@@ -24,7 +24,7 @@
       },
       "providers": [
         {
-          "id": "id of the CPO",
+          "id": "4235",
           "descriptor": {
             "name": "Alpha Charging Solutions",
             "images": [
@@ -63,7 +63,7 @@
                   "list": [
                     {
                       "display": true,
-                      "value": "30kms",
+                      "value": "10kms",
                       "descriptor": {
                         "name": "Distance",
                         "code": "distance"
