@@ -1,6 +1,6 @@
 {
   "context": {
-    "domain": "uei:ev-charging:0.1.0",
+    "domain": "uei:0.1.0",
     "location": {
       "country": {
         "name": "India",

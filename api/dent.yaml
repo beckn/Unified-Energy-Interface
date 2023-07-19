@@ -1,8 +1,8 @@
 
 openapi: 3.0.0
 info:
-  title: Beckn Protocol Core
-  description: Beckn Core Transaction API specification
+  title: Beckn Energy API Specification
+  description: Adaptation of Beckn protocol for the Energy sector.
   version: 1.1.0
 security:
   - SubscriberAuth: []
@@ -12,7 +12,7 @@ paths:
       tags:
         - Beckn Provider Platform (BPP)
         - Beckn Gateway (BG)
-      description: This allows the customer to search for EV charging stations. 
+      description: This allows the customer to search for energy related services.
       requestBody:
         content:
           application/json:
@@ -38,7 +38,7 @@ paths:
               Search for charging stations based on location and vehicle make:
                 value:
                   context:
-                    domain: uei:ev-charging:0.1.0
+                    domain: uei:0.1.0
                     location:
                       country:
                         name: India
@@ -73,7 +73,7 @@ paths:
               Search for charging stations based on location, vehicle make and tariff:
                 value:
                   context:
-                    domain: uei:ev-charging:0.1.0
+                    domain: uei:0.1.0
                     location:
                       country:
                         name: India
@@ -112,7 +112,7 @@ paths:
               Search for charging stations based on charger details:
                 value:
                   context:
-                    domain: uei:ev-charging:0.1.0
+                    domain: uei:0.1.0
                     location:
                       country:
                         name: India
@@ -218,8 +218,30 @@ paths:
                 - context
                 - message
       responses:
-        default:
-          $ref: '#/paths/~1init/post/responses/default'
+        '200':
+          description: Acknowledgement of message received after successful validation of schema and signature
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: object
+                    properties:
+                      ack:
+                        allOf:
+                          - $ref: '#/components/schemas/Ack'
+                          - properties:
+                              status:
+                                enum:
+                                  - ACK
+                                  - NACK
+                    required:
+                      - ack
+                  error:
+                    $ref: '#/components/schemas/Error'
+                required:
+                  - message
   /init:
     post:
       tags:
@@ -306,8 +328,30 @@ paths:
                 - context
                 - message
       responses:
-        default:
-          $ref: '#/paths/~1init/post/responses/default'
+        '200':
+          description: Acknowledgement of message received after successful validation of schema and signature
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: object
+                    properties:
+                      ack:
+                        allOf:
+                          - $ref: '#/components/schemas/Ack'
+                          - properties:
+                              status:
+                                enum:
+                                  - ACK
+                                  - NACK
+                    required:
+                      - ack
+                  error:
+                    $ref: '#/components/schemas/Error'
+                required:
+                  - message
   /status:
     post:
       tags:
@@ -339,8 +383,30 @@ paths:
                 - context
                 - message
       responses:
-        default:
-          $ref: '#/paths/~1init/post/responses/default'
+        '200':
+          description: Acknowledgement of message received after successful validation of schema and signature
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: object
+                    properties:
+                      ack:
+                        allOf:
+                          - $ref: '#/components/schemas/Ack'
+                          - properties:
+                              status:
+                                enum:
+                                  - ACK
+                                  - NACK
+                    required:
+                      - ack
+                  error:
+                    $ref: '#/components/schemas/Error'
+                required:
+                  - message
   /track:
     post:
       tags:
@@ -375,8 +441,30 @@ paths:
                 - context
                 - message
       responses:
-        default:
-          $ref: '#/paths/~1init/post/responses/default'
+        '200':
+          description: Acknowledgement of message received after successful validation of schema and signature
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: object
+                    properties:
+                      ack:
+                        allOf:
+                          - $ref: '#/components/schemas/Ack'
+                          - properties:
+                              status:
+                                enum:
+                                  - ACK
+                                  - NACK
+                    required:
+                      - ack
+                  error:
+                    $ref: '#/components/schemas/Error'
+                required:
+                  - message
   /cancel:
     post:
       tags:
@@ -412,8 +500,30 @@ paths:
                 - context
                 - message
       responses:
-        default:
-          $ref: '#/paths/~1init/post/responses/default'
+        '200':
+          description: Acknowledgement of message received after successful validation of schema and signature
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: object
+                    properties:
+                      ack:
+                        allOf:
+                          - $ref: '#/components/schemas/Ack'
+                          - properties:
+                              status:
+                                enum:
+                                  - ACK
+                                  - NACK
+                    required:
+                      - ack
+                  error:
+                    $ref: '#/components/schemas/Error'
+                required:
+                  - message
   /update:
     post:
       tags:
@@ -451,8 +561,30 @@ paths:
                 - context
                 - message
       responses:
-        default:
-          $ref: '#/paths/~1init/post/responses/default'
+        '200':
+          description: Acknowledgement of message received after successful validation of schema and signature
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: object
+                    properties:
+                      ack:
+                        allOf:
+                          - $ref: '#/components/schemas/Ack'
+                          - properties:
+                              status:
+                                enum:
+                                  - ACK
+                                  - NACK
+                    required:
+                      - ack
+                  error:
+                    $ref: '#/components/schemas/Error'
+                required:
+                  - message
   /rating:
     post:
       tags:
@@ -484,8 +616,30 @@ paths:
                 - context
                 - message
       responses:
-        default:
-          $ref: '#/paths/~1init/post/responses/default'
+        '200':
+          description: Acknowledgement of message received after successful validation of schema and signature
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: object
+                    properties:
+                      ack:
+                        allOf:
+                          - $ref: '#/components/schemas/Ack'
+                          - properties:
+                              status:
+                                enum:
+                                  - ACK
+                                  - NACK
+                    required:
+                      - ack
+                  error:
+                    $ref: '#/components/schemas/Error'
+                required:
+                  - message
   /support:
     post:
       tags:
@@ -515,8 +669,30 @@ paths:
                 - context
                 - message
       responses:
-        default:
-          $ref: '#/paths/~1init/post/responses/default'
+        '200':
+          description: Acknowledgement of message received after successful validation of schema and signature
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: object
+                    properties:
+                      ack:
+                        allOf:
+                          - $ref: '#/components/schemas/Ack'
+                          - properties:
+                              status:
+                                enum:
+                                  - ACK
+                                  - NACK
+                    required:
+                      - ack
+                  error:
+                    $ref: '#/components/schemas/Error'
+                required:
+                  - message
   /on_search:
     post:
       tags:
@@ -558,7 +734,7 @@ paths:
                       country:
                         name: India
                         code: IND
-                    domain: uei:ev-charging:0.1.0
+                    domain: uei:0.1.0
                     timestamp: '2023-07-16T04:41:16Z'
                     bap_id: example-bap.com
                     transaction_id: 6743e9e2-4fb5-487c-92b7-13ba8018f176
@@ -692,7 +868,7 @@ paths:
                       country:
                         name: India
                         code: IND
-                    domain: uei:ev-charging:0.1.0
+                    domain: uei:0.1.0
                     timestamp: '2023-07-16T04:41:16Z'
                     bap_id: example-bap.com
                     transaction_id: 6743e9e2-4fb5-487c-92b7-13ba8018f176
@@ -780,8 +956,30 @@ paths:
                                       display: true
                                       value: Available
       responses:
-        default:
-          $ref: '#/paths/~1init/post/responses/default'
+        '200':
+          description: Acknowledgement of message received after successful validation of schema and signature
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: object
+                    properties:
+                      ack:
+                        allOf:
+                          - $ref: '#/components/schemas/Ack'
+                          - properties:
+                              status:
+                                enum:
+                                  - ACK
+                                  - NACK
+                    required:
+                      - ack
+                  error:
+                    $ref: '#/components/schemas/Error'
+                required:
+                  - message
   /on_select:
     post:
       tags:
@@ -812,8 +1010,30 @@ paths:
               required:
                 - context
       responses:
-        default:
-          $ref: '#/paths/~1init/post/responses/default'
+        '200':
+          description: Acknowledgement of message received after successful validation of schema and signature
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: object
+                    properties:
+                      ack:
+                        allOf:
+                          - $ref: '#/components/schemas/Ack'
+                          - properties:
+                              status:
+                                enum:
+                                  - ACK
+                                  - NACK
+                    required:
+                      - ack
+                  error:
+                    $ref: '#/components/schemas/Error'
+                required:
+                  - message
   /on_init:
     post:
       tags:
@@ -846,8 +1066,30 @@ paths:
               required:
                 - context
       responses:
-        default:
-          $ref: '#/paths/~1init/post/responses/default'
+        '200':
+          description: Acknowledgement of message received after successful validation of schema and signature
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: object
+                    properties:
+                      ack:
+                        allOf:
+                          - $ref: '#/components/schemas/Ack'
+                          - properties:
+                              status:
+                                enum:
+                                  - ACK
+                                  - NACK
+                    required:
+                      - ack
+                  error:
+                    $ref: '#/components/schemas/Error'
+                required:
+                  - message
   /on_confirm:
     post:
       tags:
@@ -880,8 +1122,30 @@ paths:
               required:
                 - context
       responses:
-        default:
-          $ref: '#/paths/~1init/post/responses/default'
+        '200':
+          description: Acknowledgement of message received after successful validation of schema and signature
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: object
+                    properties:
+                      ack:
+                        allOf:
+                          - $ref: '#/components/schemas/Ack'
+                          - properties:
+                              status:
+                                enum:
+                                  - ACK
+                                  - NACK
+                    required:
+                      - ack
+                  error:
+                    $ref: '#/components/schemas/Error'
+                required:
+                  - message
   /on_track:
     post:
       tags:
@@ -914,8 +1178,30 @@ paths:
               required:
                 - context
       responses:
-        default:
-          $ref: '#/paths/~1init/post/responses/default'
+        '200':
+          description: Acknowledgement of message received after successful validation of schema and signature
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: object
+                    properties:
+                      ack:
+                        allOf:
+                          - $ref: '#/components/schemas/Ack'
+                          - properties:
+                              status:
+                                enum:
+                                  - ACK
+                                  - NACK
+                    required:
+                      - ack
+                  error:
+                    $ref: '#/components/schemas/Error'
+                required:
+                  - message
   /on_cancel:
     post:
       tags:
@@ -948,8 +1234,30 @@ paths:
               required:
                 - context
       responses:
-        default:
-          $ref: '#/paths/~1init/post/responses/default'
+        '200':
+          description: Acknowledgement of message received after successful validation of schema and signature
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: object
+                    properties:
+                      ack:
+                        allOf:
+                          - $ref: '#/components/schemas/Ack'
+                          - properties:
+                              status:
+                                enum:
+                                  - ACK
+                                  - NACK
+                    required:
+                      - ack
+                  error:
+                    $ref: '#/components/schemas/Error'
+                required:
+                  - message
   /on_update:
     post:
       tags:
@@ -982,8 +1290,30 @@ paths:
               required:
                 - context
       responses:
-        default:
-          $ref: '#/paths/~1init/post/responses/default'
+        '200':
+          description: Acknowledgement of message received after successful validation of schema and signature
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: object
+                    properties:
+                      ack:
+                        allOf:
+                          - $ref: '#/components/schemas/Ack'
+                          - properties:
+                              status:
+                                enum:
+                                  - ACK
+                                  - NACK
+                    required:
+                      - ack
+                  error:
+                    $ref: '#/components/schemas/Error'
+                required:
+                  - message
   /on_status:
     post:
       tags:
@@ -1016,8 +1346,30 @@ paths:
               required:
                 - context
       responses:
-        default:
-          $ref: '#/paths/~1init/post/responses/default'
+        '200':
+          description: Acknowledgement of message received after successful validation of schema and signature
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: object
+                    properties:
+                      ack:
+                        allOf:
+                          - $ref: '#/components/schemas/Ack'
+                          - properties:
+                              status:
+                                enum:
+                                  - ACK
+                                  - NACK
+                    required:
+                      - ack
+                  error:
+                    $ref: '#/components/schemas/Error'
+                required:
+                  - message
   /on_rating:
     post:
       tags:
@@ -1051,8 +1403,30 @@ paths:
                 - context
                 - message
       responses:
-        default:
-          $ref: '#/paths/~1init/post/responses/default'
+        '200':
+          description: Acknowledgement of message received after successful validation of schema and signature
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: object
+                    properties:
+                      ack:
+                        allOf:
+                          - $ref: '#/components/schemas/Ack'
+                          - properties:
+                              status:
+                                enum:
+                                  - ACK
+                                  - NACK
+                    required:
+                      - ack
+                  error:
+                    $ref: '#/components/schemas/Error'
+                required:
+                  - message
   /on_support:
     post:
       tags:
@@ -1083,8 +1457,30 @@ paths:
               required:
                 - context
       responses:
-        default:
-          $ref: '#/paths/~1init/post/responses/default'
+        '200':
+          description: Acknowledgement of message received after successful validation of schema and signature
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: object
+                    properties:
+                      ack:
+                        allOf:
+                          - $ref: '#/components/schemas/Ack'
+                          - properties:
+                              status:
+                                enum:
+                                  - ACK
+                                  - NACK
+                    required:
+                      - ack
+                  error:
+                    $ref: '#/components/schemas/Error'
+                required:
+                  - message
 components:
   securitySchemes:
     SubscriberAuth:

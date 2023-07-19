@@ -7,7 +7,7 @@
         "code": "IND"
       }
     },
-    "domain": "uei:ev-charging:0.1.0",
+    "domain": "uei:0.1.0",
     "timestamp": "2023-07-16T04:41:16Z",
     "bap_id": "example-bap.com",
     "transaction_id": "6743e9e2-4fb5-487c-92b7-13ba8018f176",
