@@ -20,26 +20,19 @@
   },
   "message": {
     "order": {
-      "providers": {
-        "id": "pulse-energy"
+      "provider": {
+        "id": "chargezone.in"
       },
       "items": [
         {
-          "id": "pe-charging-01"
-        }
-      ],
-      "fulfillments": [
-        {
-          "id": "1"
-        },
-        {
-          "vehicle": {
-            "category": "car",
-            "make": "Tata",
-            "model": "Nexon EV",
-            "variant": "ZX+",
-            "wheels_count": "4",
-            "energy_type": "electric"
+          "id": "pe-charging-01",
+          "quantity": {
+            "selected": {
+              "measure": {
+                "value": "4",
+                "unit": "kWh"
+              }
+            }
           }
         }
       ]
