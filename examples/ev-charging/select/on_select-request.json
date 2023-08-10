@@ -21,13 +21,13 @@
   "message": {
     "order": {
       "providers": {
-        "id": "pulse-energy",
+        "id": "chargezone.in",
         "descriptor": {
-          "name": "Pulse Energy",
-          "short_desc": "Pulse Energy Technologies Pvt Ltd",
+          "name": "Chargezone",
+          "short_desc": "Chargezone Technologies Pvt Ltd",
           "images": [
             {
-              "url": "https://pulseenergy.io/images/logo.png"
+              "url": "https://chargezone.in/images/logo.png"
             }
           ]
         }
@@ -43,67 +43,19 @@
             "currency": "INR/kWH"
           },
           "quantity": {
-            "available": "100"
-          },
-          "fulfillments": ["1"]
-        }
-      ],
-      "fulfillments": [
-        {
-          "id": "1",
-          "type": "CHARGING",
-          "vehicle": {
-            "category": "car",
-            "make": "Tata",
-            "model": "Nexon EV",
-            "variant": "ZX+",
-            "wheels_count": "4",
-            "energy_type": "electric"
-          },
-          "stops": [
-            {
-              "time": {
-                "range": {
-                  "start": "10:00",
-                  "end": "10:30"
-                }
+            "available": {
+              "measure": {
+                "value": "100",
+                "unit": "kWh"
+              }
+            },
+            "selected": {
+              "measure": {
+                "value": "4",
+                "unit": "kWh"
               }
             }
-          ],
-          "tags": [
-            {
-              "descriptor": {
-                "name": "Charging Point"
-              },
-              "list": [
-                {
-                  "descriptor": {
-                    "name": "Charger type"
-                  },
-                  "value": "AC"
-                },
-                {
-                  "descriptor": {
-                    "name": "Connector type"
-                  },
-                  "value": "CCS2"
-                },
-                {
-                  "descriptor": {
-                    "name": "Power Rating"
-                  },
-                  "value": "greater than 50kW"
-                },
-                {
-                  "descriptor": {
-                    "name": "Availability"
-                  },
-                  "value": "Available"
-                }
-              ],
-              "display": true
-            }
-          ]
+          }
         }
       ],
       "quote": {
@@ -113,16 +65,23 @@
         },
         "breakup": [
           {
-            "title": "charging cost",
-            "price": { "value": "32", "currency": "INR" }
-          },
-          {
-            "title": "cgst",
-            "price": { "value": "4", "currency": "INR" }
-          },
-          {
-            "title": "sgst",
-            "price": { "value": "4", "currency": "INR" }
+            "item": {
+              "descriptor": {
+                "name": "Units consumed"
+              },
+              "quantity": {
+                "selected": {
+                  "measure": {
+                    "value": "4",
+                    "unit": "kWh"
+                  }
+                }
+              }
+            },
+            "price": { 
+              "value": "32", 
+              "currency": "INR" 
+            }
           }
         ]
       }
