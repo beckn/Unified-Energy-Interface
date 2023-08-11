@@ -122,8 +122,12 @@
         },
         "breakup": [
           {
-            "title": "charging cost",
-            "price": { "value": "32", "currency": "INR" }
+            "title": "units consumed",
+            "price": { "value": "40", "currency": "INR" }
+          },
+          {
+            "title": "charging fees",
+            "price": { "value": "10", "currency": "INR" }
           },
           {
             "title": "cgst",
