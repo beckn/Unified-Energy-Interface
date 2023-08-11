@@ -67,7 +67,7 @@
           {
             "item": {
               "descriptor": {
-                "name": "Units consumed"
+                "name": "Estimated units consumed"
               },
               "quantity": {
                 "selected": {
