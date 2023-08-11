@@ -20,8 +20,8 @@
   },
   "message": {
     "order": {
-      "providers": {
-        "id": "pulse-energy"
+      "provider": {
+        "id": "chargezone.in"
       },
       "items": [
         {
@@ -29,21 +29,20 @@
         }
       ],
       "billing": {
+        "name": "John Doe",
         "email": "abc@example.com",
-        "number": "+91-9876522222"
+        "phone": "+91-9876522222"
       },
       "fulfillments": [
         {
-          "id": "1"
-        },
-        {
-          "vehicle": {
-            "category": "car",
-            "make": "Tata",
-            "model": "Nexon EV",
-            "variant": "ZX+",
-            "wheels_count": "4",
-            "energy_type": "electric"
+          "id": "1",
+          "customer": {
+            "person": {
+              "name" : "John Doe"
+            },
+            "contact": {
+              "phone": "+91-9887766554"
+            }
           }
         }
       ]
