@@ -32,6 +32,16 @@
               }
             ]
           }.
+          "locations": [
+            {
+              "id": "1",
+              "gps": "12.345345,77.389754"
+            },
+            {
+              "id": "2",
+              "gps": "12.247934,77.876987"
+            }
+          ],
           "items": [
             {
               "id": "pe-charging-01",
@@ -43,23 +53,18 @@
                 "currency": "INR / kWH"
               },
               "quantity": {
-                "available": "100"
+                "available": {
+                  "measure": {
+                    "value": "100",
+                    "unit": "kWH"
+                  }
+                }
               },
+              "locations": [
+                "1",
+                "2"
+              ],
               "fulfillments": ["1", "2"]
-            },
-            {
-              "id": "pe-battery-swapping-01",
-              "descriptor": {
-                "code": "energy"
-              },
-              "price": {
-                "value": "6",
-                "currency": "INR/kWH"
-              },
-              "quantity": {
-                "available": "100"
-              },
-              "fulfillments": ["3", "4"]
             }
           ],
           "fulfillments": [
@@ -84,13 +89,15 @@
                   "list": [
                     {
                       "descriptor": {
-                        "name": "Charger type"
+                        "name": "Charger type",
+                        "code": "charger-type"
                       },
                       "value": "AC"
                     },
                     {
                       "descriptor": {
-                        "name": "Connector type"
+                        "name": "Connector type",
+                        "code": "connector-type"
                       },
                       "value": "CCS2"
                     },
