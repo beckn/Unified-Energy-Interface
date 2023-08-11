@@ -27,6 +27,11 @@
             "value": "4.0",
             "unit": "kWH"
           }
+        },
+        "category": {
+          "descriptor": {
+            "code": "green-tariff"
+          }
         }
       },
       "location": {
