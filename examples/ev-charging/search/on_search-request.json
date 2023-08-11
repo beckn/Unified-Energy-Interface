@@ -22,16 +22,16 @@
     "catalog": {
       "providers": [
         {
-          "id": "pulse-energy",
+          "id": "chargezone.in",
           "descriptor": {
-            "name": "Pulse Energy",
-            "short_desc": "Pulse Energy Technologies Pvt Ltd",
+            "name": "Chargezone",
+            "short_desc": "Chargezone Technologies Pvt Ltd",
             "images": [
               {
-                "url": "https://pulseenergy.io/images/logo.png"
+                "url": "https://chargezone.in/images/logo.png"
               }
             ]
-          },
+          }.
           "items": [
             {
               "id": "pe-charging-01",
@@ -79,7 +79,7 @@
               "tags": [
                 {
                   "descriptor": {
-                    "name": "Charging Point"
+                    "name": "Charging Point Specifications"
                   },
                   "list": [
                     {
@@ -158,7 +158,31 @@
                   "display": true
                 }
               ]
-            },
+            }
+          ]
+        },
+        {
+          "id": "log9.in",
+          "descriptor": {
+            "name":"Log9 Inc"
+          },
+          "items": [
+            {
+              "id": "pe-charging-01",
+              "descriptor": {
+                "code": "energy"
+              },
+              "price": {
+                "value": "10",
+                "currency": "INR / kWH"
+              },
+              "quantity": {
+                "available": "1000"
+              },
+              "fulfillments": ["3", "4"]
+            }
+          ],
+          "fulfillments": [
             {
               "id": "3",
               "type": "BATTERY-SWAP",
@@ -172,7 +196,7 @@
             },
             {
               "id": "4",
-              "type": "BATTERY-SWAP",
+              "type": "MOBILE-BATTERY-SWAP",
               "stops": [
                 {
                   "location": {
