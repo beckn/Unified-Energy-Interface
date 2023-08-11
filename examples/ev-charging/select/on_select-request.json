@@ -36,7 +36,7 @@
         {
           "id": "pe-charging-01",
           "descriptor": {
-            "code": "ee"
+            "code": "energy"
           },
           "price": {
             "value": "8",
@@ -60,7 +60,7 @@
       ],
       "quote": {
         "price": {
-          "value": "40",
+          "value": "32",
           "currency": "INR"
         },
         "breakup": [
