@@ -12,7 +12,7 @@
     "version": "1.1.0",
     "bap_id": "example-bap.com",
     "bap_uri": "https://api.example-bap.com/pilot/bap/energy/v1",
-    "bpp_id": "chargezone-energy-bpp.com",
+    "bpp_id": "example-bpp.com",
     "bpp_uri": "https://api.example-bpp.com/pilot/bpp/",
     "transaction_id": "6743e9e2-4fb5-487c-92b7-13ba8018f176",
     "message_id": "6743e9e2-4fb5-487c-92b7-13ba8018f176",
@@ -20,65 +20,45 @@
   },
   "message": {
     "order": {
-      "providers": {
-        "id": "chargezone.in"
+      "provider": {
+        "id": "5f0acfd5"
       },
       "items": [
         {
-          "id": "pe-charging-01"
+          "id": "5f0acfd5-grid-1"
+        }
+      ],
+      "fulfillments": [
+        {
+          "id": "1"
         }
       ],
       "billing": {
-        "name": "John Doe",
-        "email": "abc@example.com",
-        "number": "+91-9876522222"
+        "email": "joe.adam@abc.org",
+        "name": "Joe Adam"
       },
-      "fulfillments": [
-        {
-          "id": "1",
-          "customer": {
-            "person": {
-              "name": "John Doe"
-            },
-            "contact": {
-              "phone": "+91-9887766554"
-            }
-          }
-        }
-      ],
-      "payments": [
-        {
-          "collected_by": "BPP",
-          "params": {
-            "amount": "40",
-            "currency": "INR"
-          },
-          "status": "PAID",
-          "type": "PRE-ORDER"
-        }
-      ],
       "quote": {
         "price": {
-          "value": "40",
-          "currency": "INR"
+          "currency": "INR",
+          "value": "-2400"
         },
         "breakup": [
           {
             "item": {
               "descriptor": {
-                "name": "Estimated units consumed"
+                "name": "Estimated units to be given"
               },
               "quantity": {
                 "selected": {
                   "measure": {
-                    "value": "4",
+                    "value": "300",
                     "unit": "kWh"
                   }
                 }
               }
             },
             "price": {
-              "value": "32",
+              "value": "-2400",
               "currency": "INR"
             }
           }

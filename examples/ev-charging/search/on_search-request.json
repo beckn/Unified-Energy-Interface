@@ -31,7 +31,16 @@
                 "url": "https://chargezone.in/images/logo.png"
               }
             ]
-          }.
+          },
+          "categories": [
+            {
+              "id": "1",
+              "descriptor": {
+                "code": "green-tariff",
+                "name": "green tariff"
+              }
+            }
+          ],
           "locations": [
             {
               "id": "1",
@@ -60,11 +69,17 @@
                   }
                 }
               },
-              "locations": [
+              "category_ids": [
+                "1"
+              ],
+              "location_ids": [
                 "1",
                 "2"
               ],
-              "fulfillments": ["1", "2"]
+              "fulfillment_ids": [
+                "1",
+                "2"
+              ]
             }
           ],
           "fulfillments": [
@@ -171,8 +186,17 @@
         {
           "id": "log9.in",
           "descriptor": {
-            "name":"Log9 Inc"
+            "name": "Log9 Inc"
           },
+          "categories": [
+            {
+              "id": "1",
+              "descriptor": {
+                "code": "green-tariff",
+                "name": "green tariff"
+              }
+            }
+          ],
           "items": [
             {
               "id": "pe-charging-01",
@@ -186,7 +210,13 @@
               "quantity": {
                 "available": "1000"
               },
-              "fulfillments": ["3", "4"]
+              "category_ids": [
+                "1"
+              ],
+              "fulfillment_ids": [
+                "3",
+                "4"
+              ]
             }
           ],
           "fulfillments": [
@@ -207,7 +237,7 @@
               "stops": [
                 {
                   "location": {
-                    "url": "https://pulseenergy.in/track/bswap/3234242"
+                    "url": "https://log9.in/track/bswap/3234242"
                   }
                 }
               ]

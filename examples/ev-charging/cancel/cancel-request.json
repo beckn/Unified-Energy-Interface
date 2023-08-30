@@ -1,7 +1,7 @@
 {
   "context": {
     "domain": "dent:0.1.0",
-    "action": "init",
+    "action": "cancel",
     "location": {
       "country": {
         "name": "India",
@@ -20,32 +20,11 @@
   },
   "message": {
     "order": {
-      "provider": {
-        "id": "chargezone.in"
+      "cancellation_reason_id": "5",
+      "descriptor": {
+        "short_desc": "Can't make it on time"
       },
-      "items": [
-        {
-          "id": "pe-charging-01"
-        }
-      ],
-      "billing": {
-        "name": "John Doe",
-        "email": "abc@example.com",
-        "phone": "+91-9876522222"
-      },
-      "fulfillments": [
-        {
-          "id": "1",
-          "customer": {
-            "person": {
-              "name": "John Doe"
-            },
-            "contact": {
-              "phone": "+91-9887766554"
-            }
-          }
-        }
-      ]
+      "order_id": "6743e9e2-4fb5-487c-92b7"
     }
   }
 }

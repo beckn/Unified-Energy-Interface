@@ -1,7 +1,7 @@
 {
   "context": {
     "domain": "dent:0.1.0",
-    "action": "init",
+    "action": "support",
     "location": {
       "country": {
         "name": "India",
@@ -19,33 +19,10 @@
     "timestamp": "2023-07-16T04:41:16Z"
   },
   "message": {
-    "order": {
-      "provider": {
-        "id": "chargezone.in"
-      },
-      "items": [
-        {
-          "id": "pe-charging-01"
-        }
-      ],
-      "billing": {
-        "name": "John Doe",
-        "email": "abc@example.com",
-        "phone": "+91-9876522222"
-      },
-      "fulfillments": [
-        {
-          "id": "1",
-          "customer": {
-            "person": {
-              "name": "John Doe"
-            },
-            "contact": {
-              "phone": "+91-9887766554"
-            }
-          }
-        }
-      ]
+    "support": {
+      "order_id": "6743e9e2-4fb5-487c-92b7",
+      "phone": "+919876543210",
+      "email": "john.doe@gmail.com"
     }
   }
 }
