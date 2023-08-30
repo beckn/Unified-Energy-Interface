@@ -1,7 +1,7 @@
 {
   "context": {
     "domain": "dent:0.1.0",
-    "action": "on_confirm",
+    "action": "on_cancel",
     "location": {
       "country": {
         "name": "India",
@@ -21,6 +21,7 @@
   "message": {
     "order": {
       "id": "5f0acfd5",
+      "status": "CANCELLED",
       "provider": {
         "id": "5f0acfd5",
         "descriptor": {
@@ -40,15 +41,8 @@
       "items": [
         {
           "id": "5f0acfd5-grid-1",
-          "provider": {
-            "contact": {
-              "email": "joe.adam@abc.org",
-              "phone": "+91-9999999999"
-            },
-            "person": {
-              "id": "0065716000",
-              "name": "Joe Adam"
-            }
+          "descriptor": {
+            "name": "Storage Grid 1"
           },
           "price": {
             "value": "8",
@@ -90,8 +84,8 @@
           ],
           "state": {
             "descriptor": {
-              "code": "transaction-confirmed",
-              "name": "energy transaction confirmed"
+              "code": "transaction-cancelled",
+              "name": "energy transaction cancelled"
             }
           },
           "tags": [

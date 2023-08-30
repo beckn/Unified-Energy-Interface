@@ -1,7 +1,7 @@
 {
   "context": {
     "domain": "dent:0.1.0",
-    "action": "on_confirm",
+    "action": "on_update",
     "location": {
       "country": {
         "name": "India",
@@ -40,15 +40,8 @@
       "items": [
         {
           "id": "5f0acfd5-grid-1",
-          "provider": {
-            "contact": {
-              "email": "joe.adam@abc.org",
-              "phone": "+91-9999999999"
-            },
-            "person": {
-              "id": "0065716000",
-              "name": "Joe Adam"
-            }
+          "descriptor": {
+            "name": "Storage Grid 1"
           },
           "price": {
             "value": "8",
@@ -82,7 +75,7 @@
             {
               "quantity": {
                 "required": {
-                  "value": "300.0",
+                  "value": "200.0",
                   "unit": "kWH"
                 }
               }
@@ -90,8 +83,8 @@
           ],
           "state": {
             "descriptor": {
-              "code": "transaction-in-progress",
-              "name": "200 out of 300 kWH transferred"
+              "code": "transaction-updated",
+              "name": "energy transaction updated"
             }
           },
           "tags": [
@@ -125,7 +118,7 @@
       "quote": {
         "price": {
           "currency": "INR",
-          "value": "-2400"
+          "value": "-1600"
         },
         "breakup": [
           {
@@ -136,14 +129,14 @@
               "quantity": {
                 "selected": {
                   "measure": {
-                    "value": "300",
+                    "value": "200",
                     "unit": "kWh"
                   }
                 }
               }
             },
             "price": {
-              "value": "-2400",
+              "value": "-1600",
               "currency": "INR"
             }
           }

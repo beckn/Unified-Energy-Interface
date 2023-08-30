@@ -40,15 +40,8 @@
       "items": [
         {
           "id": "5f0acfd5-grid-1",
-          "provider": {
-            "contact": {
-              "email": "joe.adam@abc.org",
-              "phone": "+91-9999999999"
-            },
-            "person": {
-              "id": "0065716000",
-              "name": "Joe Adam"
-            }
+          "descriptor": {
+            "name": "Storage Grid 1"
           },
           "price": {
             "value": "8",
