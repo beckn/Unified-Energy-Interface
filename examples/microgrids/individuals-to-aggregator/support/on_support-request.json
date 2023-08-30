@@ -1,7 +1,7 @@
 {
   "context": {
     "domain": "dent:0.1.0",
-    "action": "on_cancel",
+    "action": "on_support",
     "location": {
       "country": {
         "name": "India",
@@ -19,12 +19,11 @@
     "timestamp": "2023-07-16T04:41:16Z"
   },
   "message": {
-    "order": {
-      "id": "5f0acfd5",
-      "cancellation_reason_id": "5",
-      "descriptor": {
-        "code": "grid-down"
-      }
+    "support": {
+      "order_id": "6743e9e2-4fb5-487c-92b7",
+      "phone": "1800 1080",
+      "email": "customer.care@sheru.com",
+      "url": "https://www.sheru.com/helpdesk"
     }
   }
 }

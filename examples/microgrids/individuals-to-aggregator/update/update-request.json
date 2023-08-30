@@ -1,7 +1,7 @@
 {
   "context": {
     "domain": "dent:0.1.0",
-    "action": "on_cancel",
+    "action": "update",
     "location": {
       "country": {
         "name": "India",
@@ -21,10 +21,20 @@
   "message": {
     "order": {
       "id": "5f0acfd5",
-      "cancellation_reason_id": "5",
-      "descriptor": {
-        "code": "grid-down"
-      }
-    }
+      "items": [
+        {
+          "descriptor": {
+            "code": "energy"
+          },
+          "quantity": {
+            "available": {
+              "value": "200.0",
+              "unit": "kWH"
+            }
+          }
+        }
+      ]
+    },
+    "updated_target": "order.items[0].quantity.available.value"
   }
 }

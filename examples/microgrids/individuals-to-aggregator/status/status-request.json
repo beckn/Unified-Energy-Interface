@@ -1,7 +1,7 @@
 {
   "context": {
     "domain": "dent:0.1.0",
-    "action": "on_cancel",
+    "action": "status",
     "location": {
       "country": {
         "name": "India",
@@ -19,12 +19,6 @@
     "timestamp": "2023-07-16T04:41:16Z"
   },
   "message": {
-    "order": {
-      "id": "5f0acfd5",
-      "cancellation_reason_id": "5",
-      "descriptor": {
-        "code": "grid-down"
-      }
-    }
+    "order_id": "5f0acfd5"
   }
 }

@@ -1,0 +1,75 @@
+{
+  "context": {
+    "domain": "dent:0.1.0",
+    "action": "confirm",
+    "location": {
+      "country": {
+        "name": "India",
+        "code": "IND"
+      }
+    },
+    "city": "std:080",
+    "version": "1.1.0",
+    "bap_id": "example-bap.com",
+    "bap_uri": "https://api.example-bap.com/pilot/bap/energy/v1",
+    "bpp_id": "example-bpp.com",
+    "bpp_uri": "https://api.example-bpp.com/pilot/bpp/",
+    "transaction_id": "6743e9e2-4fb5-487c-92b7-13ba8018f176",
+    "message_id": "6743e9e2-4fb5-487c-92b7-13ba8018f176",
+    "timestamp": "2023-07-16T04:41:16Z"
+  },
+  "message": {
+    "order": {
+      "provider": {
+        "id": "5f0acfd5"
+      },
+      "items": [
+        {
+          "id": "5f0acfd5-grid-1"
+        }
+      ],
+      "fulfillments": [
+        {
+          "id": "1"
+        }
+      ],
+      "billing": {
+        "email": "joe.adam@abc.org",
+        "name": "Joe Adam"
+      },
+      "quote": {
+        "price": {
+          "currency": "INR",
+          "value": "-2400"
+        },
+        "breakup": [
+          {
+            "item": {
+              "descriptor": {
+                "name": "Estimated units to be given"
+              },
+              "quantity": {
+                "selected": {
+                  "measure": {
+                    "value": "300",
+                    "unit": "kWh"
+                  }
+                }
+              }
+            },
+            "price": {
+              "value": "-2400",
+              "currency": "INR"
+            }
+          }
+        ]
+      },
+      "xinput": {
+        "form_response": {
+          "status": true,
+          "submission_id": "73ef9742-c17d-4c4e-92e3-b057960863af"
+        }
+      }
+    }
+  }
+}
