@@ -90,8 +90,8 @@
           ],
           "state": {
             "descriptor": {
-              "code": "transaction-confirmed",
-              "name": "energy transaction confirmed"
+              "code": "transaction-in-progress",
+              "name": "200 out of 300 kWH transferred"
             }
           },
           "tags": [
@@ -148,12 +148,6 @@
             }
           }
         ]
-      },
-      "xinput": {
-        "form_response": {
-          "status": true,
-          "submission_id": "73ef9742-c17d-4c4e-92e3-b057960863af"
-        }
       }
     }
   }

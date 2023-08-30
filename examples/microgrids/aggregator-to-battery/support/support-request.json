@@ -1,7 +1,7 @@
 {
   "context": {
     "domain": "dent:0.1.0",
-    "action": "init",
+    "action": "support",
     "location": {
       "country": {
         "name": "India",
@@ -19,20 +19,10 @@
     "timestamp": "2023-07-16T04:41:16Z"
   },
   "message": {
-    "order": {
-      "provider": {
-        "id": "5f0acfd5"
-      },
-      "items": [
-        {
-          "id": "5f0acfd5-grid-1"
-        }
-      ],
-      "fulfillments": [
-        {
-          "id": "1"
-        }
-      ]
+    "support": {
+      "order_id": "6743e9e2-4fb5-487c-92b7",
+      "phone": "+919876543210",
+      "email": "support@sheru.com"
     }
   }
 }

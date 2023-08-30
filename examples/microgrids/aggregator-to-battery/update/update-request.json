@@ -1,7 +1,7 @@
 {
   "context": {
     "domain": "dent:0.1.0",
-    "action": "init",
+    "action": "update",
     "location": {
       "country": {
         "name": "India",
@@ -20,19 +20,21 @@
   },
   "message": {
     "order": {
-      "provider": {
-        "id": "5f0acfd5"
-      },
+      "id": "5f0acfd5",
       "items": [
         {
-          "id": "5f0acfd5-grid-1"
-        }
-      ],
-      "fulfillments": [
-        {
-          "id": "1"
+          "descriptor": {
+            "code": "energy"
+          },
+          "quantity": {
+            "available": {
+              "value": "200.0",
+              "unit": "kWH"
+            }
+          }
         }
       ]
-    }
+    },
+    "updated_target": "order.items[0].quantity.available.value"
   }
 }

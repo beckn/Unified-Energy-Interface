@@ -1,7 +1,7 @@
 {
   "context": {
     "domain": "dent:0.1.0",
-    "action": "on_confirm",
+    "action": "on_update",
     "location": {
       "country": {
         "name": "India",
@@ -73,7 +73,7 @@
       "fulfillments": [
         {
           "id": "1",
-          "type": "Manual Dispatch",
+          "type": "Automatic Dispatch",
           "contact": {
             "email": "joe.adam@abc.org",
             "phone": "+91-9999999999"
@@ -82,7 +82,7 @@
             {
               "quantity": {
                 "required": {
-                  "value": "300.0",
+                  "value": "200.0",
                   "unit": "kWH"
                 }
               }
@@ -90,8 +90,8 @@
           ],
           "state": {
             "descriptor": {
-              "code": "transaction-confirmed",
-              "name": "energy transaction confirmed"
+              "code": "transaction-updated",
+              "name": "energy transaction updated"
             }
           },
           "tags": [
@@ -125,7 +125,7 @@
       "quote": {
         "price": {
           "currency": "INR",
-          "value": "-2400"
+          "value": "-1600"
         },
         "breakup": [
           {
@@ -136,24 +136,18 @@
               "quantity": {
                 "selected": {
                   "measure": {
-                    "value": "300",
+                    "value": "200",
                     "unit": "kWh"
                   }
                 }
               }
             },
             "price": {
-              "value": "-2400",
+              "value": "-1600",
               "currency": "INR"
             }
           }
         ]
-      },
-      "xinput": {
-        "form_response": {
-          "status": true,
-          "submission_id": "73ef9742-c17d-4c4e-92e3-b057960863af"
-        }
       }
     }
   }

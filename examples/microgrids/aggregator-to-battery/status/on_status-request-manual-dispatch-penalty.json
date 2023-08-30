@@ -73,7 +73,7 @@
       "fulfillments": [
         {
           "id": "1",
-          "type": "Manual Dispatch",
+          "type": "Automatic Dispatch",
           "contact": {
             "email": "joe.adam@abc.org",
             "phone": "+91-9999999999"
@@ -90,8 +90,8 @@
           ],
           "state": {
             "descriptor": {
-              "code": "transaction-confirmed",
-              "name": "energy transaction confirmed"
+              "code": "transaction-not-started",
+              "name": "Manual dispatch hasn't begun yet"
             }
           },
           "tags": [
@@ -125,7 +125,7 @@
       "quote": {
         "price": {
           "currency": "INR",
-          "value": "-2400"
+          "value": "-400"
         },
         "breakup": [
           {
@@ -146,14 +146,15 @@
               "value": "-2400",
               "currency": "INR"
             }
+          },
+          {
+            "title": "Penalty for late manual dispatch of energy",
+            "price": {
+              "value": "2000",
+              "currency": "INR"
+            }
           }
         ]
-      },
-      "xinput": {
-        "form_response": {
-          "status": true,
-          "submission_id": "73ef9742-c17d-4c4e-92e3-b057960863af"
-        }
       }
     }
   }

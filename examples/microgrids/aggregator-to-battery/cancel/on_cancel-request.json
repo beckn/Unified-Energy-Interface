@@ -1,7 +1,7 @@
 {
   "context": {
     "domain": "dent:0.1.0",
-    "action": "on_confirm",
+    "action": "on_cancel",
     "location": {
       "country": {
         "name": "India",
@@ -21,6 +21,7 @@
   "message": {
     "order": {
       "id": "5f0acfd5",
+      "status": "CANCELLED",
       "provider": {
         "id": "5f0acfd5",
         "descriptor": {
@@ -73,7 +74,7 @@
       "fulfillments": [
         {
           "id": "1",
-          "type": "Manual Dispatch",
+          "type": "Automatic Dispatch",
           "contact": {
             "email": "joe.adam@abc.org",
             "phone": "+91-9999999999"
@@ -90,8 +91,8 @@
           ],
           "state": {
             "descriptor": {
-              "code": "transaction-confirmed",
-              "name": "energy transaction confirmed"
+              "code": "transaction-cancelled",
+              "name": "energy transaction cancelled"
             }
           },
           "tags": [
