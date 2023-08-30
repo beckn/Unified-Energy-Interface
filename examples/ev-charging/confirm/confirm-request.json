@@ -29,24 +29,61 @@
         }
       ],
       "billing": {
+        "name": "John Doe",
         "email": "abc@example.com",
         "number": "+91-9876522222"
       },
       "fulfillments": [
         {
-          "id": "1"
-        },
-        {
-          "vehicle": {
-            "category": "car",
-            "make": "Tata",
-            "model": "Nexon EV",
-            "variant": "ZX+",
-            "wheels_count": "4",
-            "energy_type": "electric"
+          "id": "1",
+          "customer": {
+            "person": {
+              "name": "John Doe"
+            },
+            "contact": {
+              "phone": "+91-9887766554"
+            }
           }
         }
-      ]
+      ],
+      "payments": [
+        {
+          "collected_by": "BPP",
+          "params": {
+            "amount": "40",
+            "currency": "INR"
+          },
+          "status": "PAID",
+          "type": "PRE-ORDER"
+        }
+      ],
+      "quote": {
+        "price": {
+          "value": "40",
+          "currency": "INR"
+        },
+        "breakup": [
+          {
+            "item": {
+              "descriptor": {
+                "name": "Estimated units consumed"
+              },
+              "quantity": {
+                "selected": {
+                  "measure": {
+                    "value": "4",
+                    "unit": "kWh"
+                  }
+                }
+              }
+            },
+            "price": {
+              "value": "32",
+              "currency": "INR"
+            }
+          }
+        ]
+      }
     }
   }
 }
