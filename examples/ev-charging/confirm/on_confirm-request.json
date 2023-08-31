@@ -83,13 +83,13 @@
             {
               "type": "start",
               "location": {
-                "gps": ""
+                "gps": "12.423423,77.325647"
               },
               "time": {
-                "timestamp": "10:00",
+                "timestamp": "01-06-2023 10:00:00",
                 "range": {
-                  "start": "10:00",
-                  "end": "10:10"
+                  "start": "01-06-2023 10:00:00",
+                  "end": "01-06-2023 10:10:00"
                 }
               },
               "instructions": {
@@ -100,10 +100,10 @@
             {
               "type": "end",
               "time": {
-                "timestamp": "10:30",
+                "timestamp": "01-06-2023 10:30:00",
                 "range": {
-                  "start": "10:30",
-                  "end": "10:40"
+                  "start": "01-06-2023 10:30:00",
+                  "end": "01-06-2023 10:40:00"
                 }
               }
             }
@@ -188,6 +188,22 @@
               "start": "2023-08-10T10:00:00Z",
               "end": "2023-08-10T10:30:00Z"
             }
+          }
+        }
+      ],
+      "cancellation_terms": [
+        {
+          "fulfillment_state": {
+            "descriptor": {
+              "code": "charging-start"
+            }
+          },
+          "cancellation_fee": {
+            "percentage": "30%"
+          },
+          "external_ref": {
+            "mimetype": "text/html",
+            "url": "https://chargezone.in/charge/tnc.html"
           }
         }
       ]

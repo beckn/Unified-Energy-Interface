@@ -1,7 +1,7 @@
 {
   "context": {
     "domain": "dent:0.1.0",
-    "action": "cancel",
+    "action": "update",
     "location": {
       "country": {
         "name": "India",
@@ -19,12 +19,19 @@
     "timestamp": "2023-07-16T04:41:16Z"
   },
   "message": {
+    "update_target": "order.fulfillments[0].state",
     "order": {
-      "cancellation_reason_id": "5",
-      "descriptor": {
-        "short_desc": "can't attend booking"
-      },
-      "order_id": "6743e9e2-4fb5-487c-92b7"
+      "fulfillments": [
+        {
+          "id": "1",
+          "type": "CHARGING",
+          "state": {
+            "descriptor": {
+              "code": "start-charging"
+            }
+          }
+        }
+      ]
     }
   }
 }
