@@ -28,7 +28,9 @@ The following recommendations need to be considered when implementing discovery 
 
 
 ### Example
-A search request for energy may look like this
+The search is broadcast to all providers on the network, there will be many providers. The providers could be EV chargers, Discoms or Energy Aggregators. The search request can look something like this.
+- have to be mapped to the provider schema (then put on_search)
+
 ```
 {
     "context": {

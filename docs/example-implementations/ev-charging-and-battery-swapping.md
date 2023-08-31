@@ -2,23 +2,27 @@
 
 ## Overview
 
-This document outlines the workflow for Electric Vehicle (EV) Charging and Battery Swapping using the DENT Protocol. The workflow includes interactions between the provider and the User for search, select, block, and completing the session.
+This document outlines the workflow for Electric Vehicle (EV) Charging and Battery Swapping using the DENT Protocol. The workflow includes interactions between the charging point operator and the user for search, select, block, and completing the session.
 
 Bear in mind that this is just an example workflow for a simple EV Charing and Battery swap workflow between a `User` and a `Provider`.
 (Note: Here, User -> Electric Vehicle Owner/User and Provider -> EV Chraging Provider or Battery Swapping Service Provider)
 
 A typical workflow for EV Charging & Battery Swapping consists of the following steps:
 
-#### Step 1: User searches for EV Chargers
+#### Step 1: The BAP searches for EV Chargers
 
-The user provides current location and specific requirements (These requirements will act as filters for EV Charging Providers such as amount of energy user needs in kwh) to find the nearest EV Chargers to charge his/her EV
+The BAP provides specific requirements to find the nearest EV Chargers to charge his/her EV
+The search can be based on the location, location and the energy requirements or location, energy requirements and charger details.
 
 #### Step 2: Provider sends catalogs of EV Chargers nearby
 
-The provider platform (BPP) sends all the nearby Providers and their catalogs to the user.
-The catalog will consist of all the services provided by the providers, such as charging types, connector types and battery swapping services etc.,
+The provider platform (BPP) sends the catalogs of all nearby charging providers to the BAP.
+The catalog will consist of various charging stations with their respective attributes such as charging types, connector types, power rating.
 
-#### Step 3: User selects EV Charger or Battery Swapping Service
+>**Note**: The BPP is not expected to run an inventory check before it sends out their catalogs. They are free to send out their entire catalogs, but if a BAP has a request with specific timing, they can send appropraite catalogs. 
+The BPP can also send add ons in their catalogs that the BAP can avail.
+
+#### Step 3: The BAP selects EV Charger or Battery Swapping Service
 
 Selects the provider which satisfies user requirements.
 In this stage, the user may select additional features such as:
@@ -29,6 +33,10 @@ In this stage, the user may select additional features such as:
 4. User can select the charger type he wants to use such as A.C. or D.C. and Connector types like CCS2 etc.,
 5. User can select quantity of energy required in units of kwh.
 
+- no of units
+- location
+- time slot
+
 #### Step 4: Provider sends quoted price
 
 The provider will receive the order based on the user requirements.
@@ -38,12 +46,19 @@ The breakdown should include:
 - Tariff per unit (i.e., INR/KWh), the tariff per unit might change by the service type, charger type and location of Energy Charger Provider
 - (or) Price for Battery Swapping
 - Price for reservation
-- Taxes
+- Taxes <br >
 
-#### Step 5: User initiates the order
+addtn
+- send quote
+- add discounts
+- add ons (free car wash, service, discounts)
 
-User initializes the order by providing billing details.
-Here, the user will provide their `Name`, `Email ID` and `Phone Number` and updates the payment details
+#### Step 5: The BAP initiates the order
+
+The BAP initializes the order by providing billing details.
+Here, the BAP will provide their `Name`, `Email ID` and `Phone Number` and updates the payment details
+
+- can send vehicle details, partnership with a company
 
 #### Step 6: Provider sends draft order
 
@@ -52,14 +67,21 @@ Based on how much units of Electrical Energy user used during charging as tariff
 If the user also done the reservation/block the transaction includes the price for block/use-up price as well
 The tariff_per_unit might change with the charger type as we know that A.C. charger type has different price compared to D.C. charger type.
 
-#### Step 7: User confirms the order
+During this interaction, the BPP can block the charger for the specified amount of time at that particular price and wait for a confirm call. Quote will no longer be valid. Recalculate the quote, applies user oe vehicle specific promotions or discounts
 
-User sees the draft order and confirms it by agreeing to the payment and fulfilment terms and conditions
+use ttl in quote to inform quote only available for this time.
+ BPP sends payment link
+
+Network can decide on the payment terms and settlements
+
+#### Step 7: The BAP confirms the order
+
+The BAP sees the draft order and confirms it by agreeing to the payment and fulfilment terms and conditions
 The confirm status will sent to the provider saying that user has paid the price and satisfied the fulfillment terms
 
 #### Step 8: Provider sends the order activation
 
-The provider will activates the order and informs user that the order is activated
+The provider will activate the order and informs user that the order is activated
 
 #### Step 9: User checks the status of the order
 

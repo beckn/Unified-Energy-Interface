@@ -81,10 +81,29 @@
           },
           "stops": [
             {
+              "type": "start",
+              "location": {
+                "gps": ""
+              },
               "time": {
+                "timestamp": "10:00",
                 "range": {
                   "start": "10:00",
-                  "end": "10:30"
+                  "end": "10:10"
+                }
+              },
+              "instructions": {
+                "name": "Charging instructions",
+                "short_desc": "To start your charging, go to charger number 987, and click on 'start' on your app"
+              }
+            },
+            {
+              "type": "end",
+              "time": {
+                "timestamp": "10:30",
+                "range": {
+                  "start": "10:30",
+                  "end": "10:40"
                 }
               }
             }
