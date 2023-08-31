@@ -1,7 +1,7 @@
 {
   "context": {
     "domain": "dent:0.1.0",
-    "action": "init",
+    "action": "update",
     "location": {
       "country": {
         "name": "India",
@@ -12,31 +12,25 @@
     "version": "1.1.0",
     "bap_id": "example-bap.com",
     "bap_uri": "https://api.example-bap.com/pilot/bap/energy/v1",
-    "bpp_id": "example-bpp.com",
+    "bpp_id": "chargezone-energy-bpp.com",
     "bpp_uri": "https://api.example-bpp.com/pilot/bpp/",
     "transaction_id": "6743e9e2-4fb5-487c-92b7-13ba8018f176",
     "message_id": "6743e9e2-4fb5-487c-92b7-13ba8018f176",
     "timestamp": "2023-07-16T04:41:16Z"
   },
   "message": {
+    "update_target": "order.fulfillments[0].state",
     "order": {
-      "provider": {
-        "id": "5f0acfd5"
-      },
-      "items": [
-        {
-          "id": "5f0acfd5-grid-1"
-        }
-      ],
       "fulfillments": [
         {
-          "id": "1"
+          "id": "1",
+          "state": {
+            "descriptor": {
+              "code": "end-charging"
+            }
+          }
         }
-      ],
-      "billing": {
-        "email": "joe.adam@abc.org",
-        "name": "Joe Adam"
-      }
+      ]
     }
   }
 }

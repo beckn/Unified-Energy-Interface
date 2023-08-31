@@ -56,6 +56,12 @@
                 "value": "4",
                 "unit": "kWh"
               }
+            },
+            "allocated": {
+              "measure": {
+                "value": "2",
+                "unit": "kWh"
+              }
             }
           },
           "fulfillments": [
@@ -77,7 +83,7 @@
           "type": "CHARGING",
           "state": {
             "descriptor": {
-              "code": "order-cancelled"
+              "code": "charger-error"
             }
           },
           "stops": [
@@ -132,7 +138,7 @@
       },
       "quote": {
         "price": {
-          "value": "-32",
+          "value": "-12",
           "currency": "INR"
         },
         "breakup": [
@@ -151,7 +157,7 @@
               }
             },
             "price": {
-              "value": "-32",
+              "value": "-12",
               "currency": "INR"
             }
           }

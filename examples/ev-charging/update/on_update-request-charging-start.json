@@ -1,7 +1,7 @@
 {
   "context": {
     "domain": "dent:0.1.0",
-    "action": "on_cancel",
+    "action": "on_update",
     "location": {
       "country": {
         "name": "India",
@@ -21,7 +21,6 @@
   "message": {
     "order": {
       "id": "6743e9e2-4fb5-487c-92b7",
-      "status": "CANCELLED",
       "providers": {
         "id": "chargezone.in",
         "descriptor": {
@@ -77,15 +76,30 @@
           "type": "CHARGING",
           "state": {
             "descriptor": {
-              "code": "order-cancelled"
+              "code": "charging-started"
             }
           },
           "stops": [
             {
+              "type": "start",
+              "location": {
+                "gps": "12.423423,77.325647"
+              },
               "time": {
+                "timestamp": "01-06-2023 10:00:00",
                 "range": {
-                  "start": "10:00",
-                  "end": "10:30"
+                  "start": "01-06-2023 10:00:00",
+                  "end": "01-06-2023 10:10:00"
+                }
+              }
+            },
+            {
+              "type": "end",
+              "time": {
+                "timestamp": "01-06-2023 10:30:00",
+                "range": {
+                  "start": "01-06-2023 10:30:00",
+                  "end": "01-06-2023 10:40:00"
                 }
               }
             }
@@ -132,14 +146,14 @@
       },
       "quote": {
         "price": {
-          "value": "-32",
+          "value": "40",
           "currency": "INR"
         },
         "breakup": [
           {
             "item": {
               "descriptor": {
-                "name": "payment refund"
+                "name": "Estimated units consumed"
               },
               "quantity": {
                 "selected": {
@@ -151,7 +165,7 @@
               }
             },
             "price": {
-              "value": "-32",
+              "value": "32",
               "currency": "INR"
             }
           }
