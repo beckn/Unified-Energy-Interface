@@ -858,23 +858,394 @@ Post-payment, UEI will activate the confirmed order
 #### `confirm` example
 
 ```json
-
+{
+  "context": {
+    "domain": "dent:0.1.0",
+    "action": "init",
+    "location": {
+      "country": {
+        "name": "India",
+        "code": "IND"
+      }
+    },
+    "city": "std:080",
+    "version": "1.1.0",
+    "bap_id": "example-bap.com",
+    "bap_uri": "https://api.example-bap.com/pilot/bap/energy/v1",
+    "bpp_id": "example-bpp.com",
+    "bpp_uri": "https://api.example-bpp.com/pilot/bpp/",
+    "transaction_id": "6743e9e2-4fb5-487c-92b7-13ba8018f176",
+    "message_id": "6743e9e2-4fb5-487c-92b7-13ba8018f176",
+    "timestamp": "2023-07-16T04:41:16Z"
+  },
+  "message": {
+    "order": {
+      "provider": {
+        "id": "5f0acfd5"
+      },
+      "items": [
+        {
+          "id": "5f0acfd5-grid-1"
+        }
+      ],
+      "fulfillments": [
+        {
+          "id": "1"
+        }
+      ],
+      "xinput": {
+        "head": {
+          "descriptor": {
+            "name": "Terms and Conditions"
+          },
+          "index": {
+            "min": 0,
+            "cur": 0,
+            "max": 0
+          },
+          "headings": ["Terms and Conditions"]
+        },
+        "form": {
+          "id": "d097c2f5-cb8d-42fe-900e-dfecdede16fb",
+          "mime_type": "text/html",
+          "url": "https://6vs8xnx5i7.icicibank.co.in/loans/xinput/formid/a23f2fdfbbb8ac402bf259d75",
+          "resubmit": false,
+          "multiple_sumbissions": false
+        },
+        "required": true
+      }
+    }
+  }
+}
 ```
 
 #### `on_confirm` example
 
 ```json
-
+{
+  "context": {
+    "domain": "dent:0.1.0",
+    "action": "on_confirm",
+    "location": {
+      "country": {
+        "name": "India",
+        "code": "IND"
+      }
+    },
+    "city": "std:080",
+    "version": "1.1.0",
+    "bap_id": "example-bap.com",
+    "bap_uri": "https://api.example-bap.com/pilot/bap/energy/v1",
+    "bpp_id": "example-bpp.com",
+    "bpp_uri": "https://api.example-bpp.com/pilot/bpp/",
+    "transaction_id": "6743e9e2-4fb5-487c-92b7-13ba8018f176",
+    "message_id": "6743e9e2-4fb5-487c-92b7-13ba8018f176",
+    "timestamp": "2023-07-16T04:41:16Z"
+  },
+  "message": {
+    "order": {
+      "id": "5f0acfd5",
+      "provider": {
+        "id": "5f0acfd5",
+        "descriptor": {
+          "name": "Joe Adam"
+        },
+        "location": [
+          {
+            "id": "1",
+            "gps": "12.345345,77.389754"
+          },
+          {
+            "id": "2",
+            "gps": "12.247934,77.876987"
+          }
+        ]
+      },
+      "items": [
+        {
+          "id": "5f0acfd5-grid-1",
+          "descriptor": {
+            "name": "Storage Grid 1"
+          },
+          "price": {
+            "value": "8",
+            "currency": "INR / kWH"
+          },
+          "quantity": {
+            "available": {
+              "measure": {
+                "value": "400",
+                "unit": "kWH"
+              }
+            }
+          },
+          "locations": ["1"],
+          "fulfillments": ["1"]
+        }
+      ],
+      "fulfillments": [
+        {
+          "id": "1",
+          "type": "Automatic Dispatch",
+          "contact": {
+            "email": "joe.adam@abc.org",
+            "phone": "+91-9999999999"
+          },
+          "stops": [
+            {
+              "quantity": {
+                "required": {
+                  "value": "300.0",
+                  "unit": "kWH"
+                }
+              }
+            }
+          ],
+          "state": {
+            "descriptor": {
+              "code": "transaction-confirmed",
+              "name": "energy transaction confirmed"
+            }
+          },
+          "tags": [
+            {
+              "descriptor": {
+                "name": "Energy Specifications"
+              },
+              "list": [
+                {
+                  "descriptor": {
+                    "name": "Power Rating"
+                  },
+                  "value": "greater than 50kW"
+                },
+                {
+                  "descriptor": {
+                    "name": "Availability"
+                  },
+                  "value": "Available"
+                }
+              ],
+              "display": true
+            }
+          ]
+        }
+      ],
+      "billing": {
+        "email": "joe.adam@abc.org",
+        "name": "Joe Adam"
+      },
+      "quote": {
+        "price": {
+          "currency": "INR",
+          "value": "-2400"
+        },
+        "breakup": [
+          {
+            "item": {
+              "descriptor": {
+                "name": "Estimated units to be stored"
+              },
+              "quantity": {
+                "selected": {
+                  "measure": {
+                    "value": "300",
+                    "unit": "kWh"
+                  }
+                }
+              }
+            },
+            "price": {
+              "value": "-2400",
+              "currency": "INR"
+            }
+          }
+        ]
+      },
+      "xinput": {
+        "form_response": {
+          "status": true,
+          "submission_id": "73ef9742-c17d-4c4e-92e3-b057960863af"
+        }
+      }
+    }
+  }
+}
 ```
 
 #### `status` example
 
 ```json
-
+{
+  "context": {
+    "domain": "dent:0.1.0",
+    "action": "status",
+    "location": {
+      "country": {
+        "name": "India",
+        "code": "IND"
+      }
+    },
+    "city": "std:080",
+    "version": "1.1.0",
+    "bap_id": "example-bap.com",
+    "bap_uri": "https://api.example-bap.com/pilot/bap/energy/v1",
+    "bpp_id": "example-bpp.com",
+    "bpp_uri": "https://api.example-bpp.com/pilot/bpp/",
+    "transaction_id": "6743e9e2-4fb5-487c-92b7-13ba8018f176",
+    "message_id": "6743e9e2-4fb5-487c-92b7-13ba8018f176",
+    "timestamp": "2023-07-16T04:41:16Z"
+  },
+  "message": {
+    "order_id": "5f0acfd5"
+  }
+}
 ```
 
 #### `on_status` example
 
 ```json
-
+{
+  "context": {
+    "domain": "dent:0.1.0",
+    "action": "on_confirm",
+    "location": {
+      "country": {
+        "name": "India",
+        "code": "IND"
+      }
+    },
+    "city": "std:080",
+    "version": "1.1.0",
+    "bap_id": "example-bap.com",
+    "bap_uri": "https://api.example-bap.com/pilot/bap/energy/v1",
+    "bpp_id": "example-bpp.com",
+    "bpp_uri": "https://api.example-bpp.com/pilot/bpp/",
+    "transaction_id": "6743e9e2-4fb5-487c-92b7-13ba8018f176",
+    "message_id": "6743e9e2-4fb5-487c-92b7-13ba8018f176",
+    "timestamp": "2023-07-16T04:41:16Z"
+  },
+  "message": {
+    "order": {
+      "id": "5f0acfd5",
+      "provider": {
+        "id": "5f0acfd5",
+        "descriptor": {
+          "name": "Joe Adam"
+        },
+        "location": [
+          {
+            "id": "1",
+            "gps": "12.345345,77.389754"
+          },
+          {
+            "id": "2",
+            "gps": "12.247934,77.876987"
+          }
+        ]
+      },
+      "items": [
+        {
+          "id": "5f0acfd5-grid-1",
+          "descriptor": {
+            "name": "Storage Grid 1"
+          },
+          "price": {
+            "value": "8",
+            "currency": "INR / kWH"
+          },
+          "quantity": {
+            "available": {
+              "measure": {
+                "value": "400",
+                "unit": "kWH"
+              }
+            }
+          },
+          "locations": ["1"],
+          "fulfillments": ["1"]
+        }
+      ],
+      "fulfillments": [
+        {
+          "id": "1",
+          "type": "Automatic Dispatch",
+          "contact": {
+            "email": "joe.adam@abc.org",
+            "phone": "+91-9999999999"
+          },
+          "stops": [
+            {
+              "quantity": {
+                "required": {
+                  "value": "300.0",
+                  "unit": "kWH"
+                }
+              }
+            }
+          ],
+          "state": {
+            "descriptor": {
+              "code": "transaction-in-progress",
+              "name": "200 out of 300 kWH transferred"
+            }
+          },
+          "tags": [
+            {
+              "descriptor": {
+                "name": "Energy Specifications"
+              },
+              "list": [
+                {
+                  "descriptor": {
+                    "name": "Power Rating"
+                  },
+                  "value": "greater than 50kW"
+                },
+                {
+                  "descriptor": {
+                    "name": "Availability"
+                  },
+                  "value": "Available"
+                }
+              ],
+              "display": true
+            }
+          ]
+        }
+      ],
+      "billing": {
+        "email": "joe.adam@abc.org",
+        "name": "Joe Adam"
+      },
+      "quote": {
+        "price": {
+          "currency": "INR",
+          "value": "-2400"
+        },
+        "breakup": [
+          {
+            "item": {
+              "descriptor": {
+                "name": "Estimated units to be stored"
+              },
+              "quantity": {
+                "selected": {
+                  "measure": {
+                    "value": "300",
+                    "unit": "kWh"
+                  }
+                }
+              }
+            },
+            "price": {
+              "value": "-2400",
+              "currency": "INR"
+            }
+          }
+        ]
+      }
+    }
+  }
+}
 ```
