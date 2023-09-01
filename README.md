@@ -3,9 +3,10 @@ The Decentralized Energy Transaction (DENT) Protocol is an adaptation of beckn p
 
 ## Release History
 
-| Version | Release Date    | Adaptation to Core Spec Version | Authors      |
-|:-------:|-----------------|---------------------------------|--------------|
-| 0.1.0   | 24th June, 2023 | 1.1.0                           | Ravi Prakash |
+| Version | Release Date        | Adaptation to Core Spec Version | Authors      |
+|:-------:|---------------------|---------------------------------|--------------|
+| 0.2.0   | 1st September, 2023 | 1.1.0                           | Ravi Prakash, Akhil Jayaprakash |
+| 0.1.0   | 24th June, 2023     | 1.1.0                           | Ravi Prakash |
 
 ## Working Group Members
 
@@ -32,16 +33,19 @@ Just like physical goods can be consumed or stored, energy can _also_ be _consum
 
 ## Implementing the specification
 
-To understanding how to implement the specification click here
+To understanding how to implement the specification click [here](./docs/5_Implementation_Guide.md)
 
 ## Acknowledgements
 
 The author(s) of this specification would like to thank the following volunteers for their contribution to the development of this specification
 
-### Version 0.1.0
+### Version 0.2.0
 - Akhil Jayaprakash - Pulse Energy (pulseenergy.io)
-- Devang Mistry - Pulse Energy (pulseenergy.io)
 - Ankit Mittal - Sheru (sheru.se)
+- Ninad Shenoy - Enterprise Minds (ninad.shenoy@eminds.ai)
+- Sudheesh Kumar Potla - IIT Kharagpur ([@Sudheesh2609](https://github.com/Sudheesh2609))
+- Sujith Nair - FIDE (fide.org)
+- Pramod Varma - FIDE (fide.org)
 
 ## References
 1. Energy Transactions - https://www.dentons.com/en/find-your-dentons-team/industry-sectors/energy/energy-trading-marketing-and-derivatives/energy-transactions
