@@ -42,7 +42,6 @@ The author(s) of this specification would like to thank the following volunteers
 ### Version 0.2.0
 - Akhil Jayaprakash - Pulse Energy (pulseenergy.io)
 - Ankit Mittal - Sheru (sheru.se)
-- Ninad Shenoy - Enterprise Minds (ninad.shenoy@eminds.ai)
 - Sudheesh Kumar Potla - IIT Kharagpur ([@Sudheesh2609](https://github.com/Sudheesh2609))
 - Sujith Nair - FIDE (fide.org)
 - Pramod Varma - FIDE (fide.org)
