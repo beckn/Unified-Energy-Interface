@@ -56,6 +56,17 @@
               }
             }
           }
+        },
+        {
+          "id": "pe-charging-01-addon-1",
+          "descriptor": {
+            "code": "add-on-item",
+            "name": "Free car wash"
+          },
+          "price": {
+            "value": "0",
+            "currency": "INR"
+          }
         }
       ],
       "fulfillments": [
@@ -64,11 +75,15 @@
           "type": "CHARGING",
           "stops": [
             {
+              "type": "start",
               "time": {
-                "range": {
-                  "start": "10:00",
-                  "end": "10:30"
-                }
+                "timestamp": "01-06-2023 10:00:00"
+              }
+            },
+            {
+              "type": "end",
+              "time": {
+                "timestamp": "01-06-2023 10:30:00"
               }
             }
           ],
@@ -132,6 +147,17 @@
             },
             "price": {
               "value": "32",
+              "currency": "INR"
+            }
+          },
+          {
+            "item": {
+              "descriptor": {
+                "name": "Free car wash"
+              }
+            },
+            "price": {
+              "value": "0",
               "currency": "INR"
             }
           }
