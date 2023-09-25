@@ -16,7 +16,7 @@ The Decentralized Energy Transaction (DENT) Protocol is an adaptation of [beckn 
 | Pramod Varma      | Maintainer, Reviewer           | @pramodkvarma   |
 | Sujith Nair       | Reviewer                       | @sjthnrk        |
 | Akhil Jayaprakash | Subject Matter Expert          | @pulse-aj       |
-| Ankit Mittal      | Subject Matter Expert          |                 |
+| Ankit Mittal      | Subject Matter Expert          | @ankitmttl      |
 
 
 ## Introduction
