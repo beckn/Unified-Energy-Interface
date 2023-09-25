@@ -3,10 +3,10 @@ The Decentralized Energy Transaction (DENT) Protocol is an adaptation of [beckn 
 
 ## Release History
 
-| Version | Release Date        | Adaptation to Core Spec Version | Authors      |
-|:-------:|---------------------|---------------------------------|--------------|
-| 0.2.0   | 1st September, 2023 | 1.1.0                           | Ravi Prakash, Akhil Jayaprakash |
-| 0.1.0   | 24th June, 2023     | 1.1.0                           | Ravi Prakash |
+| Version | Release Date         | Adaptation to Core Spec Version | Authors      |
+|:-------:|----------------------|---------------------------------|--------------|
+| 0.2.0   | 25th September, 2023 | 1.1.0                           | Ravi Prakash, Akhil Jayaprakash |
+| 0.1.0   | 24th June, 2023      | 1.1.0                           | Ravi Prakash |
 
 ## Working Group Members
 
