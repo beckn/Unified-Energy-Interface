@@ -8,15 +8,6 @@ assignees: ''
 ---
 
 ---
-name: 'Simple Issue template '
-about: Simple template for raising issue
-title: ''
-labels: ''
-assignees: ''
-
----
-
----
 name: Issue simple
 about: Used to standard issue in simple format.
 title: ''
