@@ -1,3 +1,4 @@
+
 openapi: 3.0.0
 info:
   title: Beckn Energy API Specification
@@ -11,7 +12,7 @@ paths:
       tags:
         - Beckn Provider Platform (BPP)
         - Beckn Gateway (BG)
-      description: This allows the customer to search for energy service providers.
+      description: This allows the customer to search for energy related services.
       requestBody:
         content:
           application/json:
@@ -34,40 +35,133 @@ paths:
                 - context
                 - message
             examples:
-              The BAP looks for EV charging providers:
+              Search for charging stations based on location and vehicle make:
                 value:
                   context:
-                    domain: dent:0.1.0
-                    action: search
+                    domain: uei:0.1.0
                     location:
                       country:
                         name: India
                         code: IND
-                    city: std:080
-                    version: 1.1.0
+                    timestamp: '2023-07-16T04:41:16Z'
                     bap_id: example-bap.com
-                    bap_uri: https://api.example-bap.com/pilot/bap/energy/v1
                     transaction_id: 6743e9e2-4fb5-487c-92b7-13ba8018f176
                     message_id: 6743e9e2-4fb5-487c-92b7-13ba8018f176
-                    timestamp: '2023-07-16T04:41:16Z'
+                    city: std:080
+                    core_version: 1.1.0
+                    action: search
+                    bap_uri: https://api.example-bap.com/pilot/bap/charge/v1
                   message:
                     intent:
-                      item:
-                        descriptor:
-                          code: energy
-                        quantity:
-                          required:
-                            value: '4.0'
-                            unit: kWH
-                        category:
-                          descriptor:
-                            code: green-tariff
                       location:
-                        gps: 12.423423,77.325647
-                        radius:
-                          type: CONSTANT
-                          value: '5'
-                          unit: km
+                        descriptor:
+                          name: user location
+                        circle:
+                          gps: 12.923608703179461, 77.61462964117527
+                          radius:
+                            type: CONSTANT
+                            value: '5'
+                            unit: km
+                      fulfillment:
+                        vehicle:
+                          category: car
+                          make: Tata
+                          model: Nexon EV
+                          variant: ZX+
+                          wheels_count: '4'
+                          energy_type: electric
+              Search for charging stations based on location, vehicle make and tariff:
+                value:
+                  context:
+                    domain: uei:0.1.0
+                    location:
+                      country:
+                        name: India
+                        code: IND
+                    timestamp: '2023-07-16T04:41:16Z'
+                    bap_id: example-bap.com
+                    transaction_id: 6743e9e2-4fb5-487c-92b7-13ba8018f176
+                    message_id: 6743e9e2-4fb5-487c-92b7-13ba8018f176
+                    city: std:080
+                    core_version: 1.1.0
+                    action: search
+                    bap_uri: https://api.example-bap.com/pilot/bap/charge/v1
+                  message:
+                    intent:
+                      location:
+                        descriptor:
+                          name: user location
+                        circle:
+                          gps: 12.923608703179461, 77.61462964117527
+                          radius:
+                            type: CONSTANT
+                            value: '5'
+                            unit: km
+                      item:
+                        price:
+                          currency: INR
+                          value: 15 rupees per unit
+                      fulfillment:
+                        vehicle:
+                          category: car
+                          make: Tata
+                          model: Nexon EV
+                          variant: ZX+
+                          wheels_count: '4'
+                          energy_type: electric
+              Search for charging stations based on charger details:
+                value:
+                  context:
+                    domain: uei:0.1.0
+                    location:
+                      country:
+                        name: India
+                        code: IND
+                    timestamp: '2023-07-16T04:41:16Z'
+                    bap_id: example-bap.com
+                    transaction_id: 6743e9e2-4fb5-487c-92b7-13ba8018f176
+                    message_id: 6743e9e2-4fb5-487c-92b7-13ba8018f176
+                    city: std:080
+                    core_version: 1.1.0
+                    action: search
+                    bap_uri: https://api.example-bap.com/pilot/bap/charge/v1
+                  message:
+                    intent:
+                      location:
+                        descriptor:
+                          name: user location
+                        circle:
+                          gps: 12.923608703179461, 77.61462964117527
+                          radius:
+                            type: CONSTANT
+                            value: '5'
+                            unit: km
+                      item:
+                        price:
+                          currency: INR
+                          value: 15 rupees per unit
+                      fulfillment:
+                        vehicle:
+                          category: car
+                          make: Tata
+                          model: Nexon EV
+                          variant: ZX+
+                          wheels_count: '4'
+                          energy_type: electric
+                        tags:
+                          - descriptor:
+                              name: Charger requirements
+                            list:
+                              - descriptor:
+                                  name: Charger type
+                                value: AC
+                              - descriptor:
+                                  name: Connector type
+                                value: CCS2
+                              - descriptor:
+                                  name: Charger power rating
+                                value: greater than 50kW
+                            display: true
       responses:
         '200':
           description: Acknowledgement of message received after successful validation of schema and signature
@@ -97,7 +191,7 @@ paths:
     post:
       tags:
         - Beckn Provider Platform (BPP)
-      description: BAP selects a provider and their energy service.
+      description: BAP declares the customer's cart (or equivalent) created by selecting objects from the catalog
       requestBody:
         content:
           application/json:
@@ -123,36 +217,6 @@ paths:
               required:
                 - context
                 - message
-            examples:
-              The BAP selects an EV charging service from a provider:
-                value:
-                  context:
-                    domain: dent:0.1.0
-                    action: select
-                    location:
-                      country:
-                        name: India
-                        code: IND
-                    city: std:080
-                    version: 1.1.0
-                    bap_id: example-bap.com
-                    bap_uri: https://api.example-bap.com/pilot/bap/energy/v1
-                    bpp_id: chargezone-energy-bpp.com
-                    bpp_uri: https://api.example-bpp.com/pilot/bpp/
-                    transaction_id: 6743e9e2-4fb5-487c-92b7-13ba8018f176
-                    message_id: 6743e9e2-4fb5-487c-92b7-13ba8018f176
-                    timestamp: '2023-07-16T04:41:16Z'
-                  message:
-                    order:
-                      provider:
-                        id: chargezone.in
-                      items:
-                        - id: pe-charging-01
-                          quantity:
-                            selected:
-                              measure:
-                                value: '4'
-                                unit: kWh
       responses:
         '200':
           description: Acknowledgement of message received after successful validation of schema and signature
@@ -182,7 +246,7 @@ paths:
     post:
       tags:
         - Beckn Provider Platform (BPP)
-      description: Initialize an order by providing billing and/or shipping details to the energy service provider
+      description: Initialize an order by providing billing and/or shipping details
       requestBody:
         content:
           application/json:
@@ -208,42 +272,6 @@ paths:
               required:
                 - context
                 - message
-            examples:
-              The BAP initiates an order for the EV charging service from a provider:
-                value:
-                  context:
-                    domain: dent:0.1.0
-                    action: init
-                    location:
-                      country:
-                        name: India
-                        code: IND
-                    city: std:080
-                    version: 1.1.0
-                    bap_id: example-bap.com
-                    bap_uri: https://api.example-bap.com/pilot/bap/energy/v1
-                    bpp_id: chargezone-energy-bpp.com
-                    bpp_uri: https://api.example-bpp.com/pilot/bpp/
-                    transaction_id: 6743e9e2-4fb5-487c-92b7-13ba8018f176
-                    message_id: 6743e9e2-4fb5-487c-92b7-13ba8018f176
-                    timestamp: '2023-07-16T04:41:16Z'
-                  message:
-                    order:
-                      provider:
-                        id: chargezone.in
-                      items:
-                        - id: pe-charging-01
-                      billing:
-                        name: John Doe
-                        email: abc@example.com
-                        phone: +91-9876522222
-                      fulfillments:
-                        - id: '1'
-                          customer:
-                            person:
-                              name: John Doe
-                            contact:
-                              phone: +91-9887766554
       responses:
         '200':
           description: Acknowledgement of message received after successful validation of schema and signature
@@ -273,7 +301,7 @@ paths:
     post:
       tags:
         - Beckn Provider Platform (BPP)
-      description: Confirms the order, completes the payment and waits for order confirmation.
+      description: Initialize an order by providing billing and/or shipping details
       requestBody:
         content:
           application/json:
@@ -299,65 +327,6 @@ paths:
               required:
                 - context
                 - message
-            examples:
-              The BAP confirms the order to charge the EV:
-                value:
-                  context:
-                    domain: dent:0.1.0
-                    action: confirm
-                    location:
-                      country:
-                        name: India
-                        code: IND
-                    city: std:080
-                    version: 1.1.0
-                    bap_id: example-bap.com
-                    bap_uri: https://api.example-bap.com/pilot/bap/energy/v1
-                    bpp_id: chargezone-energy-bpp.com
-                    bpp_uri: https://api.example-bpp.com/pilot/bpp/
-                    transaction_id: 6743e9e2-4fb5-487c-92b7-13ba8018f176
-                    message_id: 6743e9e2-4fb5-487c-92b7-13ba8018f176
-                    timestamp: '2023-07-16T04:41:16Z'
-                  message:
-                    order:
-                      providers:
-                        id: chargezone.in
-                      items:
-                        - id: pe-charging-01
-                      billing:
-                        name: John Doe
-                        email: abc@example.com
-                        number: +91-9876522222
-                      fulfillments:
-                        - id: '1'
-                          customer:
-                            person:
-                              name: John Doe
-                            contact:
-                              phone: +91-9887766554
-                      payments:
-                        - collected_by: BPP
-                          params:
-                            amount: '40'
-                            currency: INR
-                          status: PAID
-                          type: PRE-ORDER
-                      quote:
-                        price:
-                          value: '40'
-                          currency: INR
-                        breakup:
-                          - item:
-                              descriptor:
-                                name: Estimated units consumed
-                              quantity:
-                                selected:
-                                  measure:
-                                    value: '4'
-                                    unit: kWh
-                            price:
-                              value: '32'
-                              currency: INR
       responses:
         '200':
           description: Acknowledgement of message received after successful validation of schema and signature
@@ -387,7 +356,7 @@ paths:
     post:
       tags:
         - Beckn Provider Platform (BPP)
-      description: Fetch the latest order object status
+      description: Fetch the latest order object
       requestBody:
         content:
           application/json:
@@ -413,27 +382,64 @@ paths:
               required:
                 - context
                 - message
-            examples:
-              The BAP checks for the status of the charging:
-                value:
-                  context:
-                    domain: dent:0.1.0
-                    action: status
-                    location:
-                      country:
-                        name: India
-                        code: IND
-                    city: std:080
-                    version: 1.1.0
-                    bap_id: example-bap.com
-                    bap_uri: https://api.example-bap.com/pilot/bap/energy/v1
-                    bpp_id: chargezone-energy-bpp.com
-                    bpp_uri: https://api.example-bpp.com/pilot/bpp/
-                    transaction_id: 6743e9e2-4fb5-487c-92b7-13ba8018f176
-                    message_id: 6743e9e2-4fb5-487c-92b7-13ba8018f176
-                    timestamp: '2023-07-16T04:41:16Z'
+      responses:
+        '200':
+          description: Acknowledgement of message received after successful validation of schema and signature
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
                   message:
-                    order_id: 6743e9e2-4fb5-487c-92b7
+                    type: object
+                    properties:
+                      ack:
+                        allOf:
+                          - $ref: '#/components/schemas/Ack'
+                          - properties:
+                              status:
+                                enum:
+                                  - ACK
+                                  - NACK
+                    required:
+                      - ack
+                  error:
+                    $ref: '#/components/schemas/Error'
+                required:
+                  - message
+  /track:
+    post:
+      tags:
+        - Beckn Provider Platform (BPP)
+      description: Track an active order
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                context:
+                  allOf:
+                    - $ref: '#/components/schemas/Context'
+                    - properties:
+                        action:
+                          enum:
+                            - track
+                      required:
+                        - action
+                message:
+                  type: object
+                  properties:
+                    order_id:
+                      $ref: '#/components/schemas/Order/properties/id'
+                    callback_url:
+                      type: string
+                      format: uri
+                  required:
+                    - order_id
+              required:
+                - context
+                - message
       responses:
         '200':
           description: Acknowledgement of message received after successful validation of schema and signature
@@ -493,31 +499,6 @@ paths:
               required:
                 - context
                 - message
-            examples:
-              The BAP cancels the order for the EV charging:
-                value:
-                  context:
-                    domain: dent:0.1.0
-                    action: cancel
-                    location:
-                      country:
-                        name: India
-                        code: IND
-                    city: std:080
-                    version: 1.1.0
-                    bap_id: example-bap.com
-                    bap_uri: https://api.example-bap.com/pilot/bap/energy/v1
-                    bpp_id: chargezone-energy-bpp.com
-                    bpp_uri: https://api.example-bpp.com/pilot/bpp/
-                    transaction_id: 6743e9e2-4fb5-487c-92b7-13ba8018f176
-                    message_id: 6743e9e2-4fb5-487c-92b7-13ba8018f176
-                    timestamp: '2023-07-16T04:41:16Z'
-                  message:
-                    order:
-                      cancellation_reason_id: '5'
-                      descriptor:
-                        short_desc: can't attend booking
-                      order_id: 6743e9e2-4fb5-487c-92b7
       responses:
         '200':
           description: Acknowledgement of message received after successful validation of schema and signature
@@ -547,7 +528,7 @@ paths:
     post:
       tags:
         - Beckn Provider Platform (BPP)
-      description: Update a criteria of the order
+      description: Remove object
       requestBody:
         content:
           application/json:
@@ -579,61 +560,6 @@ paths:
               required:
                 - context
                 - message
-            examples:
-              The BAP sends an update to start charging the EV:
-                value:
-                  context:
-                    domain: dent:0.1.0
-                    action: update
-                    location:
-                      country:
-                        name: India
-                        code: IND
-                    city: std:080
-                    version: 1.1.0
-                    bap_id: example-bap.com
-                    bap_uri: https://api.example-bap.com/pilot/bap/energy/v1
-                    bpp_id: chargezone-energy-bpp.com
-                    bpp_uri: https://api.example-bpp.com/pilot/bpp/
-                    transaction_id: 6743e9e2-4fb5-487c-92b7-13ba8018f176
-                    message_id: 6743e9e2-4fb5-487c-92b7-13ba8018f176
-                    timestamp: '2023-07-16T04:41:16Z'
-                  message:
-                    update_target: order.fulfillments[0].state
-                    order:
-                      fulfillments:
-                        - id: '1'
-                          type: CHARGING
-                          state:
-                            descriptor:
-                              code: start-charging
-              The BAP sends an update to stop charging the EV:
-                value:
-                  context:
-                    domain: dent:0.1.0
-                    action: update
-                    location:
-                      country:
-                        name: India
-                        code: IND
-                    city: std:080
-                    version: 1.1.0
-                    bap_id: example-bap.com
-                    bap_uri: https://api.example-bap.com/pilot/bap/energy/v1
-                    bpp_id: chargezone-energy-bpp.com
-                    bpp_uri: https://api.example-bpp.com/pilot/bpp/
-                    transaction_id: 6743e9e2-4fb5-487c-92b7-13ba8018f176
-                    message_id: 6743e9e2-4fb5-487c-92b7-13ba8018f176
-                    timestamp: '2023-07-16T04:41:16Z'
-                  message:
-                    update_target: order.fulfillments[0].state
-                    order:
-                      fulfillments:
-                        - id: '1'
-                          type: CHARGING
-                          state:
-                            descriptor:
-                              code: end-charging
       responses:
         '200':
           description: Acknowledgement of message received after successful validation of schema and signature
@@ -689,30 +615,6 @@ paths:
               required:
                 - context
                 - message
-            examples:
-              The BAP rates the service provided:
-                value:
-                  context:
-                    domain: dent:0.1.0
-                    action: rating
-                    location:
-                      country:
-                        name: India
-                        code: IND
-                    city: std:080
-                    version: 1.1.0
-                    bap_id: example-bap.com
-                    bap_uri: https://api.example-bap.com/pilot/bap/energy/v1
-                    bpp_id: chargezone-energy-bpp.com
-                    bpp_uri: https://api.example-bpp.com/pilot/bpp/
-                    transaction_id: 6743e9e2-4fb5-487c-92b7-13ba8018f176
-                    message_id: 6743e9e2-4fb5-487c-92b7-13ba8018f176
-                    timestamp: '2023-07-16T04:41:16Z'
-                  message:
-                    ratings:
-                      - id: 6743e9e2-4fb5-487c-92b7
-                        rating_category: charger
-                        value: '5'
       responses:
         '200':
           description: Acknowledgement of message received after successful validation of schema and signature
@@ -766,30 +668,6 @@ paths:
               required:
                 - context
                 - message
-            examples:
-              The BAP wants to contact support:
-                value:
-                  context:
-                    domain: dent:0.1.0
-                    action: support
-                    location:
-                      country:
-                        name: India
-                        code: IND
-                    city: std:080
-                    version: 1.1.0
-                    bap_id: example-bap.com
-                    bap_uri: https://api.example-bap.com/pilot/bap/energy/v1
-                    bpp_id: chargezone-energy-bpp.com
-                    bpp_uri: https://api.example-bpp.com/pilot/bpp/
-                    transaction_id: 6743e9e2-4fb5-487c-92b7-13ba8018f176
-                    message_id: 6743e9e2-4fb5-487c-92b7-13ba8018f176
-                    timestamp: '2023-07-16T04:41:16Z'
-                  message:
-                    support:
-                      order_id: 6743e9e2-4fb5-487c-92b7
-                      phone: '+919876543210'
-                      email: john.doe@gmail.com
       responses:
         '200':
           description: Acknowledgement of message received after successful validation of schema and signature
@@ -820,7 +698,7 @@ paths:
       tags:
         - Beckn Application Platform (BAP)
         - Beckn Gateway (BG)
-      description: The BPP sends its energy catalog in response to a search request.
+      description: BPP sends its catalog in response to a search request.
       requestBody:
         content:
           application/json:
@@ -848,111 +726,48 @@ paths:
               required:
                 - context
             examples:
-              The provider returns a list of catalogs:
+              Charging service providers return a catalog with their services:
                 value:
                   context:
-                    domain: dent:0.1.0
-                    action: on_search
+                    country: IND
                     location:
                       country:
                         name: India
                         code: IND
-                    city: std:080
-                    version: 1.1.0
+                    domain: uei:0.1.0
+                    timestamp: '2023-07-16T04:41:16Z'
                     bap_id: example-bap.com
-                    bap_uri: https://api.example-bap.com/pilot/bap/energy/v1
-                    bpp_id: example-bpp.com
-                    bpp_uri: https://api.example-bpp.com/pilot/bpp/
                     transaction_id: 6743e9e2-4fb5-487c-92b7-13ba8018f176
                     message_id: 6743e9e2-4fb5-487c-92b7-13ba8018f176
-                    timestamp: '2023-07-16T04:41:16Z'
+                    city: std:080
+                    core_version: 1.1.0
+                    action: on_search
+                    bap_uri: https://api.example-bap.com/pilot/bap/charge/v1
                   message:
                     catalog:
+                      descriptor:
+                        name: Alpha Charging Solutions
                       providers:
-                        - id: chargezone.in
-                          descriptor:
-                            name: Chargezone
-                            short_desc: Chargezone Technologies Pvt Ltd
+                        - descriptor:
+                            name: Spark Charging Station, Outer Ring Road
                             images:
-                              - url: https://chargezone.in/images/logo.png
-                          categories:
-                            - id: '1'
-                              descriptor:
-                                code: green-tariff
-                                name: green tariff
+                              - url: https://alphachargers.com/images/logo.png
+                          id: '14325'
                           locations:
-                            - id: '1'
-                              gps: 12.345345,77.389754
-                            - id: '2'
-                              gps: 12.247934,77.876987
+                            - gps: 12.925087, 77.6132964
+                              map_url: https://goo.gl/maps/5A432HSHfcd2
+                              city: Bangalore
+                              area_code: '540045'
                           items:
-                            - id: pe-charging-01
+                            - id: 686d2a8b-0e0b-4bcb-b629-5e7208c9cbfc
                               descriptor:
-                                code: energy
+                                name: Spark Charger Point 1
                               price:
-                                value: '8'
-                                currency: INR / kWH
-                              quantity:
-                                available:
-                                  measure:
-                                    value: '100'
-                                    unit: kWH
-                              category_ids:
-                                - '1'
-                              location_ids:
-                                - '1'
-                                - '2'
-                              fulfillment_ids:
-                                - '1'
-                                - '2'
-                              add_ons:
-                                - id: pe-charging-01-addon-1
-                                  descriptor:
-                                    name: Free car wash
-                                  price:
-                                    value: '0'
-                                    currency: INR
-                          fulfillments:
-                            - id: '1'
-                              type: CHARGING
-                              stops:
-                                - type: start
-                                  time:
-                                    timestamp: 01-06-2023 10:00:00
-                                - type: end
-                                  time:
-                                    timestamp: 01-06-2023 10:30:00
+                                currency: INR
+                                value: 11 rupees per unit
                               tags:
                                 - descriptor:
-                                    name: Charging Point Specifications
-                                  list:
-                                    - descriptor:
-                                        name: Charger type
-                                        code: charger-type
-                                      value: AC
-                                    - descriptor:
-                                        name: Connector type
-                                        code: connector-type
-                                      value: CCS2
-                                    - descriptor:
-                                        name: Power Rating
-                                      value: greater than 50kW
-                                    - descriptor:
-                                        name: Availability
-                                      value: Available
-                                  display: true
-                            - id: '2'
-                              type: CHARGING
-                              stops:
-                                - type: start
-                                  time:
-                                    timestamp: 01-06-2023 10:00:00
-                                - type: end
-                                  time:
-                                    timestamp: 01-06-2023 10:30:00
-                              tags:
-                                - descriptor:
-                                    name: Charging Point
+                                    name: Charger Connector 1 Details
                                   list:
                                     - descriptor:
                                         name: Charger type
@@ -967,46 +782,179 @@ paths:
                                         name: Availability
                                       value: Available
                                   display: true
-                        - id: log9.in
+                            - id: 993def7f-9f73-4914-b999-5249285e0d5a
+                              descriptor:
+                                name: Spark Charger Point 2
+                              price:
+                                currency: INR
+                                value: 13 rupees per unit
+                              tags:
+                                - descriptor:
+                                    name: Charger Connector 1 Details
+                                  list:
+                                    - descriptor:
+                                        name: Charger type
+                                      value: AC
+                                    - descriptor:
+                                        name: Connector type
+                                      value: CCS2
+                                    - descriptor:
+                                        name: Power Rating
+                                      value: greater than 50kW
+                                    - descriptor:
+                                        name: Availability
+                                      value: Available
+                                  display: true
+                        - descriptor:
+                            name: Spark Charging Station, MG Road
+                          id: '16226'
+                          locations:
+                            - gps: 12.925178, 77.6132901
+                              map_url: https://goo.gl/maps/7fds573GSSd2
+                              city: Bangalore
+                              area_code: '540039'
+                          items:
+                            - id: 686d2a8b-0e0b-4bcb-b629-5e7208c9cbfc
+                              descriptor:
+                                name: Spark Charger Point 1
+                              price:
+                                currency: INR
+                                value: 15 rupees per unit
+                              tags:
+                                - descriptor:
+                                    name: Charger Connector 1 Details
+                                  list:
+                                    - descriptor:
+                                        name: Charger type
+                                      value: AC
+                                    - descriptor:
+                                        name: Connector type
+                                      value: CCS2
+                                    - descriptor:
+                                        name: Power Rating
+                                      value: greater than 50kW
+                                    - descriptor:
+                                        name: Availability
+                                      value: Available
+                                  display: true
+                            - id: 993def7f-9f73-4914-b999-5249285e0d5a
+                              descriptor:
+                                name: Spark Charger Point 2
+                              price:
+                                currency: INR
+                                value: 12 rupees per unit
+                              tags:
+                                - descriptor:
+                                    name: Charger Connector 1 Details
+                                  list:
+                                    - descriptor:
+                                        name: Charger type
+                                      value: AC
+                                    - descriptor:
+                                        name: Connector type
+                                      value: CCS2
+                                    - descriptor:
+                                        name: Power Rating
+                                      value: greater than 50kW
+                                    - descriptor:
+                                        name: Availability
+                                      value: Available
+                                  display: true
+              Charging service providers return a catalog with connector as items:
+                value:
+                  context:
+                    country: IND
+                    location:
+                      country:
+                        name: India
+                        code: IND
+                    domain: uei:0.1.0
+                    timestamp: '2023-07-16T04:41:16Z'
+                    bap_id: example-bap.com
+                    transaction_id: 6743e9e2-4fb5-487c-92b7-13ba8018f176
+                    message_id: 6743e9e2-4fb5-487c-92b7-13ba8018f176
+                    city: std:080
+                    core_version: 1.1.0
+                    action: on_search
+                    bap_uri: https://api.example-bap.com/pilot/bap/charge/v1
+                  message:
+                    catalog:
+                      descriptor:
+                        name: Alpha Charging Solutions
+                      providers:
+                        - id: 4235
                           descriptor:
-                            name: Log9 Inc
-                          categories:
-                            - id: '1'
-                              descriptor:
-                                code: green-tariff
-                                name: green tariff
+                            name: Alpha Charging Solutions
+                            images:
+                              - url: https://alphachargers.com/images/logo.png
+                          locations:
+                            - gps: 12.925087, 77.6132964
+                              map_url: https://goo.gl/maps/5A432HSHfcd2
+                              city: Bangalore
+                              area_code: '540045'
                           items:
-                            - id: pe-charging-01
-                              descriptor:
-                                code: energy
-                              price:
-                                value: '10'
-                                currency: INR / kWH
-                              quantity:
-                                available: '1000'
+                            - id: 686d2a8b-0e0b-4bcb-b629-5e7208c9cbfc
                               category_ids:
-                                - '1'
-                              fulfillment_ids:
-                                - '3'
-                                - '4'
-                              add_ons:
-                                - id: pe-charging-01-addon-1
+                                - charging-station
+                              location_ids:
+                                - 12.925087, 77.6132964
+                              descriptor:
+                                name: Spark Charging Station, Outer Ring Road
+                              tags:
+                                - display: true
                                   descriptor:
-                                    name: Free tyre pressure check
-                                  price:
-                                    value: '0'
-                                    currency: INR
-                          fulfillments:
-                            - id: '3'
-                              type: BATTERY-SWAP
-                              stops:
-                                - location:
-                                    gps: 12.745675, 77.987393
-                            - id: '4'
-                              type: MOBILE-BATTERY-SWAP
-                              stops:
-                                - location:
-                                    url: https://log9.in/track/bswap/3234242
+                                    name: Attributes
+                                    code: attributes
+                                  list:
+                                    - display: true
+                                      value: 10kms
+                                      descriptor:
+                                        name: Distance
+                                        code: distance
+                            - id: 01683e33-39c5-4523-9eef-36e8165e66cb
+                              parent_item_id: 686d2a8b-0e0b-4bcb-b629-5e7208c9cbfc
+                              category_ids:
+                                - charge-point
+                              descriptor:
+                                name: Spark Charger Point 1
+                              price:
+                                currency: INR
+                                value: ₹15-20 per unit
+                              tags:
+                                - display: true
+                                  descriptor:
+                                    name: Available Charging Options
+                                  list:
+                                    - descriptor:
+                                        name: Charger type
+                                      value: AC
+                                    - descriptor:
+                                        name: Connector type
+                                      value: CCS2
+                                    - descriptor:
+                                        name: Power Rating
+                                      value: greater than 50kW
+                            - id: ede1c8b9-c5b2-4e5f-bbf3-a7421f5e1537
+                              parent_item_id: 01683e33-39c5-4523-9eef-36e8165e66cb
+                              category_ids:
+                                - connector
+                              descriptor:
+                                name: Charger Connector 1 Details
+                              tags:
+                                - display: true
+                                  descriptor:
+                                    name: Power Rating
+                                  list:
+                                    - display: true
+                                      value: 15kW
+                                - display: true
+                                  descriptor:
+                                    name: Connector Status
+                                  list:
+                                    - descriptor:
+                                        name: Status
+                                      display: true
+                                      value: Available
       responses:
         '200':
           description: Acknowledgement of message received after successful validation of schema and signature
@@ -1036,7 +984,7 @@ paths:
     post:
       tags:
         - Beckn Application Platform (BAP)
-      description: Send details along with quoted price for selected items
+      description: Send draft order object with quoted price for selected items
       requestBody:
         content:
           application/json:
@@ -1061,108 +1009,6 @@ paths:
                   $ref: '#/components/schemas/Error'
               required:
                 - context
-            examples:
-              The provider sends the details of the item selected, along with a quote:
-                value:
-                  context:
-                    domain: dent:0.1.0
-                    action: on_select
-                    location:
-                      country:
-                        name: India
-                        code: IND
-                    city: std:080
-                    version: 1.1.0
-                    bap_id: example-bap.com
-                    bap_uri: https://api.example-bap.com/pilot/bap/energy/v1
-                    bpp_id: example-bpp.com
-                    bpp_uri: https://api.example-bpp.com/pilot/bpp/
-                    transaction_id: 6743e9e2-4fb5-487c-92b7-13ba8018f176
-                    message_id: 6743e9e2-4fb5-487c-92b7-13ba8018f176
-                    timestamp: '2023-07-16T04:41:16Z'
-                  message:
-                    order:
-                      providers:
-                        id: chargezone.in
-                        descriptor:
-                          name: Chargezone
-                          short_desc: Chargezone Technologies Pvt Ltd
-                          images:
-                            - url: https://chargezone.in/images/logo.png
-                      items:
-                        - id: pe-charging-01
-                          descriptor:
-                            code: energy
-                          price:
-                            value: '8'
-                            currency: INR/kWH
-                          quantity:
-                            available:
-                              measure:
-                                value: '100'
-                                unit: kWh
-                            selected:
-                              measure:
-                                value: '4'
-                                unit: kWh
-                        - id: pe-charging-01-addon-1
-                          descriptor:
-                            code: add-on-item
-                            name: Free car wash
-                          price:
-                            value: '0'
-                            currency: INR
-                      fulfillments:
-                        - id: '1'
-                          type: CHARGING
-                          stops:
-                            - type: start
-                              time:
-                                timestamp: 01-06-2023 10:00:00
-                            - type: end
-                              time:
-                                timestamp: 01-06-2023 10:30:00
-                          tags:
-                            - descriptor:
-                                name: Charging Point Specifications
-                              list:
-                                - descriptor:
-                                    name: Charger type
-                                    code: charger-type
-                                  value: AC
-                                - descriptor:
-                                    name: Connector type
-                                    code: connector-type
-                                  value: CCS2
-                                - descriptor:
-                                    name: Power Rating
-                                  value: greater than 50kW
-                                - descriptor:
-                                    name: Availability
-                                  value: Available
-                              display: true
-                      quote:
-                        price:
-                          value: '32'
-                          currency: INR
-                        breakup:
-                          - item:
-                              descriptor:
-                                name: Estimated units consumed
-                              quantity:
-                                selected:
-                                  measure:
-                                    value: '4'
-                                    unit: kWh
-                            price:
-                              value: '32'
-                              currency: INR
-                          - item:
-                              descriptor:
-                                name: Free car wash
-                            price:
-                              value: '0'
-                              currency: INR
       responses:
         '200':
           description: Acknowledgement of message received after successful validation of schema and signature
@@ -1192,7 +1038,7 @@ paths:
     post:
       tags:
         - Beckn Application Platform (BAP)
-      description: Send draft order object with payment details updated for the service.
+      description: Send order object with payment details updated
       requestBody:
         content:
           application/json:
@@ -1219,126 +1065,6 @@ paths:
                   $ref: '#/components/schemas/Error'
               required:
                 - context
-            examples:
-              The BPP intiates the order, sends the payment link:
-                value:
-                  context:
-                    domain: dent:0.1.0
-                    action: on_init
-                    location:
-                      country:
-                        name: India
-                        code: IND
-                    city: std:080
-                    version: 1.1.0
-                    bap_id: example-bap.com
-                    bap_uri: https://api.example-bap.com/pilot/bap/energy/v1
-                    bpp_id: example-bpp.com
-                    bpp_uri: https://api.example-bpp.com/pilot/bpp/
-                    transaction_id: 6743e9e2-4fb5-487c-92b7-13ba8018f176
-                    message_id: 6743e9e2-4fb5-487c-92b7-13ba8018f176
-                    timestamp: '2023-07-16T04:41:16Z'
-                  message:
-                    order:
-                      providers:
-                        id: chargezone.in
-                        descriptor:
-                          name: Chargezone
-                          short_desc: Chargezone Technologies Pvt Ltd
-                          images:
-                            - url: https://chargezone.in/images/logo.png
-                      items:
-                        - id: pe-charging-01
-                          descriptor:
-                            code: energy
-                          price:
-                            value: '8'
-                            currency: INR/kWH
-                          quantity:
-                            available:
-                              measure:
-                                value: '100'
-                                unit: kWh
-                            selected:
-                              measure:
-                                value: '4'
-                                unit: kWh
-                          fulfillments:
-                            - '1'
-                      fulfillments:
-                        - id: '1'
-                          customer:
-                            person:
-                              name: John Doe
-                            contact:
-                              phone: +91-9887766554
-                          type: CHARGING
-                          state:
-                            descriptor:
-                              code: order-initiated
-                          stops:
-                            - type: start
-                              time:
-                                timestamp: 01-06-2023 10:00:00
-                            - type: end
-                              time:
-                                timestamp: 01-06-2023 10:30:00
-                          tags:
-                            - descriptor:
-                                name: Charging Point
-                              list:
-                                - descriptor:
-                                    name: Charger type
-                                  value: AC
-                                - descriptor:
-                                    name: Connector type
-                                  value: CCS2
-                                - descriptor:
-                                    name: Power Rating
-                                  value: greater than 50kW
-                                - descriptor:
-                                    name: Availability
-                                  value: Available
-                              display: true
-                      billing:
-                        email: abc@example.com
-                        number: +91-9876522222
-                      quote:
-                        price:
-                          value: '32'
-                          currency: INR
-                        breakup:
-                          - item:
-                              descriptor:
-                                name: Estimated units consumed
-                              quantity:
-                                selected:
-                                  measure:
-                                    value: '4'
-                                    unit: kWh
-                            price:
-                              value: '32'
-                              currency: INR
-                      payments:
-                        - url: https://payment.gateway.in
-                          type: PRE-ORDER
-                          status: NOT-PAID
-                          params:
-                            amount: '40'
-                            currency: INR
-                          time:
-                            range:
-                              start: '2023-08-10T10:00:00Z'
-                              end: '2023-08-10T10:30:00Z'
-                      cancellation_terms:
-                        - fulfillment_state:
-                            descriptor:
-                              code: charging-start
-                          cancellation_fee:
-                            percentage: 30%
-                          external_ref:
-                            mimetype: text/html
-                            url: https://chargezone.in/charge/tnc.html
       responses:
         '200':
           description: Acknowledgement of message received after successful validation of schema and signature
@@ -1368,7 +1094,7 @@ paths:
     post:
       tags:
         - Beckn Application Platform (BAP)
-      description: Send active order object with the confirmed order ID
+      description: Send active order object
       requestBody:
         content:
           application/json:
@@ -1395,137 +1121,62 @@ paths:
                   $ref: '#/components/schemas/Error'
               required:
                 - context
-            examples:
-              The BAP sends an order confirmation:
-                value:
-                  context:
-                    domain: dent:0.1.0
-                    action: on_confirm
-                    location:
-                      country:
-                        name: India
-                        code: IND
-                    city: std:080
-                    version: 1.1.0
-                    bap_id: example-bap.com
-                    bap_uri: https://api.example-bap.com/pilot/bap/energy/v1
-                    bpp_id: example-bpp.com
-                    bpp_uri: https://api.example-bpp.com/pilot/bpp/
-                    transaction_id: 6743e9e2-4fb5-487c-92b7-13ba8018f176
-                    message_id: 6743e9e2-4fb5-487c-92b7-13ba8018f176
-                    timestamp: '2023-07-16T04:41:16Z'
+      responses:
+        '200':
+          description: Acknowledgement of message received after successful validation of schema and signature
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
                   message:
-                    order:
-                      id: 6743e9e2-4fb5-487c-92b7
-                      providers:
-                        id: chargezone.in
-                        descriptor:
-                          name: Chargezone
-                          short_desc: Chargezone Technologies Pvt Ltd
-                          images:
-                            - url: https://chargezone.in/images/logo.png
-                      items:
-                        - id: pe-charging-01
-                          descriptor:
-                            code: energy
-                          price:
-                            value: '8'
-                            currency: INR/kWH
-                          quantity:
-                            available:
-                              measure:
-                                value: '100'
-                                unit: kWh
-                            selected:
-                              measure:
-                                value: '4'
-                                unit: kWh
-                          fulfillments:
-                            - '1'
-                      fulfillments:
-                        - id: '1'
-                          customer:
-                            person:
-                              name: John Doe
-                            contact:
-                              phone: +91-9887766554
-                          type: CHARGING
-                          state:
-                            descriptor:
-                              code: payment-completed
-                          stops:
-                            - type: start
-                              location:
-                                gps: 12.423423,77.325647
-                              time:
-                                timestamp: 01-06-2023 10:00:00
-                                range:
-                                  start: 01-06-2023 10:00:00
-                                  end: 01-06-2023 10:10:00
-                              instructions:
-                                name: Charging instructions
-                                short_desc: To start your charging, go to charger number 987, and click on 'start' on your app
-                            - type: end
-                              time:
-                                timestamp: 01-06-2023 10:30:00
-                                range:
-                                  start: 01-06-2023 10:30:00
-                                  end: 01-06-2023 10:40:00
-                          tags:
-                            - descriptor:
-                                name: Charging Point
-                              list:
-                                - descriptor:
-                                    name: Charger type
-                                  value: AC
-                                - descriptor:
-                                    name: Connector type
-                                  value: CCS2
-                                - descriptor:
-                                    name: Power Rating
-                                  value: greater than 50kW
-                                - descriptor:
-                                    name: Availability
-                                  value: Available
-                              display: true
-                      billing:
-                        email: abc@example.com
-                        number: +91-9876522222
-                      quote:
-                        price:
-                          value: '40'
-                          currency: INR
-                        breakup:
-                          - item:
-                              descriptor:
-                                name: Estimated units consumed
-                              quantity:
-                                selected:
-                                  measure:
-                                    value: '4'
-                                    unit: kWh
-                            price:
-                              value: '32'
-                              currency: INR
-                      payments:
-                        - type: PRE-ORDER
-                          status: PAID
-                          params:
-                            amount: '40'
-                            currency: INR
-                          time:
-                            range:
-                              start: '2023-08-10T10:00:00Z'
-                              end: '2023-08-10T10:30:00Z'
-                      cancellation_terms:
-                        - fulfillment_state:
-                            descriptor:
-                              code: charging-start
-                          cancellation_fee:
-                            percentage: 30%
-                          external_ref:
-                            mimetype: text/html
-                            url: https://chargezone.in/charge/tnc.html
+                    type: object
+                    properties:
+                      ack:
+                        allOf:
+                          - $ref: '#/components/schemas/Ack'
+                          - properties:
+                              status:
+                                enum:
+                                  - ACK
+                                  - NACK
+                    required:
+                      - ack
+                  error:
+                    $ref: '#/components/schemas/Error'
+                required:
+                  - message
+  /on_track:
+    post:
+      tags:
+        - Beckn Application Platform (BAP)
+      description: Send tracking details of an active order
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                context:
+                  allOf:
+                    - $ref: '#/components/schemas/Context'
+                    - properties:
+                        action:
+                          enum:
+                            - on_track
+                      required:
+                        - action
+                message:
+                  type: object
+                  properties:
+                    tracking:
+                      $ref: '#/components/schemas/Tracking'
+                  required:
+                    - tracking
+                error:
+                  $ref: '#/components/schemas/Error'
+              required:
+                - context
       responses:
         '200':
           description: Acknowledgement of message received after successful validation of schema and signature
@@ -1555,7 +1206,7 @@ paths:
     post:
       tags:
         - Beckn Application Platform (BAP)
-      description: Sends cancelled order object with the reason.
+      description: Send cancellation request_id with reasons list in case of cancellation request. Else send cancelled order object
       requestBody:
         content:
           application/json:
@@ -1582,247 +1233,6 @@ paths:
                   $ref: '#/components/schemas/Error'
               required:
                 - context
-            examples:
-              The provider cancels the order after the BAP requested for a cancellation:
-                value:
-                  context:
-                    domain: dent:0.1.0
-                    action: on_cancel
-                    location:
-                      country:
-                        name: India
-                        code: IND
-                    city: std:080
-                    version: 1.1.0
-                    bap_id: example-bap.com
-                    bap_uri: https://api.example-bap.com/pilot/bap/energy/v1
-                    bpp_id: example-bpp.com
-                    bpp_uri: https://api.example-bpp.com/pilot/bpp/
-                    transaction_id: 6743e9e2-4fb5-487c-92b7-13ba8018f176
-                    message_id: 6743e9e2-4fb5-487c-92b7-13ba8018f176
-                    timestamp: '2023-07-16T04:41:16Z'
-                  message:
-                    order:
-                      id: 6743e9e2-4fb5-487c-92b7
-                      status: CANCELLED
-                      providers:
-                        id: chargezone.in
-                        descriptor:
-                          name: Chargezone
-                          short_desc: Chargezone Technologies Pvt Ltd
-                          images:
-                            - url: https://chargezone.in/images/logo.png
-                      items:
-                        - id: pe-charging-01
-                          descriptor:
-                            code: energy
-                          price:
-                            value: '8'
-                            currency: INR/kWH
-                          quantity:
-                            available:
-                              measure:
-                                value: '100'
-                                unit: kWh
-                            selected:
-                              measure:
-                                value: '4'
-                                unit: kWh
-                          fulfillments:
-                            - '1'
-                      fulfillments:
-                        - id: '1'
-                          customer:
-                            person:
-                              name: John Doe
-                            contact:
-                              phone: +91-9887766554
-                          type: CHARGING
-                          state:
-                            descriptor:
-                              code: order-cancelled
-                          stops:
-                            - time:
-                                range:
-                                  start: '10:00'
-                                  end: '10:30'
-                          tags:
-                            - descriptor:
-                                name: Charging Point
-                              list:
-                                - descriptor:
-                                    name: Charger type
-                                  value: AC
-                                - descriptor:
-                                    name: Connector type
-                                  value: CCS2
-                                - descriptor:
-                                    name: Power Rating
-                                  value: greater than 50kW
-                                - descriptor:
-                                    name: Availability
-                                  value: Available
-                              display: true
-                      billing:
-                        email: abc@example.com
-                        number: +91-9876522222
-                      quote:
-                        price:
-                          value: '-32'
-                          currency: INR
-                        breakup:
-                          - item:
-                              descriptor:
-                                name: payment refund
-                              quantity:
-                                selected:
-                                  measure:
-                                    value: '4'
-                                    unit: kWh
-                            price:
-                              value: '-32'
-                              currency: INR
-                      payments:
-                        - type: PRE-ORDER
-                          status: PAID
-                          params:
-                            amount: '40'
-                            currency: INR
-                          time:
-                            range:
-                              start: '2023-08-10T10:00:00Z'
-                              end: '2023-08-10T10:30:00Z'
-                      cancellation_terms:
-                        - fulfillment_state:
-                            descriptor:
-                              code: charging-start
-                          cancellation_fee:
-                            percentage: 30%
-                          external_ref:
-                            mimetype: text/html
-                            url: https://chargezone.in/charge/tnc.html
-              The provider cancels the order after the there was an error in the charger:
-                value:
-                  context:
-                    domain: dent:0.1.0
-                    action: on_cancel
-                    location:
-                      country:
-                        name: India
-                        code: IND
-                    city: std:080
-                    version: 1.1.0
-                    bap_id: example-bap.com
-                    bap_uri: https://api.example-bap.com/pilot/bap/energy/v1
-                    bpp_id: example-bpp.com
-                    bpp_uri: https://api.example-bpp.com/pilot/bpp/
-                    transaction_id: 6743e9e2-4fb5-487c-92b7-13ba8018f176
-                    message_id: 6743e9e2-4fb5-487c-92b7-13ba8018f176
-                    timestamp: '2023-07-16T04:41:16Z'
-                  message:
-                    order:
-                      id: 6743e9e2-4fb5-487c-92b7
-                      status: CANCELLED
-                      providers:
-                        id: chargezone.in
-                        descriptor:
-                          name: Chargezone
-                          short_desc: Chargezone Technologies Pvt Ltd
-                          images:
-                            - url: https://chargezone.in/images/logo.png
-                      items:
-                        - id: pe-charging-01
-                          descriptor:
-                            code: energy
-                          price:
-                            value: '8'
-                            currency: INR/kWH
-                          quantity:
-                            available:
-                              measure:
-                                value: '100'
-                                unit: kWh
-                            selected:
-                              measure:
-                                value: '4'
-                                unit: kWh
-                            allocated:
-                              measure:
-                                value: '2'
-                                unit: kWh
-                          fulfillments:
-                            - '1'
-                      fulfillments:
-                        - id: '1'
-                          customer:
-                            person:
-                              name: John Doe
-                            contact:
-                              phone: +91-9887766554
-                          type: CHARGING
-                          state:
-                            descriptor:
-                              code: charger-error
-                          stops:
-                            - time:
-                                range:
-                                  start: '10:00'
-                                  end: '10:30'
-                          tags:
-                            - descriptor:
-                                name: Charging Point
-                              list:
-                                - descriptor:
-                                    name: Charger type
-                                  value: AC
-                                - descriptor:
-                                    name: Connector type
-                                  value: CCS2
-                                - descriptor:
-                                    name: Power Rating
-                                  value: greater than 50kW
-                                - descriptor:
-                                    name: Availability
-                                  value: Available
-                              display: true
-                      billing:
-                        email: abc@example.com
-                        number: +91-9876522222
-                      quote:
-                        price:
-                          value: '-12'
-                          currency: INR
-                        breakup:
-                          - item:
-                              descriptor:
-                                name: payment refund
-                              quantity:
-                                selected:
-                                  measure:
-                                    value: '4'
-                                    unit: kWh
-                            price:
-                              value: '-12'
-                              currency: INR
-                      payments:
-                        - type: PRE-ORDER
-                          status: PAID
-                          params:
-                            amount: '40'
-                            currency: INR
-                          time:
-                            range:
-                              start: '2023-08-10T10:00:00Z'
-                              end: '2023-08-10T10:30:00Z'
-                      cancellation_terms:
-                        - fulfillment_state:
-                            descriptor:
-                              code: charging-start
-                          cancellation_fee:
-                            percentage: 30%
-                          external_ref:
-                            mimetype: text/html
-                            url: https://chargezone.in/charge/tnc.html
       responses:
         '200':
           description: Acknowledgement of message received after successful validation of schema and signature
@@ -1879,261 +1289,6 @@ paths:
                   $ref: '#/components/schemas/Error'
               required:
                 - context
-            examples:
-              The provider sends an updated object to start charging:
-                value:
-                  context:
-                    domain: dent:0.1.0
-                    action: on_update
-                    location:
-                      country:
-                        name: India
-                        code: IND
-                    city: std:080
-                    version: 1.1.0
-                    bap_id: example-bap.com
-                    bap_uri: https://api.example-bap.com/pilot/bap/energy/v1
-                    bpp_id: example-bpp.com
-                    bpp_uri: https://api.example-bpp.com/pilot/bpp/
-                    transaction_id: 6743e9e2-4fb5-487c-92b7-13ba8018f176
-                    message_id: 6743e9e2-4fb5-487c-92b7-13ba8018f176
-                    timestamp: '2023-07-16T04:41:16Z'
-                  message:
-                    order:
-                      id: 6743e9e2-4fb5-487c-92b7
-                      providers:
-                        id: chargezone.in
-                        descriptor:
-                          name: Chargezone
-                          short_desc: Chargezone Technologies Pvt Ltd
-                          images:
-                            - url: https://chargezone.in/images/logo.png
-                      items:
-                        - id: pe-charging-01
-                          descriptor:
-                            code: energy
-                          price:
-                            value: '8'
-                            currency: INR/kWH
-                          quantity:
-                            available:
-                              measure:
-                                value: '100'
-                                unit: kWh
-                            selected:
-                              measure:
-                                value: '4'
-                                unit: kWh
-                          fulfillments:
-                            - '1'
-                      fulfillments:
-                        - id: '1'
-                          customer:
-                            person:
-                              name: John Doe
-                            contact:
-                              phone: +91-9887766554
-                          type: CHARGING
-                          state:
-                            descriptor:
-                              code: charging-started
-                          stops:
-                            - type: start
-                              location:
-                                gps: 12.423423,77.325647
-                              time:
-                                timestamp: 01-06-2023 10:00:00
-                                range:
-                                  start: 01-06-2023 10:00:00
-                                  end: 01-06-2023 10:10:00
-                            - type: end
-                              time:
-                                timestamp: 01-06-2023 10:30:00
-                                range:
-                                  start: 01-06-2023 10:30:00
-                                  end: 01-06-2023 10:40:00
-                          tags:
-                            - descriptor:
-                                name: Charging Point
-                              list:
-                                - descriptor:
-                                    name: Charger type
-                                  value: AC
-                                - descriptor:
-                                    name: Connector type
-                                  value: CCS2
-                                - descriptor:
-                                    name: Power Rating
-                                  value: greater than 50kW
-                                - descriptor:
-                                    name: Availability
-                                  value: Available
-                              display: true
-                      billing:
-                        email: abc@example.com
-                        number: +91-9876522222
-                      quote:
-                        price:
-                          value: '40'
-                          currency: INR
-                        breakup:
-                          - item:
-                              descriptor:
-                                name: Estimated units consumed
-                              quantity:
-                                selected:
-                                  measure:
-                                    value: '4'
-                                    unit: kWh
-                            price:
-                              value: '32'
-                              currency: INR
-                      payments:
-                        - type: PRE-ORDER
-                          status: PAID
-                          params:
-                            amount: '40'
-                            currency: INR
-                          time:
-                            range:
-                              start: '2023-08-10T10:00:00Z'
-                              end: '2023-08-10T10:30:00Z'
-                      cancellation_terms:
-                        - fulfillment_state:
-                            descriptor:
-                              code: charging-start
-                          cancellation_fee:
-                            percentage: 30%
-                          external_ref:
-                            mimetype: text/html
-                            url: https://chargezone.in/charge/tnc.html
-              The provider sends an updated object to stop charging:
-                value:
-                  context:
-                    domain: dent:0.1.0
-                    action: on_update
-                    location:
-                      country:
-                        name: India
-                        code: IND
-                    city: std:080
-                    version: 1.1.0
-                    bap_id: example-bap.com
-                    bap_uri: https://api.example-bap.com/pilot/bap/energy/v1
-                    bpp_id: example-bpp.com
-                    bpp_uri: https://api.example-bpp.com/pilot/bpp/
-                    transaction_id: 6743e9e2-4fb5-487c-92b7-13ba8018f176
-                    message_id: 6743e9e2-4fb5-487c-92b7-13ba8018f176
-                    timestamp: '2023-07-16T04:41:16Z'
-                  message:
-                    order:
-                      id: 6743e9e2-4fb5-487c-92b7
-                      providers:
-                        id: chargezone.in
-                        descriptor:
-                          name: Chargezone
-                          short_desc: Chargezone Technologies Pvt Ltd
-                          images:
-                            - url: https://chargezone.in/images/logo.png
-                      items:
-                        - id: pe-charging-01
-                          descriptor:
-                            code: energy
-                          price:
-                            value: '8'
-                            currency: INR/kWH
-                          quantity:
-                            available:
-                              measure:
-                                value: '100'
-                                unit: kWh
-                            selected:
-                              measure:
-                                value: '4'
-                                unit: kWh
-                          fulfillments:
-                            - '1'
-                      fulfillments:
-                        - id: '1'
-                          customer:
-                            person:
-                              name: John Doe
-                            contact:
-                              phone: +91-9887766554
-                          type: CHARGING
-                          state:
-                            descriptor:
-                              code: charging-ended
-                          stops:
-                            - type: start
-                              location:
-                                gps: 12.423423,77.325647
-                              time:
-                                timestamp: 01-06-2023 10:00:00
-                                range:
-                                  start: 01-06-2023 10:00:00
-                                  end: 01-06-2023 10:10:00
-                            - type: end
-                              time:
-                                timestamp: 01-06-2023 10:30:00
-                                range:
-                                  start: 01-06-2023 10:30:00
-                                  end: 01-06-2023 10:40:00
-                          tags:
-                            - descriptor:
-                                name: Charging Point
-                              list:
-                                - descriptor:
-                                    name: Charger type
-                                  value: AC
-                                - descriptor:
-                                    name: Connector type
-                                  value: CCS2
-                                - descriptor:
-                                    name: Power Rating
-                                  value: greater than 50kW
-                                - descriptor:
-                                    name: Availability
-                                  value: Available
-                              display: true
-                      billing:
-                        email: abc@example.com
-                        number: +91-9876522222
-                      quote:
-                        price:
-                          value: '40'
-                          currency: INR
-                        breakup:
-                          - item:
-                              descriptor:
-                                name: Estimated units consumed
-                              quantity:
-                                selected:
-                                  measure:
-                                    value: '4'
-                                    unit: kWh
-                            price:
-                              value: '32'
-                              currency: INR
-                      payments:
-                        - type: PRE-ORDER
-                          status: PAID
-                          params:
-                            amount: '40'
-                            currency: INR
-                          time:
-                            range:
-                              start: '2023-08-10T10:00:00Z'
-                              end: '2023-08-10T10:30:00Z'
-                      cancellation_terms:
-                        - fulfillment_state:
-                            descriptor:
-                              code: charging-start
-                          cancellation_fee:
-                            percentage: 30%
-                          external_ref:
-                            mimetype: text/html
-                            url: https://chargezone.in/charge/tnc.html
       responses:
         '200':
           description: Acknowledgement of message received after successful validation of schema and signature
@@ -2163,7 +1318,7 @@ paths:
     post:
       tags:
         - Beckn Application Platform (BAP)
-      description: Fetch the status of a service
+      description: Fetch the status of a Service
       requestBody:
         content:
           application/json:
@@ -2190,134 +1345,6 @@ paths:
                   $ref: '#/components/schemas/Error'
               required:
                 - context
-            examples:
-              The provider sends status of the charging:
-                value:
-                  context:
-                    domain: dent:0.1.0
-                    action: on_status
-                    location:
-                      country:
-                        name: India
-                        code: IND
-                    city: std:080
-                    version: 1.1.0
-                    bap_id: example-bap.com
-                    bap_uri: https://api.example-bap.com/pilot/bap/energy/v1
-                    bpp_id: example-bpp.com
-                    bpp_uri: https://api.example-bpp.com/pilot/bpp/
-                    transaction_id: 6743e9e2-4fb5-487c-92b7-13ba8018f176
-                    message_id: 6743e9e2-4fb5-487c-92b7-13ba8018f176
-                    timestamp: '2023-07-16T04:41:16Z'
-                  message:
-                    order:
-                      id: 6743e9e2-4fb5-487c-92b7
-                      providers:
-                        id: chargezone.in
-                        descriptor:
-                          name: Chargezone
-                          short_desc: Chargezone Technologies Pvt Ltd
-                          images:
-                            - url: https://chargezone.in/images/logo.png
-                      items:
-                        - id: pe-charging-01
-                          descriptor:
-                            code: energy
-                          price:
-                            value: '8'
-                            currency: INR/kWH
-                          quantity:
-                            available:
-                              measure:
-                                value: '100'
-                                unit: kWh
-                            selected:
-                              measure:
-                                value: '4'
-                                unit: kWh
-                          fulfillments:
-                            - '1'
-                      fulfillments:
-                        - id: '1'
-                          customer:
-                            person:
-                              name: John Doe
-                            contact:
-                              phone: +91-9887766554
-                          type: CHARGING
-                          state:
-                            descriptor:
-                              name: vehicle 65% charged
-                          stops:
-                            - type: start
-                              location:
-                                gps: 12.423423,77.325647
-                              time:
-                                timestamp: 01-06-2023 10:00:00
-                                range:
-                                  start: 01-06-2023 10:00:00
-                                  end: 01-06-2023 10:10:00
-                            - type: end
-                              time:
-                                timestamp: 01-06-2023 10:30:00
-                                range:
-                                  start: 01-06-2023 10:30:00
-                                  end: 01-06-2023 10:40:00
-                          tags:
-                            - descriptor:
-                                name: Charging Point
-                              list:
-                                - descriptor:
-                                    name: Charger type
-                                  value: AC
-                                - descriptor:
-                                    name: Connector type
-                                  value: CCS2
-                                - descriptor:
-                                    name: Power Rating
-                                  value: greater than 50kW
-                                - descriptor:
-                                    name: Availability
-                                  value: Available
-                              display: true
-                      billing:
-                        email: abc@example.com
-                        number: +91-9876522222
-                      quote:
-                        price:
-                          value: '32'
-                          currency: INR
-                        breakup:
-                          - item:
-                              descriptor:
-                                name: Estimated units consumed
-                              quantity:
-                                selected:
-                                  measure:
-                                    value: '4'
-                                    unit: kWh
-                            price:
-                              value: '32'
-                              currency: INR
-                      payments:
-                        - type: PRE-ORDER
-                          status: PAID
-                          params:
-                            amount: '40'
-                            currency: INR
-                          time:
-                            range:
-                              start: '2023-08-10T10:00:00Z'
-                              end: '2023-08-10T10:30:00Z'
-                      cancellation_terms:
-                        - fulfillment_state:
-                            descriptor:
-                              code: charging-start
-                          cancellation_fee:
-                            percentage: 30%
-                          external_ref:
-                            mimetype: text/html
-                            url: https://chargezone.in/charge/tnc.html
       responses:
         '200':
           description: Acknowledgement of message received after successful validation of schema and signature
@@ -2375,31 +1402,6 @@ paths:
               required:
                 - context
                 - message
-            examples:
-              The provider responds with a form URL for rating:
-                value:
-                  context:
-                    domain: dent:0.1.0
-                    action: on_rating
-                    location:
-                      country:
-                        name: India
-                        code: IND
-                    city: std:080
-                    version: 1.1.0
-                    bap_id: example-bap.com
-                    bap_uri: https://api.example-bap.com/pilot/bap/energy/v1
-                    bpp_id: chargezone-energy-bpp.com
-                    bpp_uri: https://api.example-bpp.com/pilot/bpp/
-                    transaction_id: 6743e9e2-4fb5-487c-92b7-13ba8018f176
-                    message_id: 6743e9e2-4fb5-487c-92b7-13ba8018f176
-                    timestamp: '2023-07-16T04:41:16Z'
-                  message:
-                    feedback_form:
-                      xinput:
-                        form:
-                          url: https://api.example-bpp.com/pilot/bpp/feedback/portal
-                        required: 'false'
       responses:
         '200':
           description: Acknowledgement of message received after successful validation of schema and signature
@@ -2454,31 +1456,6 @@ paths:
                   $ref: '#/components/schemas/Error'
               required:
                 - context
-            examples:
-              The provider returns support details:
-                value:
-                  context:
-                    domain: dent:0.1.0
-                    action: on_support
-                    location:
-                      country:
-                        name: India
-                        code: IND
-                    city: std:080
-                    version: 1.1.0
-                    bap_id: example-bap.com
-                    bap_uri: https://api.example-bap.com/pilot/bap/energy/v1
-                    bpp_id: chargezone-energy-bpp.com
-                    bpp_uri: https://api.example-bpp.com/pilot/bpp/
-                    transaction_id: 6743e9e2-4fb5-487c-92b7-13ba8018f176
-                    message_id: 6743e9e2-4fb5-487c-92b7-13ba8018f176
-                    timestamp: '2023-07-16T04:41:16Z'
-                  message:
-                    support:
-                      order_id: 6743e9e2-4fb5-487c-92b7
-                      phone: 1800 1080
-                      email: customer.care@chargezone.com
-                      url: https://www.chargezone.com/helpdesk
       responses:
         '200':
           description: Acknowledgement of message received after successful validation of schema and signature
@@ -2542,7 +1519,7 @@ components:
       description: Describes a postal address.
       type: string
     Agent:
-      description: "Describes the direct performer, driver or executor that fulfills an order. It is usually a person. But in some rare cases, it could be a non-living entity like a drone, or a bot. Some examples of agents are Doctor in the healthcare sector, a driver in the mobility sector, or a delivery person in the logistics sector. This object can be set at any stage of the order lifecycle. This can be set at the discovery stage when the BPP wants to provide details on the agent fulfilling the order, like in healthcare, where the doctor's name appears during search. This object can also used to search for a particular person that the customer wants fulfilling an order. Sometimes, this object gets instantiated after the order is confirmed, like in the case of on-demand taxis, where the driver is assigned after the user confirms the ride."
+      description: 'Describes the direct performer, driver or executor that fulfills an order. It is usually a person. But in some rare cases, it could be a non-living entity like a drone, or a bot. Some examples of agents are Doctor in the healthcare sector, a driver in the mobility sector, or a delivery person in the logistics sector. This object can be set at any stage of the order lifecycle. This can be set at the discovery stage when the BPP wants to provide details on the agent fulfilling the order, like in healthcare, where the doctor''s name appears during search. This object can also used to search for a particular person that the customer wants fulfilling an order. Sometimes, this object gets instantiated after the order is confirmed, like in the case of on-demand taxis, where the driver is assigned after the user confirms the ride.'
       properties:
         person:
           $ref: '#/components/schemas/Person'
@@ -2733,7 +1710,7 @@ components:
           type: object
           description: A Jcard object as per draft-ietf-jcardcal-jcard-03 specification
     Context:
-      description: "Every API call in beckn protocol has a context. It provides a high-level overview to the receiver about the nature of the intended transaction. Typically, it is the BAP that sets the transaction context based on the consumer's location and action on their UI. But sometimes, during unsolicited callbacks, the BPP also sets the transaction context but it is usually the same as the context of a previous full-cycle, request-callback interaction between the BAP and the BPP. The context object contains four types of fields. <ol><li>Demographic information about the transaction using fields like `domain`, `country`, and `region`.</li><li>Addressing details like the sending and receiving platform's ID and API URL.</li><li>Interoperability information like the protocol version that implemented by the sender and,</li><li>Transaction details like the method being called at the receiver's endpoint, the transaction_id that represents an end-to-end user session at the BAP, a message ID to pair requests with callbacks, a timestamp to capture sending times, a ttl to specifiy the validity of the request, and a key to encrypt information if necessary.</li></ol> This object must be passed in every interaction between a BAP and a BPP. In HTTP/S implementations, it is not necessary to send the context during the synchronous response. However, in asynchronous protocols, the context must be sent during all interactions,"
+      description: 'Every API call in beckn protocol has a context. It provides a high-level overview to the receiver about the nature of the intended transaction. Typically, it is the BAP that sets the transaction context based on the consumer''s location and action on their UI. But sometimes, during unsolicited callbacks, the BPP also sets the transaction context but it is usually the same as the context of a previous full-cycle, request-callback interaction between the BAP and the BPP. The context object contains four types of fields. <ol><li>Demographic information about the transaction using fields like `domain`, `country`, and `region`.</li><li>Addressing details like the sending and receiving platform''s ID and API URL.</li><li>Interoperability information like the protocol version that implemented by the sender and,</li><li>Transaction details like the method being called at the receiver''s endpoint, the transaction_id that represents an end-to-end user session at the BAP, a message ID to pair requests with callbacks, a timestamp to capture sending times, a ttl to specifiy the validity of the request, and a key to encrypt information if necessary.</li></ol> This object must be passed in every interaction between a BAP and a BPP. In HTTP/S implementations, it is not necessary to send the context during the synchronous response. However, in asynchronous protocols, the context must be sent during all interactions,'
       type: object
       properties:
         domain:
@@ -2854,7 +1831,7 @@ components:
           items:
             $ref: '#/components/schemas/Image'
     Domain:
-      description: "Described the industry sector or sub-sector. The network policy should contain codes for all the industry sectors supported by the network. Domains can be created in varying levels of granularity. The granularity of a domain can be decided by the participants of the network. Too broad domains will result in irrelevant search broadcast calls to BPPs that don't have services supporting the domain. Too narrow domains will result in a large number of registry entries for each BPP. It is recommended that network facilitators actively collaborate with various working groups and network participants to carefully choose domain codes keeping in mind relevance, performance, and opportunity cost. It is recommended that networks choose broad domains like mobility, logistics, healthcare etc, and progressively granularize them as and when the number of network participants for each domain grows large."
+      description: 'Described the industry sector or sub-sector. The network policy should contain codes for all the industry sectors supported by the network. Domains can be created in varying levels of granularity. The granularity of a domain can be decided by the participants of the network. Too broad domains will result in irrelevant search broadcast calls to BPPs that don''t have services supporting the domain. Too narrow domains will result in a large number of registry entries for each BPP. It is recommended that network facilitators actively collaborate with various working groups and network participants to carefully choose domain codes keeping in mind relevance, performance, and opportunity cost. It is recommended that networks choose broad domains like mobility, logistics, healthcare etc, and progressively granularize them as and when the number of network participants for each domain grows large.'
       type: object
       properties:
         name:
@@ -3006,7 +1983,7 @@ components:
           description: Height of the image in pixels
           type: string
     Intent:
-      description: "The intent to buy or avail a product or a service. The BAP can declare the intent of the consumer containing <ul><li>What they want (A product, service, offer)</li><li>Who they want (A seller, service provider, agent etc)</li><li>Where they want it and where they want it from</li><li>When they want it (start and end time of fulfillment</li><li>How they want to pay for it</li></ul><br>This has properties like descriptor,provider,fulfillment,payment,category,offer,item,tags<br>This is typically used by the BAP to send the purpose of the user's search to the BPP. This will be used by the BPP to find products or services it offers that may match the user's intent.<br>For example, in Mobility, the mobility consumer declares a mobility intent. In this case, the mobility consumer declares information that describes various aspects of their journey like,<ul><li>Where would they like to begin their journey (intent.fulfillment.start.location)</li><li>Where would they like to end their journey (intent.fulfillment.end.location)</li><li>When would they like to begin their journey (intent.fulfillment.start.time)</li><li>When would they like to end their journey (intent.fulfillment.end.time)</li><li>Who is the transport service provider they would like to avail services from (intent.provider)</li><li>Who is traveling (This is not recommended in public networks) (intent.fulfillment.customer)</li><li>What kind of fare product would they like to purchase (intent.item)</li><li>What add-on services would they like to avail</li><li>What offers would they like to apply on their booking (intent.offer)</li><li>What category of services would they like to avail (intent.category)</li><li>What additional luggage are they carrying</li><li>How would they like to pay for their journey (intent.payment)</li></ul><br>For example, in health domain, a consumer declares the intent for a lab booking the describes various aspects of their booking like,<ul><li>Where would they like to get their scan/test done (intent.fulfillment.start.location)</li><li>When would they like to get their scan/test done (intent.fulfillment.start.time)</li><li>When would they like to get the results of their test/scan (intent.fulfillment.end.time)</li><li>Who is the service provider they would like to avail services from (intent.provider)</li><li>Who is getting the test/scan (intent.fulfillment.customer)</li><li>What kind of test/scan would they like to purchase (intent.item)</li><li>What category of services would they like to avail (intent.category)</li><li>How would they like to pay for their journey (intent.payment)</li></ul>"
+      description: 'The intent to buy or avail a product or a service. The BAP can declare the intent of the consumer containing <ul><li>What they want (A product, service, offer)</li><li>Who they want (A seller, service provider, agent etc)</li><li>Where they want it and where they want it from</li><li>When they want it (start and end time of fulfillment</li><li>How they want to pay for it</li></ul><br>This has properties like descriptor,provider,fulfillment,payment,category,offer,item,tags<br>This is typically used by the BAP to send the purpose of the user''s search to the BPP. This will be used by the BPP to find products or services it offers that may match the user''s intent.<br>For example, in Mobility, the mobility consumer declares a mobility intent. In this case, the mobility consumer declares information that describes various aspects of their journey like,<ul><li>Where would they like to begin their journey (intent.fulfillment.start.location)</li><li>Where would they like to end their journey (intent.fulfillment.end.location)</li><li>When would they like to begin their journey (intent.fulfillment.start.time)</li><li>When would they like to end their journey (intent.fulfillment.end.time)</li><li>Who is the transport service provider they would like to avail services from (intent.provider)</li><li>Who is traveling (This is not recommended in public networks) (intent.fulfillment.customer)</li><li>What kind of fare product would they like to purchase (intent.item)</li><li>What add-on services would they like to avail</li><li>What offers would they like to apply on their booking (intent.offer)</li><li>What category of services would they like to avail (intent.category)</li><li>What additional luggage are they carrying</li><li>How would they like to pay for their journey (intent.payment)</li></ul><br>For example, in health domain, a consumer declares the intent for a lab booking the describes various aspects of their booking like,<ul><li>Where would they like to get their scan/test done (intent.fulfillment.start.location)</li><li>When would they like to get their scan/test done (intent.fulfillment.start.time)</li><li>When would they like to get the results of their test/scan (intent.fulfillment.end.time)</li><li>Who is the service provider they would like to avail services from (intent.provider)</li><li>Who is getting the test/scan (intent.fulfillment.customer)</li><li>What kind of test/scan would they like to purchase (intent.item)</li><li>What category of services would they like to avail (intent.category)</li><li>How would they like to pay for their journey (intent.payment)</li></ul>'
       type: object
       properties:
         descriptor:
@@ -3283,7 +2260,7 @@ components:
       type: object
       properties:
         mimetype:
-          description: "indicates the nature and format of the document, file, or assortment of bytes. MIME types are defined and standardized in IETF's RFC 6838"
+          description: 'indicates the nature and format of the document, file, or assortment of bytes. MIME types are defined and standardized in IETF''s RFC 6838'
           type: string
         url:
           description: The URL of the file
@@ -3454,14 +2431,14 @@ components:
         contact:
           $ref: '#/components/schemas/Contact'
     Payment:
-      description: "Describes the terms of settlement between the BAP and the BPP for a single transaction. When instantiated, this object contains <ol><li>the amount that has to be settled,</li><li>The payment destination destination details</li><li>When the settlement should happen, and</li><li>A transaction reference ID</li></ol>. During a transaction, the BPP reserves the right to decide the terms of payment. However, the BAP can send its terms to the BPP first. If the BPP does not agree to those terms, it must overwrite the terms and return them to the BAP. If overridden, the BAP must either agree to the terms sent by the BPP in order to preserve the provider's autonomy, or abort the transaction. In case of such disagreements, the BAP and the BPP can perform offline negotiations on the payment terms. Once an agreement is reached, the BAP and BPP can resume transactions."
+      description: 'Describes the terms of settlement between the BAP and the BPP for a single transaction. When instantiated, this object contains <ol><li>the amount that has to be settled,</li><li>The payment destination destination details</li><li>When the settlement should happen, and</li><li>A transaction reference ID</li></ol>. During a transaction, the BPP reserves the right to decide the terms of payment. However, the BAP can send its terms to the BPP first. If the BPP does not agree to those terms, it must overwrite the terms and return them to the BAP. If overridden, the BAP must either agree to the terms sent by the BPP in order to preserve the provider''s autonomy, or abort the transaction. In case of such disagreements, the BAP and the BPP can perform offline negotiations on the payment terms. Once an agreement is reached, the BAP and BPP can resume transactions.'
       type: object
       properties:
         id:
           description: ID of the payment term that can be referred at an item or an order level in a catalog
           type: string
         collected_by:
-          description: "This field indicates who is the collector of payment. The BAP can set this value to 'bap' if it wants to collect the payment first and  settle it to the BPP. If the BPP agrees to those terms, the BPP should not send the payment url. Alternatively, the BPP can set this field with the value 'bpp' if it wants the payment to be made directly."
+          description: 'This field indicates who is the collector of payment. The BAP can set this value to ''bap'' if it wants to collect the payment first and  settle it to the BPP. If the BPP agrees to those terms, the BPP should not send the payment url. Alternatively, the BPP can set this field with the value ''bpp'' if it wants the payment to be made directly.'
         url:
           type: string
           description: 'A payment url to be called by the BAP. If empty, then the payment is to be done offline. The details of payment should be present in the params object. If tl_method = http/get, then the payment details will be sent as url params. Two url param values, ```$transaction_id``` and ```$amount``` are mandatory.'

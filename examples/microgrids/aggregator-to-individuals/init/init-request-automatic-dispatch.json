@@ -1,0 +1,61 @@
+{
+  "context": {
+    "domain": "dent:0.1.0",
+    "action": "init",
+    "location": {
+      "country": {
+        "name": "India",
+        "code": "IND"
+      }
+    },
+    "city": "std:080",
+    "version": "1.1.0",
+    "bap_id": "example-bap.com",
+    "bap_uri": "https://api.example-bap.com/pilot/bap/energy/v1",
+    "bpp_id": "example-bpp.com",
+    "bpp_uri": "https://api.example-bpp.com/pilot/bpp/",
+    "transaction_id": "6743e9e2-4fb5-487c-92b7-13ba8018f176",
+    "message_id": "6743e9e2-4fb5-487c-92b7-13ba8018f176",
+    "timestamp": "2023-07-16T04:41:16Z"
+  },
+  "message": {
+    "order": {
+      "provider": {
+        "id": "5f0acfd5"
+      },
+      "items": [
+        {
+          "id": "5f0acfd5-grid-1"
+        }
+      ],
+      "fulfillments": [
+        {
+          "id": "1"
+        }
+      ],
+      "xinput": {
+        "head": {
+          "descriptor": {
+            "name": "Dispatch Consent"
+          },
+          "index": {
+            "min": 0,
+            "cur": 0,
+            "max": 0
+          },
+          "headings": [
+            "Dispatch Consent"
+          ]
+        },
+        "form": {
+          "id": "d097c2f5-cb8d-42fe-900e-dfecdede16fb",
+          "mime_type": "text/html",
+          "url": "https://6vs8xnx5i7.icicibank.co.in/loans/xinput/formid/a23f2fdfbbb8ac402bf259d75",
+          "resubmit": false,
+          "multiple_sumbissions": false
+        },
+        "required": true
+      }
+    }
+  }
+}

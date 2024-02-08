@@ -79,18 +79,6 @@
               "fulfillment_ids": [
                 "1",
                 "2"
-              ],
-              "add_ons": [
-                {
-                  "id": "pe-charging-01-addon-1",
-                  "descriptor": {
-                    "name": "Free car wash"
-                  },
-                  "price": {
-                    "value": "0",
-                    "currency": "INR"
-                  }
-                }
               ]
             }
           ],
@@ -100,15 +88,11 @@
               "type": "CHARGING",
               "stops": [
                 {
-                  "type": "start",
                   "time": {
-                    "timestamp": "01-06-2023 10:00:00"
-                  }
-                },
-                {
-                  "type": "end",
-                  "time": {
-                    "timestamp": "01-06-2023 10:30:00"
+                    "range": {
+                      "start": "10:00",
+                      "end": "10:30"
+                    }
                   }
                 }
               ],
@@ -154,15 +138,11 @@
               "type": "CHARGING",
               "stops": [
                 {
-                  "type": "start",
                   "time": {
-                    "timestamp": "01-06-2023 10:00:00"
-                  }
-                },
-                {
-                  "type": "end",
-                  "time": {
-                    "timestamp": "01-06-2023 10:30:00"
+                    "range": {
+                      "start": "10:30",
+                      "end": "11:00"
+                    }
                   }
                 }
               ],
@@ -236,18 +216,6 @@
               "fulfillment_ids": [
                 "3",
                 "4"
-              ],
-              "add_ons": [
-                {
-                  "id": "pe-charging-01-addon-1",
-                  "descriptor": {
-                    "name": "Free tyre pressure check"
-                  },
-                  "price": {
-                    "value": "0",
-                    "currency": "INR"
-                  }
-                }
               ]
             }
           ],
