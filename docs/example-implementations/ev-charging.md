@@ -1,37 +1,139 @@
-# Implementation Guide
+# EV Charging Application Workflow #1
 
-This document contains the REQUIRED and RECOMMENDED standard functionality that must be implemented by any Energy Producer Platform a.k.a BPPs and Energy Consumer Platforms a.k.a BAPs.
+## Overview
 
-The key words "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL NOT", "SHOULD", "SHOULD NOT", "RECOMMENDED", "MAY", and "OPTIONAL" in this document are to be interpreted as described in [RFC2119](https://datatracker.ietf.org/doc/html/rfc2119) from IETF.
+This document outlines the workflow for Electric Vehicle (EV) Charging using the DENT Protocol. The workflow includes interactions between the charging point operator (BPP) and the BAP for search, select, block, and completing the session.
 
-## 5.1 Discovery of Energy Sources
+Bear in mind that this is just an example workflow for a simple EV Charing and Battery swap workflow between a `User` and a `Provider`.
+(Note: Here, User -> Electric Vehicle Owner/User and Provider -> EV Charging Provider)
 
-### 5.1.1 Recommendations for BPPs
+A typical workflow for EV Charging consists of the following steps:
 
-The following recommendations need to be considered when implementing discovery functionality for an Energy Provider BPP
+#### Step 1: The BAP searches for EV Chargers
 
-- REQUIRED. The BPP MUST implement the `search` endpoint to receive an `Intent` object sent by BAPs
-- REQUIRED. The BPP MUST return a catalog of energy sources on the `on_search` callback endpoint specified in the `context.bpp_uri` field of the `search` request body.
-- REQUIRED. The BPP MUST map its energy source to the `Item` schema.
-- REQUIRED. Any energy provider-related information like name, logo, short description must be mapped to the `Provider.descriptor` schema
-- REQUIRED. If the BPP wants to group its energy sources under a specific category, it must map each category to the `Category` schema
-- REQUIRED. Any energy transfer related information MUST be mapped to the `Fulfillment` schema.
-- REQUIRED. If the BPP does not want to respond to a search request, it MUST return a `ack.status` value equal to `NACK`
-- RECOMMENDED. Upon receiving a `search` request, the BPP SHOULD return a catalog that best matches the intent. This can be done by indexing the catalog against the various probable paths in the `Intent` schema relevant to typical financial service use cases
+The BAP provides specific requirements to find the nearest EV Chargers to charge their EV
+The search can be based on the location, location and the energy requirements or location, energy requirements and charger details.
 
-### 5.1.2 Recommendations for BAPs
+#### Step 2: Provider sends catalogs of EV Chargers nearby
 
-- REQUIRED. The BAP MUST call the `search` endpoint of the BG to discover multiple BPPs on a network
-- REQUIRED. The BAP MUST implement the `on_search` endpoint to consume the `Catalog` objects containing Energy Sources sent by BPPs.
-- REQUIRED. The BAP MUST expect multiple catalogs sent by the respective Energy Providers on the network
-- REQUIRED. The energy sources can be found in the `Catalog.providers[].items[]` array in the `on_search` request
-- REQUIRED. If the `catalog.providers[].items[].xinput` object is present, then the BAP MUST redirect the user to, or natively render the form present on the link specified on the `items[].xinput.form.url` field.
-- REQUIRED. If the `catalog.providers[].items[].xinput.required` field is set to `"true"` , then the BAP MUST NOT fire a `select`, `init` or `confirm` call until the form is submitted and a successful response is received
-- RECOMMENDED. If the `catalog.providers[].items[].xinput.required` field is set to `"false"` , then the BAP SHOULD allow the user to skip filling the form
+The provider platform (BPP) sends the catalogs of all nearby charging providers to the BAP.
+The catalog will consist of various charging stations with their respective attributes such as charging types, connector types, power rating.
 
-### Example
+> **Note**: The BPP is not expected to run an inventory check before it sends out their catalogs. They are free to send out their entire catalogs, but if a BAP has a request with specific timing, they can send the appropraite catalogs. The BPP can also choose to send add ons in their catalogs that the BAP can avail.
 
-The search is broadcast to all providers on the network, there will be many providers. The providers could be EV chargers, Discoms or Energy Aggregators. The search request can look something like this.
+#### Step 3: The BAP selects a EV Charger Service
+
+Selects the provider which satisfies user requirements.
+In this stage, The BAP may select additional features such as:
+
+1. The BAP can select his required services (such as EV Charging) from the catalog of provider
+2. The BAP can block/reserve the charger/swap service for a certain time slot, along with the start and duration times of the session.
+3. The BAP can select the charger type he wants to use such as A.C. or D.C. and Connector types like CCS2 etc.,
+4. The BAP can select quantity of energy required in units of kwh.
+5. The BAP can select the provider based on a location that helps them fulfill their intent.
+
+#### Step 4: Provider sends quoted price
+
+The provider will receive the order based on the BAP's requirements.
+The user gets the quoted price, including the breakdown of the price details.
+The breakdown should include:
+
+- Tariff per unit (i.e., INR/KWh), the tariff per unit might change by the service type, charger type and location of Energy Charger Provider
+- Price for reservation
+
+Apart from this, the provider can include add ons to the items for the BAP, these add ons can be services that can be availed in that location. In the case of EV charging it could be free car wash, free tyre pressure check etc.
+
+Providers can also include discounts to the items based on partnerships or subscriptions.
+
+#### Step 5: The BAP initiates the order
+
+The BAP initializes the order by providing billing details, apart from the details of the items chosen.
+Here, the BAP will provide their `Name`, `Email ID` and `Phone Number` and updates the payment details
+
+The BAP can send vehicle details to avail add ons and offers for that particular vehicle type or company.
+
+#### Step 6: Provider sends draft order
+
+The provider sends the draft order with the payment and fulfilment terms to the user-side.
+Based on how much units of Electrical Energy user used during charging as tariff_per_unit as already mentioned above in INR/KWh
+If the user also done the reservation/block the transaction includes the price for block/use-up price as well
+The tariff_per_unit might change with the charger type as we know that A.C. charger type has different price compared to D.C. charger type.
+
+During this interaction, the BPP can block the charger for the specified amount of time at that particular price and wait for a confirm call. The quote will no longer be valid after a certain amount of time. The quote would have to be re-calculated for a new order.
+The BPP sends the payment link, the BAP uses the link to complete the payment.
+
+#### Step 7: The BAP confirms the order
+
+The BAP sees the draft order and confirms it by agreeing to the payment and fulfilment terms and conditions
+The confirm status will sent to the provider saying that user has paid the price and satisfied the fulfillment terms, the order will also have instructions on how to connect to the charger.
+
+#### Step 8: Provider sends the order activation
+
+The provider will activate the order when the user updates the provider to start the charging.
+
+#### Step 9: User checks the status of the order
+
+The BAP requests to check the updates/status of their order, this can include the percentage of charge completed.
+
+#### Step 10: Provider sends the status of the order
+
+The provider will send the order updates with current status to the BAP
+
+#### Step 11: The BAP or the provider cancels the order.
+
+The BAP or the provider can cancel the order for various reasons. The provider can cancel the order if there is failure on their side, in which case the appropriate refund will be processed.
+
+## Search (Searching for EV Chargers)
+
+1. The user declares the intent for EV Charging to the providers
+2. Providers publish the catalog of their services
+
+### User-side Actions
+
+A EV user can declare their intent for charging their EV in many ways like:
+
+- Searching for EV Charging Providers based on current location of user
+- Searching for EV Charging Providers based on quantity required
+- Searching for EV Charging based on Name/Code of provider
+- Searching for EV Charging Providers based on ratings
+- View list of energy sources, such as EV chargers, Solar Farms providing EV charging, Houses providing EV charging, Battery Swap Providers etc.
+
+### Provider-side Actions
+
+In this interaction, the Provider publishes their catalog of services and products. A Provider can publish various types of catalogs like
+
+- Publish list of energy sources and EV chargers including Solar Farms providing EV charging, Houses, Battery Swap Providers etc.
+- Publish list of provders in 5Km radius of user
+- Publish list of provders with the requested Charing types/Connector types/Battery types
+- Publish catalog/details of services provided by providers
+- Publish catalog of services provided by a particular provider
+
+### Logical Workflow
+
+```mermaid
+    sequenceDiagram
+    User->>Provider: Declare Intent to EV Charging
+    Provider->>User: Publish Catalog of services available
+```
+
+### Beckn Protocol API Workflow
+
+In beckn protocol, the search intent generated by the EV User Platform (BAP) is typically published on the gateway (BG) that broadcasts the intent to multiple Provider platforms (BPPs). Each of the BPPs return their catalogs directly to the BAP via asynchronous callbacks. The workflow for that is shown below.
+
+```mermaid
+  sequenceDiagram
+    User Platform (BAP)->> Gateway (BG): Declare Intent to charge EV ( search )
+    Gateway (BG)->> Registry: Lookup Provider Platforms (lookup)
+    Registry ->> Gateway (BG): List of Provider Platforms in 'x'km radius and 'y'kwh energy quantity required (200 OK)
+    Gateway (BG)->> Provider Platform 1 (BPP1): Declare Intent to charge EV (search)
+    Gateway (BG)->> Provider Platform 2 (BPP2): Declare Intent to charge EV (search)
+    Gateway (BG)->> Provider Platform n (BPPn): Declare Intent to charge EV (search)
+    Provider Platform 1 (BPP1)->> User Platform (BAP): Publish Catalog of Provider 1 (on_search)
+    Provider Platform 2 (BPP2)->> User Platform (BAP): Publish Catalog of Provider 2 (on_search)
+    Provider Platform n (BPPn)->> User Platform (BAP): Publish Catalog of Provider n (on_search)
+```
+
+#### Example `search` api Json:
 
 ```json
 {
@@ -40,6 +142,7 @@ The search is broadcast to all providers on the network, there will be many prov
     "action": "search",
     "location": {
       "country": {
+        "name": "India",
         "code": "IND"
       }
     },
@@ -62,11 +165,17 @@ The search is broadcast to all providers on the network, there will be many prov
             "value": "4.0",
             "unit": "kWH"
           }
+        },
+        "category": {
+          "descriptor": {
+            "code": "green-tariff"
+          }
         }
       },
       "location": {
         "gps": "12.423423,77.325647",
         "radius": {
+          "type": "CONSTANT",
           "value": "5",
           "unit": "km"
         }
@@ -76,7 +185,7 @@ The search is broadcast to all providers on the network, there will be many prov
 }
 ```
 
-The on_search comes from all the providers, The providers have to be mapped to the provider schema. The `on_search` would look like this.
+#### Example `on_search` api json:
 
 ```json
 {
@@ -350,40 +459,58 @@ The on_search comes from all the providers, The providers have to be mapped to t
 }
 ```
 
-## Ordering
+## Select and Book Charging
 
-This section provides recommendations for implementing the APIs related to creating an order for energy.
+1. User selects a EV Charge Provider from the list which satisfies the requirements
+2. The provider sends the draft order with the quoted price to the User
 
-### 5.2.1 Recommendations for BPPs
+### User-side Actions
 
-#### 5.2.1.1 Selecting a service from the catalog
+- Selecting EV Charge Provider(s) after viewing catalogs
+- Selecting to block/use-up charger (or) not. (Y/N)
+- Selecting start and end time for block/use-up of charger service
+- Selecting charger type (A.C./D.C.) and connector type
 
-- REQUIRED. The BPP MUST implement the `select` endpoint on the url specified in URL specified in the `context.bpp_uri` field sent during `on_search`. In case of permissioned networks, this URL MUST match the `Subscriber.url` present on the respective entry in the Network Registry
-- REQUIRED. The BPP MUST check for a form submission at the URL specified on the `xinput.form.url` before acknowledging a `select` request.
-- REQUIRED. If the energy service provider has successfully received the information submitted by the energy service consumer, the BPP must return an acknowledgement with `ack.status` set to `ACK` in response to the `select` request
-- REQUIRED. If the energy service provider has returned a successful acknowledgement to a `select` request, it MUST send the offer encapsulated in an `Order` object
+### Provider-side Actions
 
-#### 5.2.1.2 Initializing an order for an energy related service
+- Receive user's selection
+- Requesting for block/use-up charger (Y/N)
+- Requesting for time slot
+- Requesting for charger type, connecter type, vehicle type and battery type
+- Provider sends draft order for the selected EV charge with quoted price
+- The price includes with a breakdown of `tariff_per_unit` , `Reservation Price`, `taxes`
 
-- REQUIRED. The BPP MUST implement the `init` endpoint on the url specified in URL specified in the `context.bpp_uri` field sent during `on_search`. In case of permissioned networks, this URL MUST match the `Subscriber.url` present on the respective entry in the Network Registry
+### Logical Workflow
 
-#### 5.2.1.3 Confirming an order for an energy related service
+The below diagram illustrates the logical interactions between a EV user and Provider during the Selecting service/product stage
 
-- REQUIRED. The BPP MUST implement the `confirm` endpoint on the url specified in URL specified in the `context.bpp_uri` field sent during `on_search`. In case of permissioned networks, this URL MUST match the `Subscriber.url` present on the respective entry in the Network Registry
+```mermaid
+    sequenceDiagram
+    User->>Provider: Selects a EV charger provider
+    Provider->>User: Request for block/use-up (Y/N)
+    User->>Provider: Selects for block/use-up (Y/N)
+    Provider->>User: Request for time slot - start & end
+    User->>Provider: Selects start & end time slot
+    Provider->>User: Requesting for charger type, vehicle type & battery type
+    User->>Provider: Selects charger, vehicle and battery type
+    Provider->>User: Sends the draft order with quoted price
+```
 
-### 5.2.2 Recommendations for BAPs
+### Beckn Protocol API Workflow
 
-#### 5.2.2.1 Selecting a financial service from the catalog
+```mermaid
+   sequenceDiagram
+   User Platform (BAP)->> Provider 1 (BPP): Select EV charge Provider after seeing catalogs of all providers (select)
+   Provider 1 (BPP)->>User Platform (BAP): Publish Provider 1 catalog (on_select)
+   User Platform (BAP)->> Provider 1 (BPP): Select one from EV charging & Battery Swap as a service from Provider 1 (select)
+   Provider 1 (BPP)->>User Platform (BAP): Request block/use-up (on_select)
+   User Platform (BAP)->> Provider 1 (BPP): Select block/use-up (select)
+   Provider 1 (BPP)->>User Platform (BAP): Request time slot to block, charging type, vehicle type and battery type of EV (on_select)
+   User Platform (BAP)->> Provider 1 (BPP): Select time slot to block and charging type, vehicle type and battery type of EV (select)
+   Provider 1 (BPP)->>User Platform (BAP): Send draft order with quoted price and breakdown (on_select)
+```
 
-#### 5.2.2.2 Initializing an order for a energy service
-
-#### 5.2.2.3 Confirming the order for the energy service
-
-### 5.2.3 Example Workflow
-
-### 5.2.3 Example Requests
-
-An example of `select` request
+#### Example `select` api json:
 
 ```json
 {
@@ -429,7 +556,7 @@ An example of `select` request
 }
 ```
 
-An example of `on_select` request
+#### Example `on_select` api json:
 
 ```json
 {
@@ -602,7 +729,38 @@ An example of `on_select` request
 }
 ```
 
-An example of `init` request
+## Order Initialization
+
+In this stage, the User provides the required information and initiates the order
+
+### User-side Actions
+
+- User provides the billing details `Name`, `Email ID` and `Phone Number`
+- User updates the payment details and initiates the order
+
+### Provider-side Actions
+
+- Request for billing details
+- Receive billing details from the user
+- Send draft order with payment and fulfillment terms
+
+### Logical Workflow
+
+```mermaid
+    sequenceDiagram
+    User->>Provider: Provides billing details and initates the order
+    Provider->>User: Send draft order with payment transcript and fulfillment terms
+```
+
+### Beckn Protocol API Workflow
+
+```mermaid
+    sequenceDiagram
+    User Platform (BAP)->> Provider 1 (BPP): BAP updates billing details and initiates the order(init)
+    Provider 1 (BPP)->>User Platform (BAP): BPP sends draft order with breakdown and fulfillment terms (on_init)
+```
+
+#### Example `init` api json:
 
 ```json
 {
@@ -658,7 +816,7 @@ An example of `init` request
 }
 ```
 
-An example of `on_init` request
+#### Example `on_init` api json:
 
 ```json
 {
@@ -858,7 +1016,55 @@ An example of `on_init` request
 }
 ```
 
-An example of `confirm` request
+## Fulfillment (Payment and Order Confirmation and Cancellation)
+
+User will check the order details and confirms the order with payment (might also update the order)
+Post payment user will activates the confirmed order
+
+### User-side Actions
+
+- Confirms(\updates) the order by agreeing to fulfillment terms
+
+### Provider-side Actions
+
+- Receive order confirmation from the user
+- Send active confirmed order to the user
+
+## Status Updates and Monitoring
+
+### User-side Actions
+
+- Request to fetch the latest status of the order
+
+#### Provider-side Actions
+
+- Provide the latest status of the order to the user
+
+### Logical Worklow
+
+```mermaid
+    sequenceDiagram
+    User->>Provider: Confirms (\Updates) the order and pays the the price
+    Provider->>User: Send active confirmed order
+    User->>Provider: Request for latest status of order
+    Provider->>User: Sends the latest status of order
+```
+
+### Beckn API Workflow
+
+```mermaid
+    sequenceDiagram
+    User Platform (BAP)->> Provider 1 (BPP): BAP updates the payment and confirms the order and fulfillment terms(confirm)
+    Provider 1 (BPP)->>User Platform (BAP): BPP sends active confirmation of order (on_confirm)
+    User Platform (BAP)->> Provider 1 (BPP): BAP request to start the charging (update)
+    Provider 1 (BPP)->>User Platform (BAP): BPP starts the charging and sends an update (on_update)
+    User Platform (BAP)->> Provider 1 (BPP): BAP request to fetch the status of the order (status)
+    Provider 1 (BPP)->>User Platform (BAP): BPP provides the latest status of the order to BAP (on_status)
+    User Platform (BAP)->> Provider 1 (BPP): BAP request to start the charging (update)
+    Provider 1 (BPP)->>User Platform (BAP): BPP stops the charging and sends an update (on_update)
+```
+
+#### Example `confirm` api json:
 
 ```json
 {
@@ -952,7 +1158,7 @@ An example of `confirm` request
 }
 ```
 
-An example of `on_confirm` request
+#### Example `on_confirm` api json:
 
 ```json
 {
@@ -1167,512 +1373,7 @@ An example of `on_confirm` request
 }
 ```
 
-## Fulfillment
-
-This section contains recommendations for implementing the APIs related to fulfilling a energy service order
-
-### 5.3.1 Recommendations for BPPs
-
-#### 5.3.1.1 Sending status updates
-
-- REQUIRED. The BPP MUST implement the `status` endpoint on the url specified in URL specified in the `context.bpp_uri` field sent during `on_search`. In case of permissioned networks, this URL MUST match the `Subscriber.url` present on the respective entry in the Network Registry
-
-#### 5.3.1.2 Updating an order for energy service
-
-- REQUIRED. The BPP MUST implement the `update` endpoint on the url specified in URL specified in the `context.bpp_uri` field sent during `on_search`. In case of permissioned networks, this URL MUST match the `Subscriber.url` present on the respective entry in the Network Registry
-
-#### 5.3.1.3 Cancelling a energy service order
-
-- REQUIRED. The BPP MUST implement the `cancel` endpoint on the url specified in URL specified in the `context.bpp_uri` field sent during `on_search`. In case of permissioned networks, this URL MUST match the `Subscriber.url` present on the respective entry in the Network Registry
-- REQUIRED. The BPP MUST implement the `get_cancellation_reasons` endpoint on the url specified in URL specified in the `context.bpp_uri` field sent during `on_search`. In case of permissioned networks, this URL MUST match the `Subscriber.url` present on the respective entry in the Network Registry
-
-### 5.3.2 Recommendations for BAPs
-
-#### 5.3.2.1 Sending status updates
-
-#### 5.3.2.2 Updating an order for energy service
-
-#### 5.3.2.3 Cancelling a energy service aporderplication
-
-#### 5.3.2.4 Real-time tracking
-
-### 5.3.3 Example Workflow
-
-### 5.3.4 Example Requests
-
-An example of `status` request
-
-```json
-{
-  "context": {
-    "domain": "dent:0.1.0",
-    "action": "status",
-    "location": {
-      "country": {
-        "name": "India",
-        "code": "IND"
-      }
-    },
-    "city": "std:080",
-    "version": "1.1.0",
-    "bap_id": "example-bap.com",
-    "bap_uri": "https://api.example-bap.com/pilot/bap/energy/v1",
-    "bpp_id": "chargezone-energy-bpp.com",
-    "bpp_uri": "https://api.example-bpp.com/pilot/bpp/",
-    "transaction_id": "6743e9e2-4fb5-487c-92b7-13ba8018f176",
-    "message_id": "6743e9e2-4fb5-487c-92b7-13ba8018f176",
-    "timestamp": "2023-07-16T04:41:16Z"
-  },
-  "message": {
-    "order_id": "6743e9e2-4fb5-487c-92b7"
-  }
-}
-```
-
-An example of `on_status` request
-
-```json
-{
-  "context": {
-    "domain": "dent:0.1.0",
-    "action": "on_status",
-    "location": {
-      "country": {
-        "name": "India",
-        "code": "IND"
-      }
-    },
-    "city": "std:080",
-    "version": "1.1.0",
-    "bap_id": "example-bap.com",
-    "bap_uri": "https://api.example-bap.com/pilot/bap/energy/v1",
-    "bpp_id": "example-bpp.com",
-    "bpp_uri": "https://api.example-bpp.com/pilot/bpp/",
-    "transaction_id": "6743e9e2-4fb5-487c-92b7-13ba8018f176",
-    "message_id": "6743e9e2-4fb5-487c-92b7-13ba8018f176",
-    "timestamp": "2023-07-16T04:41:16Z"
-  },
-  "message": {
-    "order": {
-      "id": "6743e9e2-4fb5-487c-92b7",
-      "providers": {
-        "id": "chargezone.in",
-        "descriptor": {
-          "name": "Chargezone",
-          "short_desc": "Chargezone Technologies Pvt Ltd",
-          "images": [
-            {
-              "url": "https://chargezone.in/images/logo.png"
-            }
-          ]
-        }
-      },
-      "items": [
-        {
-          "id": "pe-charging-01",
-          "descriptor": {
-            "code": "energy"
-          },
-          "price": {
-            "value": "8",
-            "currency": "INR/kWH"
-          },
-          "quantity": {
-            "available": {
-              "measure": {
-                "value": "100",
-                "unit": "kWh"
-              }
-            },
-            "selected": {
-              "measure": {
-                "value": "4",
-                "unit": "kWh"
-              }
-            }
-          },
-          "fulfillments": ["1"]
-        }
-      ],
-      "fulfillments": [
-        {
-          "id": "1",
-          "customer": {
-            "person": {
-              "name": "John Doe"
-            },
-            "contact": {
-              "phone": "+91-9887766554"
-            }
-          },
-          "type": "CHARGING",
-          "state": {
-            "descriptor": {
-              "name": "vehicle 65% charged"
-            }
-          },
-          "stops": [
-            {
-              "type": "start",
-              "location": {
-                "gps": "12.423423,77.325647"
-              },
-              "time": {
-                "timestamp": "01-06-2023 10:00:00",
-                "range": {
-                  "start": "01-06-2023 10:00:00",
-                  "end": "01-06-2023 10:10:00"
-                }
-              }
-            },
-            {
-              "type": "end",
-              "time": {
-                "timestamp": "01-06-2023 10:30:00",
-                "range": {
-                  "start": "01-06-2023 10:30:00",
-                  "end": "01-06-2023 10:40:00"
-                }
-              }
-            }
-          ],
-          "tags": [
-            {
-              "descriptor": {
-                "name": "Charging Point"
-              },
-              "list": [
-                {
-                  "descriptor": {
-                    "name": "Charger type"
-                  },
-                  "value": "AC"
-                },
-                {
-                  "descriptor": {
-                    "name": "Connector type"
-                  },
-                  "value": "CCS2"
-                },
-                {
-                  "descriptor": {
-                    "name": "Power Rating"
-                  },
-                  "value": "greater than 50kW"
-                },
-                {
-                  "descriptor": {
-                    "name": "Availability"
-                  },
-                  "value": "Available"
-                }
-              ],
-              "display": true
-            }
-          ]
-        }
-      ],
-      "billing": {
-        "email": "abc@example.com",
-        "number": "+91-9876522222"
-      },
-      "quote": {
-        "price": {
-          "value": "32",
-          "currency": "INR"
-        },
-        "breakup": [
-          {
-            "item": {
-              "descriptor": {
-                "name": "Estimated units consumed"
-              },
-              "quantity": {
-                "selected": {
-                  "measure": {
-                    "value": "4",
-                    "unit": "kWh"
-                  }
-                }
-              }
-            },
-            "price": {
-              "value": "32",
-              "currency": "INR"
-            }
-          }
-        ]
-      },
-      "payments": [
-        {
-          "type": "PRE-ORDER",
-          "status": "PAID",
-          "params": {
-            "amount": "40",
-            "currency": "INR"
-          },
-          "time": {
-            "range": {
-              "start": "2023-08-10T10:00:00Z",
-              "end": "2023-08-10T10:30:00Z"
-            }
-          }
-        }
-      ],
-      "cancellation_terms": [
-        {
-          "fulfillment_state": {
-            "descriptor": {
-              "code": "charging-start"
-            }
-          },
-          "cancellation_fee": {
-            "percentage": "30%"
-          },
-          "external_ref": {
-            "mimetype": "text/html",
-            "url": "https://chargezone.in/charge/tnc.html"
-          }
-        }
-      ]
-    }
-  }
-}
-```
-
-An example of `cancel` request
-
-```json
-{
-  "context": {
-    "domain": "dent:0.1.0",
-    "action": "cancel",
-    "location": {
-      "country": {
-        "name": "India",
-        "code": "IND"
-      }
-    },
-    "city": "std:080",
-    "version": "1.1.0",
-    "bap_id": "example-bap.com",
-    "bap_uri": "https://api.example-bap.com/pilot/bap/energy/v1",
-    "bpp_id": "chargezone-energy-bpp.com",
-    "bpp_uri": "https://api.example-bpp.com/pilot/bpp/",
-    "transaction_id": "6743e9e2-4fb5-487c-92b7-13ba8018f176",
-    "message_id": "6743e9e2-4fb5-487c-92b7-13ba8018f176",
-    "timestamp": "2023-07-16T04:41:16Z"
-  },
-  "message": {
-    "order": {
-      "cancellation_reason_id": "5",
-      "descriptor": {
-        "short_desc": "can't attend booking"
-      },
-      "order_id": "6743e9e2-4fb5-487c-92b7"
-    }
-  }
-}
-```
-
-An example of `on_cancel` request
-
-```json
-{
-  "context": {
-    "domain": "dent:0.1.0",
-    "action": "on_cancel",
-    "location": {
-      "country": {
-        "name": "India",
-        "code": "IND"
-      }
-    },
-    "city": "std:080",
-    "version": "1.1.0",
-    "bap_id": "example-bap.com",
-    "bap_uri": "https://api.example-bap.com/pilot/bap/energy/v1",
-    "bpp_id": "example-bpp.com",
-    "bpp_uri": "https://api.example-bpp.com/pilot/bpp/",
-    "transaction_id": "6743e9e2-4fb5-487c-92b7-13ba8018f176",
-    "message_id": "6743e9e2-4fb5-487c-92b7-13ba8018f176",
-    "timestamp": "2023-07-16T04:41:16Z"
-  },
-  "message": {
-    "order": {
-      "id": "6743e9e2-4fb5-487c-92b7",
-      "status": "CANCELLED",
-      "providers": {
-        "id": "chargezone.in",
-        "descriptor": {
-          "name": "Chargezone",
-          "short_desc": "Chargezone Technologies Pvt Ltd",
-          "images": [
-            {
-              "url": "https://chargezone.in/images/logo.png"
-            }
-          ]
-        }
-      },
-      "items": [
-        {
-          "id": "pe-charging-01",
-          "descriptor": {
-            "code": "energy"
-          },
-          "price": {
-            "value": "8",
-            "currency": "INR/kWH"
-          },
-          "quantity": {
-            "available": {
-              "measure": {
-                "value": "100",
-                "unit": "kWh"
-              }
-            },
-            "selected": {
-              "measure": {
-                "value": "4",
-                "unit": "kWh"
-              }
-            }
-          },
-          "fulfillments": ["1"]
-        }
-      ],
-      "fulfillments": [
-        {
-          "id": "1",
-          "customer": {
-            "person": {
-              "name": "John Doe"
-            },
-            "contact": {
-              "phone": "+91-9887766554"
-            }
-          },
-          "type": "CHARGING",
-          "state": {
-            "descriptor": {
-              "code": "order-cancelled"
-            }
-          },
-          "stops": [
-            {
-              "time": {
-                "range": {
-                  "start": "10:00",
-                  "end": "10:30"
-                }
-              }
-            }
-          ],
-          "tags": [
-            {
-              "descriptor": {
-                "name": "Charging Point"
-              },
-              "list": [
-                {
-                  "descriptor": {
-                    "name": "Charger type"
-                  },
-                  "value": "AC"
-                },
-                {
-                  "descriptor": {
-                    "name": "Connector type"
-                  },
-                  "value": "CCS2"
-                },
-                {
-                  "descriptor": {
-                    "name": "Power Rating"
-                  },
-                  "value": "greater than 50kW"
-                },
-                {
-                  "descriptor": {
-                    "name": "Availability"
-                  },
-                  "value": "Available"
-                }
-              ],
-              "display": true
-            }
-          ]
-        }
-      ],
-      "billing": {
-        "email": "abc@example.com",
-        "number": "+91-9876522222"
-      },
-      "quote": {
-        "price": {
-          "value": "-32",
-          "currency": "INR"
-        },
-        "breakup": [
-          {
-            "item": {
-              "descriptor": {
-                "name": "payment refund"
-              },
-              "quantity": {
-                "selected": {
-                  "measure": {
-                    "value": "4",
-                    "unit": "kWh"
-                  }
-                }
-              }
-            },
-            "price": {
-              "value": "-32",
-              "currency": "INR"
-            }
-          }
-        ]
-      },
-      "payments": [
-        {
-          "type": "PRE-ORDER",
-          "status": "PAID",
-          "params": {
-            "amount": "40",
-            "currency": "INR"
-          },
-          "time": {
-            "range": {
-              "start": "2023-08-10T10:00:00Z",
-              "end": "2023-08-10T10:30:00Z"
-            }
-          }
-        }
-      ],
-      "cancellation_terms": [
-        {
-          "fulfillment_state": {
-            "descriptor": {
-              "code": "charging-start"
-            }
-          },
-          "cancellation_fee": {
-            "percentage": "30%"
-          },
-          "external_ref": {
-            "mimetype": "text/html",
-            "url": "https://chargezone.in/charge/tnc.html"
-          }
-        }
-      ]
-    }
-  }
-}
-```
-
-An example of `update` request
+#### Example `update` api json to start charging:
 
 ```json
 {
@@ -1714,7 +1415,7 @@ An example of `update` request
 }
 ```
 
-An example of `on_update` request
+#### Example `on_update` api json:
 
 ```json
 {
@@ -1925,32 +1626,1269 @@ An example of `on_update` request
 }
 ```
 
-## Post-fulfillment
+#### Example `update` api json to stop charging:
 
-This section contains recommendations for implementing the APIs after fulfilling a energy service
+```json
+{
+  "context": {
+    "domain": "dent:0.1.0",
+    "action": "update",
+    "location": {
+      "country": {
+        "name": "India",
+        "code": "IND"
+      }
+    },
+    "city": "std:080",
+    "version": "1.1.0",
+    "bap_id": "example-bap.com",
+    "bap_uri": "https://api.example-bap.com/pilot/bap/energy/v1",
+    "bpp_id": "chargezone-energy-bpp.com",
+    "bpp_uri": "https://api.example-bpp.com/pilot/bpp/",
+    "transaction_id": "6743e9e2-4fb5-487c-92b7-13ba8018f176",
+    "message_id": "6743e9e2-4fb5-487c-92b7-13ba8018f176",
+    "timestamp": "2023-07-16T04:41:16Z"
+  },
+  "message": {
+    "update_target": "order.fulfillments[0].state",
+    "order": {
+      "fulfillments": [
+        {
+          "id": "1",
+          "state": {
+            "descriptor": {
+              "code": "end-charging"
+            }
+          }
+        }
+      ]
+    }
+  }
+}
+```
 
-### 5.4.1 Recommendations for BPPs
+#### Example `on_update` api json:
 
-#### 5.4.1.1 Rating and Feedback
+```json
+{
+  "context": {
+    "domain": "dent:0.1.0",
+    "action": "on_update",
+    "location": {
+      "country": {
+        "name": "India",
+        "code": "IND"
+      }
+    },
+    "city": "std:080",
+    "version": "1.1.0",
+    "bap_id": "example-bap.com",
+    "bap_uri": "https://api.example-bap.com/pilot/bap/energy/v1",
+    "bpp_id": "example-bpp.com",
+    "bpp_uri": "https://api.example-bpp.com/pilot/bpp/",
+    "transaction_id": "6743e9e2-4fb5-487c-92b7-13ba8018f176",
+    "message_id": "6743e9e2-4fb5-487c-92b7-13ba8018f176",
+    "timestamp": "2023-07-16T04:41:16Z"
+  },
+  "message": {
+    "order": {
+      "id": "6743e9e2-4fb5-487c-92b7",
+      "providers": {
+        "id": "chargezone.in",
+        "descriptor": {
+          "name": "Chargezone",
+          "short_desc": "Chargezone Technologies Pvt Ltd",
+          "images": [
+            {
+              "url": "https://chargezone.in/images/logo.png"
+            }
+          ]
+        }
+      },
+      "items": [
+        {
+          "id": "pe-charging-01",
+          "descriptor": {
+            "code": "energy"
+          },
+          "price": {
+            "value": "8",
+            "currency": "INR/kWH"
+          },
+          "quantity": {
+            "available": {
+              "measure": {
+                "value": "100",
+                "unit": "kWh"
+              }
+            },
+            "selected": {
+              "measure": {
+                "value": "4",
+                "unit": "kWh"
+              }
+            }
+          },
+          "fulfillments": ["1"]
+        }
+      ],
+      "fulfillments": [
+        {
+          "id": "1",
+          "customer": {
+            "person": {
+              "name": "John Doe"
+            },
+            "contact": {
+              "phone": "+91-9887766554"
+            }
+          },
+          "type": "CHARGING",
+          "state": {
+            "descriptor": {
+              "code": "charging-ended"
+            }
+          },
+          "stops": [
+            {
+              "type": "start",
+              "location": {
+                "gps": "12.423423,77.325647"
+              },
+              "time": {
+                "timestamp": "01-06-2023 10:00:00",
+                "range": {
+                  "start": "01-06-2023 10:00:00",
+                  "end": "01-06-2023 10:10:00"
+                }
+              }
+            },
+            {
+              "type": "end",
+              "time": {
+                "timestamp": "01-06-2023 10:30:00",
+                "range": {
+                  "start": "01-06-2023 10:30:00",
+                  "end": "01-06-2023 10:40:00"
+                }
+              }
+            }
+          ],
+          "tags": [
+            {
+              "descriptor": {
+                "name": "Charging Point"
+              },
+              "list": [
+                {
+                  "descriptor": {
+                    "name": "Charger type"
+                  },
+                  "value": "AC"
+                },
+                {
+                  "descriptor": {
+                    "name": "Connector type"
+                  },
+                  "value": "CCS2"
+                },
+                {
+                  "descriptor": {
+                    "name": "Power Rating"
+                  },
+                  "value": "greater than 50kW"
+                },
+                {
+                  "descriptor": {
+                    "name": "Availability"
+                  },
+                  "value": "Available"
+                }
+              ],
+              "display": true
+            }
+          ]
+        }
+      ],
+      "billing": {
+        "email": "abc@example.com",
+        "number": "+91-9876522222"
+      },
+      "quote": {
+        "price": {
+          "value": "40",
+          "currency": "INR"
+        },
+        "breakup": [
+          {
+            "item": {
+              "descriptor": {
+                "name": "Estimated units consumed"
+              },
+              "quantity": {
+                "selected": {
+                  "measure": {
+                    "value": "4",
+                    "unit": "kWh"
+                  }
+                }
+              }
+            },
+            "price": {
+              "value": "32",
+              "currency": "INR"
+            }
+          }
+        ]
+      },
+      "payments": [
+        {
+          "type": "PRE-ORDER",
+          "status": "PAID",
+          "params": {
+            "amount": "40",
+            "currency": "INR"
+          },
+          "time": {
+            "range": {
+              "start": "2023-08-10T10:00:00Z",
+              "end": "2023-08-10T10:30:00Z"
+            }
+          }
+        }
+      ],
+      "cancellation_terms": [
+        {
+          "fulfillment_state": {
+            "descriptor": {
+              "code": "charging-start"
+            }
+          },
+          "cancellation_fee": {
+            "percentage": "30%"
+          },
+          "external_ref": {
+            "mimetype": "text/html",
+            "url": "https://chargezone.in/charge/tnc.html"
+          }
+        }
+      ]
+    }
+  }
+}
+```
 
-- REQUIRED. The BPP MUST implement the `rating` endpoint on the url specified in URL specified in the `context.bpp_uri` field sent during `on_search`. In case of permissioned networks, this URL MUST match the `Subscriber.url` present on the respective entry in the Network Registry
-- REQUIRED. The BPP MUST implement the `get_rating_categories` endpoint on the url specified in URL specified in the `context.bpp_uri` field sent during `on_search`. In case of permissioned networks, this URL MUST match the `Subscriber.url` present on the respective entry in the Network Registry
+#### Example `status` api json:
 
-#### 5.4.1.2 Providing Support
+```json
+{
+  "context": {
+    "domain": "dent:0.1.0",
+    "action": "status",
+    "location": {
+      "country": {
+        "name": "India",
+        "code": "IND"
+      }
+    },
+    "city": "std:080",
+    "version": "1.1.0",
+    "bap_id": "example-bap.com",
+    "bap_uri": "https://api.example-bap.com/pilot/bap/energy/v1",
+    "bpp_id": "chargezone-energy-bpp.com",
+    "bpp_uri": "https://api.example-bpp.com/pilot/bpp/",
+    "transaction_id": "6743e9e2-4fb5-487c-92b7-13ba8018f176",
+    "message_id": "6743e9e2-4fb5-487c-92b7-13ba8018f176",
+    "timestamp": "2023-07-16T04:41:16Z"
+  },
+  "message": {
+    "order_id": "6743e9e2-4fb5-487c-92b7"
+  }
+}
+```
 
-- REQUIRED. The BPP MUST implement the `support` endpoint on the url specified in URL specified in the `context.bpp_uri` field sent during `on_search`. In case of permissioned networks, this URL MUST match the `Subscriber.url` present on the respective entry in the Network Registry
+#### Example `on_status` api json:
 
-### 5.4.2 Recommendations for BAPs
+```json
+{
+  "context": {
+    "domain": "dent:0.1.0",
+    "action": "on_status",
+    "location": {
+      "country": {
+        "name": "India",
+        "code": "IND"
+      }
+    },
+    "city": "std:080",
+    "version": "1.1.0",
+    "bap_id": "example-bap.com",
+    "bap_uri": "https://api.example-bap.com/pilot/bap/energy/v1",
+    "bpp_id": "example-bpp.com",
+    "bpp_uri": "https://api.example-bpp.com/pilot/bpp/",
+    "transaction_id": "6743e9e2-4fb5-487c-92b7-13ba8018f176",
+    "message_id": "6743e9e2-4fb5-487c-92b7-13ba8018f176",
+    "timestamp": "2023-07-16T04:41:16Z"
+  },
+  "message": {
+    "order": {
+      "id": "6743e9e2-4fb5-487c-92b7",
+      "providers": {
+        "id": "chargezone.in",
+        "descriptor": {
+          "name": "Chargezone",
+          "short_desc": "Chargezone Technologies Pvt Ltd",
+          "images": [
+            {
+              "url": "https://chargezone.in/images/logo.png"
+            }
+          ]
+        }
+      },
+      "items": [
+        {
+          "id": "pe-charging-01",
+          "descriptor": {
+            "code": "energy"
+          },
+          "price": {
+            "value": "8",
+            "currency": "INR/kWH"
+          },
+          "quantity": {
+            "available": {
+              "measure": {
+                "value": "100",
+                "unit": "kWh"
+              }
+            },
+            "selected": {
+              "measure": {
+                "value": "4",
+                "unit": "kWh"
+              }
+            }
+          },
+          "fulfillments": ["1"]
+        }
+      ],
+      "fulfillments": [
+        {
+          "id": "1",
+          "customer": {
+            "person": {
+              "name": "John Doe"
+            },
+            "contact": {
+              "phone": "+91-9887766554"
+            }
+          },
+          "type": "CHARGING",
+          "state": {
+            "descriptor": {
+              "name": "vehicle 65% charged"
+            }
+          },
+          "stops": [
+            {
+              "type": "start",
+              "location": {
+                "gps": "12.423423,77.325647"
+              },
+              "time": {
+                "timestamp": "01-06-2023 10:00:00",
+                "range": {
+                  "start": "01-06-2023 10:00:00",
+                  "end": "01-06-2023 10:10:00"
+                }
+              }
+            },
+            {
+              "type": "end",
+              "time": {
+                "timestamp": "01-06-2023 10:30:00",
+                "range": {
+                  "start": "01-06-2023 10:30:00",
+                  "end": "01-06-2023 10:40:00"
+                }
+              }
+            }
+          ],
+          "tags": [
+            {
+              "descriptor": {
+                "name": "Charging Point"
+              },
+              "list": [
+                {
+                  "descriptor": {
+                    "name": "Charger type"
+                  },
+                  "value": "AC"
+                },
+                {
+                  "descriptor": {
+                    "name": "Connector type"
+                  },
+                  "value": "CCS2"
+                },
+                {
+                  "descriptor": {
+                    "name": "Power Rating"
+                  },
+                  "value": "greater than 50kW"
+                },
+                {
+                  "descriptor": {
+                    "name": "Availability"
+                  },
+                  "value": "Available"
+                }
+              ],
+              "display": true
+            }
+          ]
+        }
+      ],
+      "billing": {
+        "email": "abc@example.com",
+        "number": "+91-9876522222"
+      },
+      "quote": {
+        "price": {
+          "value": "32",
+          "currency": "INR"
+        },
+        "breakup": [
+          {
+            "item": {
+              "descriptor": {
+                "name": "Estimated units consumed"
+              },
+              "quantity": {
+                "selected": {
+                  "measure": {
+                    "value": "4",
+                    "unit": "kWh"
+                  }
+                }
+              }
+            },
+            "price": {
+              "value": "32",
+              "currency": "INR"
+            }
+          }
+        ]
+      },
+      "payments": [
+        {
+          "type": "PRE-ORDER",
+          "status": "PAID",
+          "params": {
+            "amount": "40",
+            "currency": "INR"
+          },
+          "time": {
+            "range": {
+              "start": "2023-08-10T10:00:00Z",
+              "end": "2023-08-10T10:30:00Z"
+            }
+          }
+        }
+      ],
+      "cancellation_terms": [
+        {
+          "fulfillment_state": {
+            "descriptor": {
+              "code": "charging-start"
+            }
+          },
+          "cancellation_fee": {
+            "percentage": "30%"
+          },
+          "external_ref": {
+            "mimetype": "text/html",
+            "url": "https://chargezone.in/charge/tnc.html"
+          }
+        }
+      ]
+    }
+  }
+}
+```
 
-#### 5.4.2.1 Rating and Feedback
+#### Example `cancel` api json:
 
-#### 5.4.2.2 Providing Support
+```json
+{
+  "context": {
+    "domain": "dent:0.1.0",
+    "action": "cancel",
+    "location": {
+      "country": {
+        "name": "India",
+        "code": "IND"
+      }
+    },
+    "city": "std:080",
+    "version": "1.1.0",
+    "bap_id": "example-bap.com",
+    "bap_uri": "https://api.example-bap.com/pilot/bap/energy/v1",
+    "bpp_id": "chargezone-energy-bpp.com",
+    "bpp_uri": "https://api.example-bpp.com/pilot/bpp/",
+    "transaction_id": "6743e9e2-4fb5-487c-92b7-13ba8018f176",
+    "message_id": "6743e9e2-4fb5-487c-92b7-13ba8018f176",
+    "timestamp": "2023-07-16T04:41:16Z"
+  },
+  "message": {
+    "order": {
+      "cancellation_reason_id": "5",
+      "descriptor": {
+        "short_desc": "Can't make it on time"
+      },
+      "order_id": "6743e9e2-4fb5-487c-92b7"
+    }
+  }
+}
+```
 
-### 5.4.3 Example Workflow
+#### Example `on_cancel` api json:
 
-### 5.4.4 Example Requests
+```json
+{
+  "context": {
+    "domain": "dent:0.1.0",
+    "action": "on_cancel",
+    "location": {
+      "country": {
+        "name": "India",
+        "code": "IND"
+      }
+    },
+    "city": "std:080",
+    "version": "1.1.0",
+    "bap_id": "example-bap.com",
+    "bap_uri": "https://api.example-bap.com/pilot/bap/energy/v1",
+    "bpp_id": "example-bpp.com",
+    "bpp_uri": "https://api.example-bpp.com/pilot/bpp/",
+    "transaction_id": "6743e9e2-4fb5-487c-92b7-13ba8018f176",
+    "message_id": "6743e9e2-4fb5-487c-92b7-13ba8018f176",
+    "timestamp": "2023-07-16T04:41:16Z"
+  },
+  "message": {
+    "order": {
+      "id": "6743e9e2-4fb5-487c-92b7",
+      "status": "CANCELLED",
+      "providers": {
+        "id": "chargezone.in",
+        "descriptor": {
+          "name": "Chargezone",
+          "short_desc": "Chargezone Technologies Pvt Ltd",
+          "images": [
+            {
+              "url": "https://chargezone.in/images/logo.png"
+            }
+          ]
+        }
+      },
+      "items": [
+        {
+          "id": "pe-charging-01",
+          "descriptor": {
+            "code": "energy"
+          },
+          "price": {
+            "value": "8",
+            "currency": "INR/kWH"
+          },
+          "quantity": {
+            "available": {
+              "measure": {
+                "value": "100",
+                "unit": "kWh"
+              }
+            },
+            "selected": {
+              "measure": {
+                "value": "4",
+                "unit": "kWh"
+              }
+            }
+          },
+          "fulfillments": ["1"]
+        }
+      ],
+      "fulfillments": [
+        {
+          "id": "1",
+          "customer": {
+            "person": {
+              "name": "John Doe"
+            },
+            "contact": {
+              "phone": "+91-9887766554"
+            }
+          },
+          "type": "CHARGING",
+          "state": {
+            "descriptor": {
+              "code": "order-cancelled"
+            }
+          },
+          "stops": [
+            {
+              "time": {
+                "range": {
+                  "start": "10:00",
+                  "end": "10:30"
+                }
+              }
+            }
+          ],
+          "tags": [
+            {
+              "descriptor": {
+                "name": "Charging Point"
+              },
+              "list": [
+                {
+                  "descriptor": {
+                    "name": "Charger type"
+                  },
+                  "value": "AC"
+                },
+                {
+                  "descriptor": {
+                    "name": "Connector type"
+                  },
+                  "value": "CCS2"
+                },
+                {
+                  "descriptor": {
+                    "name": "Power Rating"
+                  },
+                  "value": "greater than 50kW"
+                },
+                {
+                  "descriptor": {
+                    "name": "Availability"
+                  },
+                  "value": "Available"
+                }
+              ],
+              "display": true
+            }
+          ]
+        }
+      ],
+      "billing": {
+        "email": "abc@example.com",
+        "number": "+91-9876522222"
+      },
+      "quote": {
+        "price": {
+          "value": "40",
+          "currency": "INR"
+        },
+        "breakup": [
+          {
+            "item": {
+              "descriptor": {
+                "name": "Estimated units consumed"
+              },
+              "quantity": {
+                "selected": {
+                  "measure": {
+                    "value": "4",
+                    "unit": "kWh"
+                  }
+                }
+              }
+            },
+            "price": {
+              "value": "32",
+              "currency": "INR"
+            }
+          }
+        ]
+      },
+      "payments": [
+        {
+          "type": "PRE-ORDER",
+          "status": "PAID",
+          "params": {
+            "amount": "40",
+            "currency": "INR"
+          },
+          "time": {
+            "range": {
+              "start": "2023-08-10T10:00:00Z",
+              "end": "2023-08-10T10:30:00Z"
+            }
+          }
+        }
+      ]
+    }
+  }
+}
+```
 
-An example of `rating` request
+#### example for `support` call
+
+```json
+{
+  "context": {
+    "domain": "dent:0.1.0",
+    "action": "support",
+    "location": {
+      "country": {
+        "name": "India",
+        "code": "IND"
+      }
+    },
+    "city": "std:080",
+    "version": "1.1.0",
+    "bap_id": "example-bap.com",
+    "bap_uri": "https://api.example-bap.com/pilot/bap/energy/v1",
+    "bpp_id": "chargezone-energy-bpp.com",
+    "bpp_uri": "https://api.example-bpp.com/pilot/bpp/",
+    "transaction_id": "6743e9e2-4fb5-487c-92b7-13ba8018f176",
+    "message_id": "6743e9e2-4fb5-487c-92b7-13ba8018f176",
+    "timestamp": "2023-07-16T04:41:16Z"
+  },
+  "message": {
+    "support": {
+      "order_id": "6743e9e2-4fb5-487c-92b7",
+      "phone": "+919876543210",
+      "email": "john.doe@gmail.com"
+    }
+  }
+}
+```
+
+#### example for `on_support` call
+
+```json
+{
+  "context": {
+    "domain": "dent:0.1.0",
+    "action": "on_support",
+    "location": {
+      "country": {
+        "name": "India",
+        "code": "IND"
+      }
+    },
+    "city": "std:080",
+    "version": "1.1.0",
+    "bap_id": "example-bap.com",
+    "bap_uri": "https://api.example-bap.com/pilot/bap/energy/v1",
+    "bpp_id": "chargezone-energy-bpp.com",
+    "bpp_uri": "https://api.example-bpp.com/pilot/bpp/",
+    "transaction_id": "6743e9e2-4fb5-487c-92b7-13ba8018f176",
+    "message_id": "6743e9e2-4fb5-487c-92b7-13ba8018f176",
+    "timestamp": "2023-07-16T04:41:16Z"
+  },
+  "message": {
+    "support": {
+      "order_id": "6743e9e2-4fb5-487c-92b7",
+      "phone": "1800 1080",
+      "email": "customer.care@chargezone.com",
+      "url": "https://www.chargezone.com/helpdesk"
+    }
+  }
+}
+```
+
+## Order cancel
+
+### User-side Actions
+
+- Request to cancel the order
+
+#### Provider-side Actions
+
+- Cancels the order of the BAP
+
+### Logical Worklow
+
+```mermaid
+    sequenceDiagram
+    User->>Provider: Cancels the order
+    Provider->>User: Sends cancellation confirmation
+```
+
+### Beckn API Workflow
+
+```mermaid
+    sequenceDiagram
+    User Platform (BAP)->> Provider 1 (BPP): BAP cancels the order (cancel)
+    Provider 1 (BPP)->>User Platform (BAP): BPP sends cancellation of order (on_cancel)
+```
+
+#### example `cancel` JSON
+
+```json
+{
+  "context": {
+    "domain": "dent:0.1.0",
+    "action": "cancel",
+    "location": {
+      "country": {
+        "name": "India",
+        "code": "IND"
+      }
+    },
+    "city": "std:080",
+    "version": "1.1.0",
+    "bap_id": "example-bap.com",
+    "bap_uri": "https://api.example-bap.com/pilot/bap/energy/v1",
+    "bpp_id": "chargezone-energy-bpp.com",
+    "bpp_uri": "https://api.example-bpp.com/pilot/bpp/",
+    "transaction_id": "6743e9e2-4fb5-487c-92b7-13ba8018f176",
+    "message_id": "6743e9e2-4fb5-487c-92b7-13ba8018f176",
+    "timestamp": "2023-07-16T04:41:16Z"
+  },
+  "message": {
+    "order": {
+      "cancellation_reason_id": "5",
+      "descriptor": {
+        "short_desc": "can't attend booking"
+      },
+      "order_id": "6743e9e2-4fb5-487c-92b7"
+    }
+  }
+}
+```
+
+#### example `on_cancel` JSON
+
+```json
+{
+  "context": {
+    "domain": "dent:0.1.0",
+    "action": "on_cancel",
+    "location": {
+      "country": {
+        "name": "India",
+        "code": "IND"
+      }
+    },
+    "city": "std:080",
+    "version": "1.1.0",
+    "bap_id": "example-bap.com",
+    "bap_uri": "https://api.example-bap.com/pilot/bap/energy/v1",
+    "bpp_id": "example-bpp.com",
+    "bpp_uri": "https://api.example-bpp.com/pilot/bpp/",
+    "transaction_id": "6743e9e2-4fb5-487c-92b7-13ba8018f176",
+    "message_id": "6743e9e2-4fb5-487c-92b7-13ba8018f176",
+    "timestamp": "2023-07-16T04:41:16Z"
+  },
+  "message": {
+    "order": {
+      "id": "6743e9e2-4fb5-487c-92b7",
+      "status": "CANCELLED",
+      "providers": {
+        "id": "chargezone.in",
+        "descriptor": {
+          "name": "Chargezone",
+          "short_desc": "Chargezone Technologies Pvt Ltd",
+          "images": [
+            {
+              "url": "https://chargezone.in/images/logo.png"
+            }
+          ]
+        }
+      },
+      "items": [
+        {
+          "id": "pe-charging-01",
+          "descriptor": {
+            "code": "energy"
+          },
+          "price": {
+            "value": "8",
+            "currency": "INR/kWH"
+          },
+          "quantity": {
+            "available": {
+              "measure": {
+                "value": "100",
+                "unit": "kWh"
+              }
+            },
+            "selected": {
+              "measure": {
+                "value": "4",
+                "unit": "kWh"
+              }
+            }
+          },
+          "fulfillments": ["1"]
+        }
+      ],
+      "fulfillments": [
+        {
+          "id": "1",
+          "customer": {
+            "person": {
+              "name": "John Doe"
+            },
+            "contact": {
+              "phone": "+91-9887766554"
+            }
+          },
+          "type": "CHARGING",
+          "state": {
+            "descriptor": {
+              "code": "order-cancelled"
+            }
+          },
+          "stops": [
+            {
+              "time": {
+                "range": {
+                  "start": "10:00",
+                  "end": "10:30"
+                }
+              }
+            }
+          ],
+          "tags": [
+            {
+              "descriptor": {
+                "name": "Charging Point"
+              },
+              "list": [
+                {
+                  "descriptor": {
+                    "name": "Charger type"
+                  },
+                  "value": "AC"
+                },
+                {
+                  "descriptor": {
+                    "name": "Connector type"
+                  },
+                  "value": "CCS2"
+                },
+                {
+                  "descriptor": {
+                    "name": "Power Rating"
+                  },
+                  "value": "greater than 50kW"
+                },
+                {
+                  "descriptor": {
+                    "name": "Availability"
+                  },
+                  "value": "Available"
+                }
+              ],
+              "display": true
+            }
+          ]
+        }
+      ],
+      "billing": {
+        "email": "abc@example.com",
+        "number": "+91-9876522222"
+      },
+      "quote": {
+        "price": {
+          "value": "-32",
+          "currency": "INR"
+        },
+        "breakup": [
+          {
+            "item": {
+              "descriptor": {
+                "name": "payment refund"
+              },
+              "quantity": {
+                "selected": {
+                  "measure": {
+                    "value": "4",
+                    "unit": "kWh"
+                  }
+                }
+              }
+            },
+            "price": {
+              "value": "-32",
+              "currency": "INR"
+            }
+          }
+        ]
+      },
+      "payments": [
+        {
+          "type": "PRE-ORDER",
+          "status": "PAID",
+          "params": {
+            "amount": "40",
+            "currency": "INR"
+          },
+          "time": {
+            "range": {
+              "start": "2023-08-10T10:00:00Z",
+              "end": "2023-08-10T10:30:00Z"
+            }
+          }
+        }
+      ],
+      "cancellation_terms": [
+        {
+          "fulfillment_state": {
+            "descriptor": {
+              "code": "charging-start"
+            }
+          },
+          "cancellation_fee": {
+            "percentage": "30%"
+          },
+          "external_ref": {
+            "mimetype": "text/html",
+            "url": "https://chargezone.in/charge/tnc.html"
+          }
+        }
+      ]
+    }
+  }
+}
+```
+
+#### example `on_cancel` JSON triggered by BPP
+
+```json
+{
+  "context": {
+    "domain": "dent:0.1.0",
+    "action": "on_cancel",
+    "location": {
+      "country": {
+        "name": "India",
+        "code": "IND"
+      }
+    },
+    "city": "std:080",
+    "version": "1.1.0",
+    "bap_id": "example-bap.com",
+    "bap_uri": "https://api.example-bap.com/pilot/bap/energy/v1",
+    "bpp_id": "example-bpp.com",
+    "bpp_uri": "https://api.example-bpp.com/pilot/bpp/",
+    "transaction_id": "6743e9e2-4fb5-487c-92b7-13ba8018f176",
+    "message_id": "6743e9e2-4fb5-487c-92b7-13ba8018f176",
+    "timestamp": "2023-07-16T04:41:16Z"
+  },
+  "message": {
+    "order": {
+      "id": "6743e9e2-4fb5-487c-92b7",
+      "status": "CANCELLED",
+      "providers": {
+        "id": "chargezone.in",
+        "descriptor": {
+          "name": "Chargezone",
+          "short_desc": "Chargezone Technologies Pvt Ltd",
+          "images": [
+            {
+              "url": "https://chargezone.in/images/logo.png"
+            }
+          ]
+        }
+      },
+      "items": [
+        {
+          "id": "pe-charging-01",
+          "descriptor": {
+            "code": "energy"
+          },
+          "price": {
+            "value": "8",
+            "currency": "INR/kWH"
+          },
+          "quantity": {
+            "available": {
+              "measure": {
+                "value": "100",
+                "unit": "kWh"
+              }
+            },
+            "selected": {
+              "measure": {
+                "value": "4",
+                "unit": "kWh"
+              }
+            },
+            "allocated": {
+              "measure": {
+                "value": "2",
+                "unit": "kWh"
+              }
+            }
+          },
+          "fulfillments": ["1"]
+        }
+      ],
+      "fulfillments": [
+        {
+          "id": "1",
+          "customer": {
+            "person": {
+              "name": "John Doe"
+            },
+            "contact": {
+              "phone": "+91-9887766554"
+            }
+          },
+          "type": "CHARGING",
+          "state": {
+            "descriptor": {
+              "code": "charger-error"
+            }
+          },
+          "stops": [
+            {
+              "time": {
+                "range": {
+                  "start": "10:00",
+                  "end": "10:30"
+                }
+              }
+            }
+          ],
+          "tags": [
+            {
+              "descriptor": {
+                "name": "Charging Point"
+              },
+              "list": [
+                {
+                  "descriptor": {
+                    "name": "Charger type"
+                  },
+                  "value": "AC"
+                },
+                {
+                  "descriptor": {
+                    "name": "Connector type"
+                  },
+                  "value": "CCS2"
+                },
+                {
+                  "descriptor": {
+                    "name": "Power Rating"
+                  },
+                  "value": "greater than 50kW"
+                },
+                {
+                  "descriptor": {
+                    "name": "Availability"
+                  },
+                  "value": "Available"
+                }
+              ],
+              "display": true
+            }
+          ]
+        }
+      ],
+      "billing": {
+        "email": "abc@example.com",
+        "number": "+91-9876522222"
+      },
+      "quote": {
+        "price": {
+          "value": "-12",
+          "currency": "INR"
+        },
+        "breakup": [
+          {
+            "item": {
+              "descriptor": {
+                "name": "payment refund"
+              },
+              "quantity": {
+                "selected": {
+                  "measure": {
+                    "value": "4",
+                    "unit": "kWh"
+                  }
+                }
+              }
+            },
+            "price": {
+              "value": "-12",
+              "currency": "INR"
+            }
+          }
+        ]
+      },
+      "payments": [
+        {
+          "type": "PRE-ORDER",
+          "status": "PAID",
+          "params": {
+            "amount": "40",
+            "currency": "INR"
+          },
+          "time": {
+            "range": {
+              "start": "2023-08-10T10:00:00Z",
+              "end": "2023-08-10T10:30:00Z"
+            }
+          }
+        }
+      ],
+      "cancellation_terms": [
+        {
+          "fulfillment_state": {
+            "descriptor": {
+              "code": "charging-start"
+            }
+          },
+          "cancellation_fee": {
+            "percentage": "30%"
+          },
+          "external_ref": {
+            "mimetype": "text/html",
+            "url": "https://chargezone.in/charge/tnc.html"
+          }
+        }
+      ]
+    }
+  }
+}
+```
+
+## Order rating
+
+### User-side Actions
+
+- Request to rate the order
+
+#### Provider-side Actions
+
+- Rates the order of the BAP
+
+### Logical Worklow
+
+```mermaid
+    sequenceDiagram
+    User->>Provider: Rates the order
+    Provider->>User: Sends rating confirmation
+```
+
+### Beckn API Workflow
+
+```mermaid
+    sequenceDiagram
+    User Platform (BAP)->> Provider 1 (BPP): BAP rates the order (rating)
+    Provider 1 (BPP)->>User Platform (BAP): BPP sends rating of order (on_rating)
+```
+
+#### example `rating` JSON
 
 ```json
 {
@@ -1985,7 +2923,7 @@ An example of `rating` request
 }
 ```
 
-An example of `on_rating` request
+#### example `on_rating` JSON
 
 ```json
 {
@@ -2021,7 +2959,33 @@ An example of `on_rating` request
 }
 ```
 
-An example of `support` request
+## Order support
+
+### User-side Actions
+
+- Request to get support for the order
+
+#### Provider-side Actions
+
+- Provides support to the BAP
+
+### Logical Worklow
+
+```mermaid
+    sequenceDiagram
+    User->>Provider: Request to get support for the order
+    Provider->>User: Sends support to the BAP
+```
+
+### Beckn API Workflow
+
+```mermaid
+    sequenceDiagram
+    User Platform (BAP)->> Provider 1 (BPP): BAP requests to get support for the order (cancel)
+    Provider 1 (BPP)->>User Platform (BAP): BPP sends support of order (on_cancel)
+```
+
+#### example `support` JSON
 
 ```json
 {
@@ -2054,7 +3018,7 @@ An example of `support` request
 }
 ```
 
-An example of `on_support` request
+#### example `on_support` JSON
 
 ```json
 {

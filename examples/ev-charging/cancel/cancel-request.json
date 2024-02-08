@@ -22,7 +22,7 @@
     "order": {
       "cancellation_reason_id": "5",
       "descriptor": {
-        "short_desc": "Can't make it on time"
+        "short_desc": "can't attend booking"
       },
       "order_id": "6743e9e2-4fb5-487c-92b7"
     }
