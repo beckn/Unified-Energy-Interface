@@ -80,15 +80,11 @@
           },
           "stops": [
             {
-              "type": "start",
               "time": {
-                "timestamp": "01-06-2023 10:00:00"
-              }
-            },
-            {
-              "type": "end",
-              "time": {
-                "timestamp": "01-06-2023 10:30:00"
+                "range": {
+                  "start": "10:00",
+                  "end": "10:30"
+                }
               }
             }
           ],
@@ -134,7 +130,7 @@
       },
       "quote": {
         "price": {
-          "value": "32",
+          "value": "40",
           "currency": "INR"
         },
         "breakup": [
@@ -173,22 +169,6 @@
               "start": "2023-08-10T10:00:00Z",
               "end": "2023-08-10T10:30:00Z"
             }
-          }
-        }
-      ],
-      "cancellation_terms": [
-        {
-          "fulfillment_state": {
-            "descriptor": {
-              "code": "charging-start"
-            }
-          },
-          "cancellation_fee": {
-            "percentage": "30%"
-          },
-          "external_ref": {
-            "mimetype": "text/html",
-            "url": "https://chargezone.in/charge/tnc.html"
           }
         }
       ]
