@@ -2,7 +2,7 @@
 
 ## Overview
 
-This document outlines the workflow for Electric Vehicle (EV) Charging using the DENT Protocol. The workflow includes interactions between the charging point operator (BPP) and the BAP for search, select, block, and completing the session.
+This document outlines the workflow for Electric Vehicle (EV) Charging using the UEI Protocol. The workflow includes interactions between the charging point operator (BPP) and the BAP for search, select, block, and completing the session.
 
 Bear in mind that this is just an example workflow for a simple EV Charing and Battery swap workflow between a `User` and a `Provider`.
 (Note: Here, User -> Electric Vehicle Owner/User and Provider -> EV Charging Provider)
