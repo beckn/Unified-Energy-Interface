@@ -26,7 +26,20 @@
       },
       "items": [
         {
-          "id": "pe-charging-01"
+          "id": "pe-charging-01",
+          "quantity": {
+            "selected": {
+              "measure": {
+                "value": "4",
+                "unit": "kWh"
+              }
+            }
+          },
+          "add_ons": [
+            {
+              "id": "pe-charging-01-addon-1"
+            }
+          ]
         }
       ],
       "billing": {

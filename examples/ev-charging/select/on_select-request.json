@@ -134,6 +134,7 @@
         "breakup": [
           {
             "item": {
+              "id": "pe-charging-01",
               "descriptor": {
                 "name": "Estimated units consumed"
               },
@@ -153,6 +154,11 @@
           },
           {
             "item": {
+              "add-ons": [
+                {
+                  "id": "pe-charging-01-addon-1"
+                }
+              ],
               "descriptor": {
                 "name": "Free car wash"
               }

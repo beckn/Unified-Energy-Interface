@@ -21,12 +21,10 @@
   },
   "message": {
     "feedback_form": {
-      "xinput": {
         "form": {
           "url": "https://api.example-bpp.com/pilot/bpp/feedback/portal"
         },
         "required": "false"
-      }
     }
   }
 }

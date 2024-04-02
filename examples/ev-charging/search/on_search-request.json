@@ -33,15 +33,6 @@
               }
             ]
           },
-          "categories": [
-            {
-              "id": "1",
-              "descriptor": {
-                "code": "green-tariff",
-                "name": "green tariff"
-              }
-            }
-          ],
           "locations": [
             {
               "id": "1",
@@ -52,47 +43,13 @@
               "gps": "12.247934,77.876987"
             }
           ],
-          "items": [
+          "categories": [
             {
-              "id": "pe-charging-01",
+              "id": "1",
               "descriptor": {
-                "code": "energy"
-              },
-              "price": {
-                "value": "8",
-                "currency": "INR / kWH"
-              },
-              "quantity": {
-                "available": {
-                  "measure": {
-                    "value": "100",
-                    "unit": "kWH"
-                  }
-                }
-              },
-              "category_ids": [
-                "1"
-              ],
-              "location_ids": [
-                "1",
-                "2"
-              ],
-              "fulfillment_ids": [
-                "1",
-                "2"
-              ],
-              "add_ons": [
-                {
-                  "id": "pe-charging-01-addon-1",
-                  "descriptor": {
-                    "name": "Free car wash"
-                  },
-                  "price": {
-                    "value": "0",
-                    "currency": "INR"
-                  }
-                }
-              ]
+                "code": "green-tariff",
+                "name": "green tariff"
+              }
             }
           ],
           "fulfillments": [
@@ -202,6 +159,49 @@
                 }
               ]
             }
+          ],
+          "items": [
+            {
+              "id": "pe-charging-01",
+              "descriptor": {
+                "code": "energy"
+              },
+              "price": {
+                "value": "8",
+                "currency": "INR/kWH"
+              },
+              "quantity": {
+                "available": {
+                  "measure": {
+                    "unit": "kWH",
+                    "value": "100"
+                  }
+                }
+              },
+              "category_ids": [
+                "1"
+              ],
+              "location_ids": [
+                "1",
+                "2"
+              ],
+              "fulfillment_ids": [
+                "1",
+                "2"
+              ],
+              "add_ons": [
+                {
+                  "id": "pe-charging-01-addon-1",
+                  "descriptor": {
+                    "name": "Free car wash"
+                  },
+                  "price": {
+                    "value": "0",
+                    "currency": "INR"
+                  }
+                }
+              ]
+            }
           ]
         },
         {
@@ -216,40 +216,6 @@
                 "code": "green-tariff",
                 "name": "green tariff"
               }
-            }
-          ],
-          "items": [
-            {
-              "id": "pe-charging-01",
-              "descriptor": {
-                "code": "energy"
-              },
-              "price": {
-                "value": "10",
-                "currency": "INR / kWH"
-              },
-              "quantity": {
-                "available": "1000"
-              },
-              "category_ids": [
-                "1"
-              ],
-              "fulfillment_ids": [
-                "3",
-                "4"
-              ],
-              "add_ons": [
-                {
-                  "id": "pe-charging-01-addon-1",
-                  "descriptor": {
-                    "name": "Free tyre pressure check"
-                  },
-                  "price": {
-                    "value": "0",
-                    "currency": "INR"
-                  }
-                }
-              ]
             }
           ],
           "fulfillments": [
@@ -275,7 +241,46 @@
                 }
               ]
             }
-          ]
+          ],
+          "items": [
+            {
+              "id": "pe-charging-01",
+              "descriptor": {
+                "code": "energy"
+              },
+              "price": {
+                "value": "10",
+                "currency": "INR / kWH"
+              },
+              "quantity": {
+                "available": {
+                  "measure": {
+                    "unit": "kWH",
+                    "value": "1000"
+                  }
+                }
+              },
+              "category_ids": [
+                "1"
+              ],
+              "fulfillment_ids": [
+                "3",
+                "4"
+              ],
+              "add_ons": [
+                {
+                  "id": "pe-charging-01-addon-1",
+                  "descriptor": {
+                    "name": "Free tyre pressure check"
+                  },
+                  "price": {
+                    "value": "0",
+                    "currency": "INR"
+                  }
+                }
+              ]
+            }
+          ]  
         }
       ]
     }

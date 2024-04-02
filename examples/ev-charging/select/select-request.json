@@ -34,7 +34,17 @@
                 "unit": "kWh"
               }
             }
-          }
+          },
+          "add_ons": [
+            {
+              "id": "pe-charging-01-addon-1"
+            }
+          ]
+        }
+      ],
+      "fulfillments": [
+        {
+          "id": "1"
         }
       ]
     }

@@ -59,8 +59,18 @@
               }
             }
           },
-          "fulfillments": [
-            "1"
+          "add_ons": [
+            {
+              "id": "pe-charging-01-addon-1",
+              "descriptor": {
+                "code": "add-on-item",
+                "name": "Free car wash"
+              },
+              "price": {
+                "value": "0",
+                "currency": "INR"
+              }
+            }
           ]
         }
       ],

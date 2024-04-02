@@ -19,28 +19,32 @@
   },
   "message": {
     "intent": {
+      "category": {
+        "descriptor": {
+          "code": "green-tariff"
+        }
+      },
       "item": {
         "descriptor": {
           "code": "energy"
         },
         "quantity": {
-          "required": {
-            "value": "4.0",
-            "unit": "kWH"
-          }
-        },
-        "category": {
-          "descriptor": {
-            "code": "green-tariff"
+          "available": {
+            "measure": {
+              "unit": "kWH",
+              "value": "4.0"
+            }
           }
         }
       },
       "location": {
-        "gps": "12.423423,77.325647",
-        "radius": {
-          "type": "CONSTANT",
-          "value": "5",
-          "unit": "km"
+        "circle": {
+          "gps": "12.423423,77.325647",
+          "radius": {
+            "type": "CONSTANT",
+            "value": "5",
+            "unit": "km"
+          }
         }
       }
     }
