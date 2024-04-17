@@ -1,6 +1,6 @@
 {
   "context": {
-    "domain": "dent:0.1.0",
+    "domain": "dent:ev-charging:0.1.0",
     "action": "on_status",
     "location": {
       "country": {
@@ -188,7 +188,8 @@
           "status": "PAID",
           "params": {
             "amount": "40",
-            "currency": "INR"
+            "currency": "INR",
+            "transaction_id": "asjdhw8e238e3"
           },
           "time": {
             "range": {

@@ -1,6 +1,6 @@
 {
   "context": {
-    "domain": "dent:0.1.0",
+    "domain": "dent:ev-charging:0.1.0",
     "action": "confirm",
     "location": {
       "country": {
@@ -65,7 +65,8 @@
           "collected_by": "BPP",
           "params": {
             "amount": "40",
-            "currency": "INR"
+            "currency": "INR",
+            "transaction_id": "asjdhw8e238e3"
           },
           "status": "PAID",
           "type": "PRE-ORDER"

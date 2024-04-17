@@ -1,6 +1,6 @@
 {
   "context": {
-    "domain": "dent:0.1.0",
+    "domain": "dent:ev-charging:0.1.0",
     "action": "select",
     "location": {
       "country": {
