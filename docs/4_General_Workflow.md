@@ -1,7 +1,7 @@
 # General Workflow
 The general workflow of an energy transaction consists of the following stages
 1. Discovery of energy sources
-2. Purchasing a specific amount of energy
+2. Purchasing a specific units of energy
 3. Transfer of energy
 4. Providing Rating or Contacting Support
 5. Reconciliation and Settlement

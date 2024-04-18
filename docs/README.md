@@ -1,9 +1,9 @@
 # Table of Contents
 
-1. [Overview](./rfc/Overview.md)
-2. [Terminology](./rfc/Terminology.md)
-3. [Enery Transaction Network Architecture - Reference](./architecture/Network-Architecture.md)
-4. [Energy Transaction Use Cases](./use-cases/Use-Cases.md)
-5. [Adaptation to Core Specification](./rfc/core-adaptation.md)
-6. [EV Charging Contract Use Case - Implementation Guide](implementation-guides/ev-charging.md)
-7. [Energy Storage Use Case - Implementation Guide](implementation-guides/ev-charging.md)
+1. [Introduction](./1_Introduction.md)
+2. [Terminology](./2_Terminology.md)
+3. [Scope](./3_Scope.md)
+4. [General Workflow](./4_General_Workflow.md)
+5. [Implementation Guide](./implementation-guide/README.md)
+6. [Example implementations: EV charging](./example-implementations/README.md)
+7. [Architecture](./architecture/README.md)

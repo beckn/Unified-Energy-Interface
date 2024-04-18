@@ -41,9 +41,11 @@ The search is broadcast to all providers on the network, there will be many prov
     "location": {
       "country": {
         "code": "IND"
+      },
+      "city": {
+        "code": "std:080"
       }
     },
-    "city": "std:080",
     "version": "1.1.0",
     "bap_id": "example-bap.com",
     "bap_uri": "https://api.example-bap.com/pilot/bap/energy/v1",
@@ -53,22 +55,32 @@ The search is broadcast to all providers on the network, there will be many prov
   },
   "message": {
     "intent": {
+      "category": {
+        "descriptor": {
+          "code": "green-tariff"
+        }
+      },
       "item": {
         "descriptor": {
           "code": "energy"
         },
         "quantity": {
-          "required": {
-            "value": "4.0",
-            "unit": "kWH"
+          "available": {
+            "measure": {
+              "unit": "kWH",
+              "value": "4.0"
+            }
           }
         }
       },
       "location": {
-        "gps": "12.423423,77.325647",
-        "radius": {
-          "value": "5",
-          "unit": "km"
+        "circle": {
+          "gps": "12.423423,77.325647",
+          "radius": {
+            "type": "CONSTANT",
+            "value": "5",
+            "unit": "km"
+          }
         }
       }
     }
@@ -85,11 +97,12 @@ The on_search comes from all the providers, The providers have to be mapped to t
     "action": "on_search",
     "location": {
       "country": {
-        "name": "India",
         "code": "IND"
+      },
+      "city": {
+        "code": "std:080"
       }
     },
-    "city": "std:080",
     "version": "1.1.0",
     "bap_id": "example-bap.com",
     "bap_uri": "https://api.example-bap.com/pilot/bap/energy/v1",
@@ -113,15 +126,6 @@ The on_search comes from all the providers, The providers have to be mapped to t
               }
             ]
           },
-          "categories": [
-            {
-              "id": "1",
-              "descriptor": {
-                "code": "green-tariff",
-                "name": "green tariff"
-              }
-            }
-          ],
           "locations": [
             {
               "id": "1",
@@ -132,39 +136,13 @@ The on_search comes from all the providers, The providers have to be mapped to t
               "gps": "12.247934,77.876987"
             }
           ],
-          "items": [
+          "categories": [
             {
-              "id": "pe-charging-01",
+              "id": "1",
               "descriptor": {
-                "code": "energy"
-              },
-              "price": {
-                "value": "8",
-                "currency": "INR / kWH"
-              },
-              "quantity": {
-                "available": {
-                  "measure": {
-                    "value": "100",
-                    "unit": "kWH"
-                  }
-                }
-              },
-              "category_ids": ["1"],
-              "location_ids": ["1", "2"],
-              "fulfillment_ids": ["1", "2"],
-              "add_ons": [
-                {
-                  "id": "pe-charging-01-addon-1",
-                  "descriptor": {
-                    "name": "Free car wash"
-                  },
-                  "price": {
-                    "value": "0",
-                    "currency": "INR"
-                  }
-                }
-              ]
+                "code": "green-tariff",
+                "name": "green tariff"
+              }
             }
           ],
           "fulfillments": [
@@ -274,6 +252,49 @@ The on_search comes from all the providers, The providers have to be mapped to t
                 }
               ]
             }
+          ],
+          "items": [
+            {
+              "id": "pe-charging-01",
+              "descriptor": {
+                "code": "energy"
+              },
+              "price": {
+                "value": "8",
+                "currency": "INR/kWH"
+              },
+              "quantity": {
+                "available": {
+                  "measure": {
+                    "unit": "kWH",
+                    "value": "100"
+                  }
+                }
+              },
+              "category_ids": [
+                "1"
+              ],
+              "location_ids": [
+                "1",
+                "2"
+              ],
+              "fulfillment_ids": [
+                "1",
+                "2"
+              ],
+              "add_ons": [
+                {
+                  "id": "pe-charging-01-addon-1",
+                  "descriptor": {
+                    "name": "Free car wash"
+                  },
+                  "price": {
+                    "value": "0",
+                    "currency": "INR"
+                  }
+                }
+              ]
+            }
           ]
         },
         {
@@ -288,35 +309,6 @@ The on_search comes from all the providers, The providers have to be mapped to t
                 "code": "green-tariff",
                 "name": "green tariff"
               }
-            }
-          ],
-          "items": [
-            {
-              "id": "pe-charging-01",
-              "descriptor": {
-                "code": "energy"
-              },
-              "price": {
-                "value": "10",
-                "currency": "INR / kWH"
-              },
-              "quantity": {
-                "available": "1000"
-              },
-              "category_ids": ["1"],
-              "fulfillment_ids": ["3", "4"],
-              "add_ons": [
-                {
-                  "id": "pe-charging-01-addon-1",
-                  "descriptor": {
-                    "name": "Free tyre pressure check"
-                  },
-                  "price": {
-                    "value": "0",
-                    "currency": "INR"
-                  }
-                }
-              ]
             }
           ],
           "fulfillments": [
@@ -342,7 +334,46 @@ The on_search comes from all the providers, The providers have to be mapped to t
                 }
               ]
             }
-          ]
+          ],
+          "items": [
+            {
+              "id": "pe-charging-01",
+              "descriptor": {
+                "code": "energy"
+              },
+              "price": {
+                "value": "10",
+                "currency": "INR / kWH"
+              },
+              "quantity": {
+                "available": {
+                  "measure": {
+                    "unit": "kWH",
+                    "value": "1000"
+                  }
+                }
+              },
+              "category_ids": [
+                "1"
+              ],
+              "fulfillment_ids": [
+                "3",
+                "4"
+              ],
+              "add_ons": [
+                {
+                  "id": "pe-charging-01-addon-1",
+                  "descriptor": {
+                    "name": "Free tyre pressure check"
+                  },
+                  "price": {
+                    "value": "0",
+                    "currency": "INR"
+                  }
+                }
+              ]
+            }
+          ]  
         }
       ]
     }
@@ -392,11 +423,12 @@ An example of `select` request
     "action": "select",
     "location": {
       "country": {
-        "name": "India",
         "code": "IND"
+      },
+      "city": {
+        "code": "std:080"
       }
     },
-    "city": "std:080",
     "version": "1.1.0",
     "bap_id": "example-bap.com",
     "bap_uri": "https://api.example-bap.com/pilot/bap/energy/v1",
@@ -421,7 +453,17 @@ An example of `select` request
                 "unit": "kWh"
               }
             }
-          }
+          },
+          "add_ons": [
+            {
+              "id": "pe-charging-01-addon-1"
+            }
+          ]
+        }
+      ],
+      "fulfillments": [
+        {
+          "id": "1"
         }
       ]
     }
@@ -438,11 +480,12 @@ An example of `on_select` request
     "action": "on_select",
     "location": {
       "country": {
-        "name": "India",
         "code": "IND"
+      },
+      "city": {
+        "code": "std:080"
       }
     },
-    "city": "std:080",
     "version": "1.1.0",
     "bap_id": "example-bap.com",
     "bap_uri": "https://api.example-bap.com/pilot/bap/energy/v1",
@@ -567,6 +610,7 @@ An example of `on_select` request
         "breakup": [
           {
             "item": {
+              "id": "pe-charging-01",
               "descriptor": {
                 "name": "Estimated units consumed"
               },
@@ -586,6 +630,11 @@ An example of `on_select` request
           },
           {
             "item": {
+              "add-ons": [
+                {
+                  "id": "pe-charging-01-addon-1"
+                }
+              ],
               "descriptor": {
                 "name": "Free car wash"
               }
@@ -611,11 +660,12 @@ An example of `init` request
     "action": "init",
     "location": {
       "country": {
-        "name": "India",
         "code": "IND"
+      },
+      "city": {
+        "code": "std:080"
       }
     },
-    "city": "std:080",
     "version": "1.1.0",
     "bap_id": "example-bap.com",
     "bap_uri": "https://api.example-bap.com/pilot/bap/energy/v1",
@@ -632,7 +682,20 @@ An example of `init` request
       },
       "items": [
         {
-          "id": "pe-charging-01"
+          "id": "pe-charging-01",
+          "quantity": {
+            "selected": {
+              "measure": {
+                "value": "4",
+                "unit": "kWh"
+              }
+            }
+          },
+          "add_ons": [
+            {
+              "id": "pe-charging-01-addon-1"
+            }
+          ]
         }
       ],
       "billing": {
@@ -667,11 +730,12 @@ An example of `on_init` request
     "action": "on_init",
     "location": {
       "country": {
-        "name": "India",
         "code": "IND"
+      },
+      "city": {
+        "code": "std:080"
       }
     },
-    "city": "std:080",
     "version": "1.1.0",
     "bap_id": "example-bap.com",
     "bap_uri": "https://api.example-bap.com/pilot/bap/energy/v1",
@@ -719,7 +783,19 @@ An example of `on_init` request
               }
             }
           },
-          "fulfillments": ["1"]
+          "add_ons": [
+            {
+              "id": "pe-charging-01-addon-1",
+              "descriptor": {
+                "code": "add-on-item",
+                "name": "Free car wash"
+              },
+              "price": {
+                "value": "0",
+                "currency": "INR"
+              }
+            }
+          ]
         }
       ],
       "fulfillments": [
@@ -867,11 +943,12 @@ An example of `confirm` request
     "action": "confirm",
     "location": {
       "country": {
-        "name": "India",
         "code": "IND"
+      },
+      "city": {
+        "code": "std:080"
       }
     },
-    "city": "std:080",
     "version": "1.1.0",
     "bap_id": "example-bap.com",
     "bap_uri": "https://api.example-bap.com/pilot/bap/energy/v1",
@@ -888,7 +965,20 @@ An example of `confirm` request
       },
       "items": [
         {
-          "id": "pe-charging-01"
+          "id": "pe-charging-01",
+          "quantity": {
+            "selected": {
+              "measure": {
+                "value": "4",
+                "unit": "kWh"
+              }
+            }
+          },
+          "add_ons": [
+            {
+              "id": "pe-charging-01-addon-1"
+            }
+          ]
         }
       ],
       "billing": {
@@ -961,11 +1051,12 @@ An example of `on_confirm` request
     "action": "on_confirm",
     "location": {
       "country": {
-        "name": "India",
         "code": "IND"
+      },
+      "city": {
+        "code": "std:080"
       }
     },
-    "city": "std:080",
     "version": "1.1.0",
     "bap_id": "example-bap.com",
     "bap_uri": "https://api.example-bap.com/pilot/bap/energy/v1",
@@ -1014,7 +1105,19 @@ An example of `on_confirm` request
               }
             }
           },
-          "fulfillments": ["1"]
+          "add_ons": [
+            {
+              "id": "pe-charging-01-addon-1",
+              "descriptor": {
+                "code": "add-on-item",
+                "name": "Free car wash"
+              },
+              "price": {
+                "value": "0",
+                "currency": "INR"
+              }
+            }
+          ]
         }
       ],
       "fulfillments": [
@@ -1209,11 +1312,12 @@ An example of `status` request
     "action": "status",
     "location": {
       "country": {
-        "name": "India",
         "code": "IND"
+      },
+      "city": {
+        "code": "std:080"
       }
     },
-    "city": "std:080",
     "version": "1.1.0",
     "bap_id": "example-bap.com",
     "bap_uri": "https://api.example-bap.com/pilot/bap/energy/v1",
@@ -1238,11 +1342,12 @@ An example of `on_status` request
     "action": "on_status",
     "location": {
       "country": {
-        "name": "India",
         "code": "IND"
+      },
+      "city": {
+        "code": "std:080"
       }
     },
-    "city": "std:080",
     "version": "1.1.0",
     "bap_id": "example-bap.com",
     "bap_uri": "https://api.example-bap.com/pilot/bap/energy/v1",
@@ -1291,7 +1396,19 @@ An example of `on_status` request
               }
             }
           },
-          "fulfillments": ["1"]
+          "add_ons": [
+            {
+              "id": "pe-charging-01-addon-1",
+              "descriptor": {
+                "code": "add-on-item",
+                "name": "Free car wash"
+              },
+              "price": {
+                "value": "0",
+                "currency": "INR"
+              }
+            }
+          ]
         }
       ],
       "fulfillments": [
@@ -1449,11 +1566,12 @@ An example of `cancel` request
     "action": "cancel",
     "location": {
       "country": {
-        "name": "India",
         "code": "IND"
+      },
+      "city": {
+        "code": "std:080"
       }
     },
-    "city": "std:080",
     "version": "1.1.0",
     "bap_id": "example-bap.com",
     "bap_uri": "https://api.example-bap.com/pilot/bap/energy/v1",
@@ -1484,11 +1602,12 @@ An example of `on_cancel` request
     "action": "on_cancel",
     "location": {
       "country": {
-        "name": "India",
         "code": "IND"
+      },
+      "city": {
+        "code": "std:080"
       }
     },
-    "city": "std:080",
     "version": "1.1.0",
     "bap_id": "example-bap.com",
     "bap_uri": "https://api.example-bap.com/pilot/bap/energy/v1",
@@ -1538,7 +1657,19 @@ An example of `on_cancel` request
               }
             }
           },
-          "fulfillments": ["1"]
+          "add_ons": [
+            {
+              "id": "pe-charging-01-addon-1",
+              "descriptor": {
+                "code": "add-on-item",
+                "name": "Free car wash"
+              },
+              "price": {
+                "value": "0",
+                "currency": "INR"
+              }
+            }
+          ]
         }
       ],
       "fulfillments": [
@@ -1681,11 +1812,12 @@ An example of `update` request
     "action": "update",
     "location": {
       "country": {
-        "name": "India",
         "code": "IND"
+      },
+      "city": {
+        "code": "std:080"
       }
     },
-    "city": "std:080",
     "version": "1.1.0",
     "bap_id": "example-bap.com",
     "bap_uri": "https://api.example-bap.com/pilot/bap/energy/v1",
@@ -1723,11 +1855,12 @@ An example of `on_update` request
     "action": "on_update",
     "location": {
       "country": {
-        "name": "India",
         "code": "IND"
+      },
+      "city": {
+        "code": "std:080"
       }
     },
-    "city": "std:080",
     "version": "1.1.0",
     "bap_id": "example-bap.com",
     "bap_uri": "https://api.example-bap.com/pilot/bap/energy/v1",
@@ -1776,7 +1909,19 @@ An example of `on_update` request
               }
             }
           },
-          "fulfillments": ["1"]
+          "add_ons": [
+            {
+              "id": "pe-charging-01-addon-1",
+              "descriptor": {
+                "code": "add-on-item",
+                "name": "Free car wash"
+              },
+              "price": {
+                "value": "0",
+                "currency": "INR"
+              }
+            }
+          ]
         }
       ],
       "fulfillments": [
@@ -1959,11 +2104,12 @@ An example of `rating` request
     "action": "rating",
     "location": {
       "country": {
-        "name": "India",
         "code": "IND"
+      },
+      "city": {
+        "code": "std:080"
       }
     },
-    "city": "std:080",
     "version": "1.1.0",
     "bap_id": "example-bap.com",
     "bap_uri": "https://api.example-bap.com/pilot/bap/energy/v1",
@@ -1994,11 +2140,12 @@ An example of `on_rating` request
     "action": "on_rating",
     "location": {
       "country": {
-        "name": "India",
         "code": "IND"
+      },
+      "city": {
+        "code": "std:080"
       }
     },
-    "city": "std:080",
     "version": "1.1.0",
     "bap_id": "example-bap.com",
     "bap_uri": "https://api.example-bap.com/pilot/bap/energy/v1",
@@ -2010,12 +2157,10 @@ An example of `on_rating` request
   },
   "message": {
     "feedback_form": {
-      "xinput": {
         "form": {
           "url": "https://api.example-bpp.com/pilot/bpp/feedback/portal"
         },
         "required": "false"
-      }
     }
   }
 }
@@ -2030,11 +2175,12 @@ An example of `support` request
     "action": "support",
     "location": {
       "country": {
-        "name": "India",
         "code": "IND"
+      },
+      "city": {
+        "code": "std:080"
       }
     },
-    "city": "std:080",
     "version": "1.1.0",
     "bap_id": "example-bap.com",
     "bap_uri": "https://api.example-bap.com/pilot/bap/energy/v1",
@@ -2046,7 +2192,7 @@ An example of `support` request
   },
   "message": {
     "support": {
-      "order_id": "6743e9e2-4fb5-487c-92b7",
+      "ref_id": "6743e9e2-4fb5-487c-92b7",
       "phone": "+919876543210",
       "email": "john.doe@gmail.com"
     }
@@ -2063,11 +2209,12 @@ An example of `on_support` request
     "action": "on_support",
     "location": {
       "country": {
-        "name": "India",
         "code": "IND"
+      },
+      "city": {
+        "code": "std:080"
       }
     },
-    "city": "std:080",
     "version": "1.1.0",
     "bap_id": "example-bap.com",
     "bap_uri": "https://api.example-bap.com/pilot/bap/energy/v1",
@@ -2079,7 +2226,7 @@ An example of `on_support` request
   },
   "message": {
     "support": {
-      "order_id": "6743e9e2-4fb5-487c-92b7",
+      "ref_id": "6743e9e2-4fb5-487c-92b7",
       "phone": "1800 1080",
       "email": "customer.care@chargezone.com",
       "url": "https://www.chargezone.com/helpdesk"
