@@ -2957,6 +2957,8 @@ components:
           enum:
             - CHARGING
             - BATTERY_SWAP
+            - AUTOMATIC_DISPATCH
+            - VIRTUAL_POWER_PURCHASE_AGREEMENTS
         rateable:
           description: Whether the fulfillment can be rated or not
           type: boolean
