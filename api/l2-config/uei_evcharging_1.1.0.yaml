@@ -37,37 +37,40 @@ paths:
               The BAP looks for EV charging providers:
                 value:
                   context:
-                    domain: dent:0.1.0
+                    domain: uei:evcharging
                     action: search
                     location:
                       country:
-                        name: India
                         code: IND
-                    city: std:080
+                      city:
+                        code: std:080
                     version: 1.1.0
                     bap_id: example-bap.com
                     bap_uri: https://api.example-bap.com/pilot/bap/energy/v1
                     transaction_id: 6743e9e2-4fb5-487c-92b7-13ba8018f176
                     message_id: 6743e9e2-4fb5-487c-92b7-13ba8018f176
                     timestamp: '2023-07-16T04:41:16Z'
+                    ttl: 'PT5M'
                   message:
                     intent:
                       item:
                         descriptor:
-                          code: energy
+                          name: Energy
                         quantity:
-                          required:
-                            value: '4.0'
-                            unit: kWH
-                        category:
-                          descriptor:
-                            code: green-tariff
+                          available:
+                            measure:
+                              value: '4.0'
+                              unit: kWH
+                      category:
+                        descriptor:
+                          code: GREEN_TARIFF
                       location:
-                        gps: 12.423423,77.325647
-                        radius:
-                          type: CONSTANT
-                          value: '5'
-                          unit: km
+                        circle:
+                          gps: 12.423423,77.325647
+                          radius:
+                            type: CONSTANT
+                            value: '5'
+                            unit: km
       responses:
         '200':
           description: Acknowledgement of message received after successful validation of schema and signature
@@ -129,13 +132,13 @@ paths:
               The BAP selects an EV charging service from a provider:
                 value:
                   context:
-                    domain: dent:0.1.0
+                    domain: uei:evcharging
                     action: select
                     location:
                       country:
-                        name: India
                         code: IND
-                    city: std:080
+                      city:
+                        code: std:080
                     version: 1.1.0
                     bap_id: example-bap.com
                     bap_uri: https://api.example-bap.com/pilot/bap/energy/v1
@@ -149,12 +152,16 @@ paths:
                       provider:
                         id: chargezone.in
                       items:
-                        - id: pe-charging-01
-                          quantity:
-                            selected:
-                              measure:
-                                value: '4'
-                                unit: kWh
+                      - id: pe-charging-01
+                        quantity:
+                          selected:
+                            measure:
+                              value: '4'
+                              unit: kWh
+                        add_ons:
+                        - id: pe-charging-01-addon-1
+                      fulfillments:
+                      - id: '1'
       responses:
         '200':
           description: Acknowledgement of message received after successful validation of schema and signature
@@ -218,13 +225,13 @@ paths:
               The BAP initiates an order for the EV charging service from a provider:
                 value:
                   context:
-                    domain: dent:0.1.0
+                    domain: uei:evcharging
                     action: init
                     location:
                       country:
-                        name: India
                         code: IND
-                    city: std:080
+                      city:
+                        code: std:080
                     version: 1.1.0
                     bap_id: example-bap.com
                     bap_uri: https://api.example-bap.com/pilot/bap/energy/v1
@@ -238,18 +245,25 @@ paths:
                       provider:
                         id: chargezone.in
                       items:
-                        - id: pe-charging-01
+                      - id: pe-charging-01
+                        quantity:
+                          selected:
+                            measure:
+                              value: '4'
+                              unit: kWh
+                        add_ons:
+                        - id: pe-charging-01-addon-1
                       billing:
                         name: John Doe
                         email: abc@example.com
-                        phone: +91-9876522222
+                        phone: "+91-9876522222"
                       fulfillments:
-                        - id: '1'
-                          customer:
-                            person:
-                              name: John Doe
-                            contact:
-                              phone: +91-9887766554
+                      - id: '1'
+                        customer:
+                          person:
+                            name: John Doe
+                          contact:
+                            phone: "+91-9887766554"
       responses:
         '200':
           description: Acknowledgement of message received after successful validation of schema and signature
@@ -314,13 +328,13 @@ paths:
               The BAP confirms the order to charge the EV:
                 value:
                   context:
-                    domain: dent:0.1.0
+                    domain: uei:evcharging
                     action: confirm
                     location:
                       country:
-                        name: India
                         code: IND
-                    city: std:080
+                      city:
+                        code: std:080
                     version: 1.1.0
                     bap_id: example-bap.com
                     bap_uri: https://api.example-bap.com/pilot/bap/energy/v1
@@ -334,41 +348,34 @@ paths:
                       providers:
                         id: chargezone.in
                       items:
-                        - id: pe-charging-01
+                      - id: pe-charging-01
+                        quantity:
+                          selected:
+                            measure:
+                              value: '4'
+                              unit: kWh
+                        add_ons:
+                        - id: pe-charging-01-addon-1
                       billing:
                         name: John Doe
                         email: abc@example.com
-                        number: +91-9876522222
+                        number: "+91-9876522222"
                       fulfillments:
-                        - id: '1'
-                          customer:
-                            person:
-                              name: John Doe
-                            contact:
-                              phone: +91-9887766554
+                      - id: '1'
+                        customer:
+                          person:
+                            name: John Doe
+                          contact:
+                            phone: "+91-9887766554"
                       payments:
-                        - collected_by: BPP
-                          params:
-                            amount: '40'
-                            currency: INR
-                          status: PAID
-                          type: PRE-ORDER
-                      quote:
-                        price:
-                          value: '40'
+                      - id: '1234'
+                        collected_by: BPP
+                        status: PAID
+                        type: PRE_ORDER
+                        params:
+                          amount: '40'
                           currency: INR
-                        breakup:
-                          - item:
-                              descriptor:
-                                name: Estimated units consumed
-                              quantity:
-                                selected:
-                                  measure:
-                                    value: '4'
-                                    unit: kWh
-                            price:
-                              value: '32'
-                              currency: INR
+                          transaction_id: asjdhw8e238e3
       responses:
         '200':
           description: Acknowledgement of message received after successful validation of schema and signature
@@ -426,16 +433,16 @@ paths:
                 - context
                 - message
             examples:
-              The BAP checks for the status of the charging:
+              The BAP sends an status to get the status of the order:
                 value:
                   context:
-                    domain: dent:0.1.0
+                    domain: uei:evcharging
                     action: status
                     location:
                       country:
-                        name: India
                         code: IND
-                    city: std:080
+                      city:
+                        code: std:080
                     version: 1.1.0
                     bap_id: example-bap.com
                     bap_uri: https://api.example-bap.com/pilot/bap/energy/v1
@@ -510,13 +517,13 @@ paths:
               The BAP cancels the order for the EV charging:
                 value:
                   context:
-                    domain: dent:0.1.0
+                    domain: uei:evcharging
                     action: cancel
                     location:
                       country:
-                        name: India
                         code: IND
-                    city: std:080
+                      city:
+                        code: std:080
                     version: 1.1.0
                     bap_id: example-bap.com
                     bap_uri: https://api.example-bap.com/pilot/bap/energy/v1
@@ -527,10 +534,10 @@ paths:
                     timestamp: '2023-07-16T04:41:16Z'
                   message:
                     order:
+                      order_id: 6743e9e2-4fb5-487c-92b7
                       cancellation_reason_id: '5'
                       descriptor:
                         short_desc: can't attend booking
-                      order_id: 6743e9e2-4fb5-487c-92b7
       responses:
         '200':
           description: Acknowledgement of message received after successful validation of schema and signature
@@ -599,13 +606,13 @@ paths:
               The BAP sends an update to start charging the EV:
                 value:
                   context:
-                    domain: dent:0.1.0
+                    domain: uei:evcharging
                     action: update
                     location:
                       country:
-                        name: India
                         code: IND
-                    city: std:080
+                      city:
+                        code: std:080
                     version: 1.1.0
                     bap_id: example-bap.com
                     bap_uri: https://api.example-bap.com/pilot/bap/energy/v1
@@ -617,39 +624,40 @@ paths:
                   message:
                     update_target: order.fulfillments[0].state
                     order:
+                      id: "1234"
+                      fulfillments:
+                        - id: '1'
+                          state:
+                            descriptor:
+                              code: end-charging
+              The BAP sends an update to stop charging the EV:
+                value:
+                  context:
+                    domain: uei:evcharging
+                    action: update
+                    location:
+                      country:
+                        code: IND
+                      city:
+                        code: std:080
+                    version: 1.1.0
+                    bap_id: example-bap.com
+                    bap_uri: https://api.example-bap.com/pilot/bap/energy/v1
+                    bpp_id: chargezone-energy-bpp.com
+                    bpp_uri: https://api.example-bpp.com/pilot/bpp/
+                    transaction_id: 6743e9e2-4fb5-487c-92b7-13ba8018f176
+                    message_id: 6743e9e2-4fb5-487c-92b7-13ba8018f176
+                    timestamp: '2023-07-16T04:41:16Z'
+                  message:
+                    update_target: order.fulfillments[0].state
+                    order:
+                      id: "1234"
                       fulfillments:
                         - id: '1'
                           type: CHARGING
                           state:
                             descriptor:
                               code: start-charging
-              The BAP sends an update to stop charging the EV:
-                value:
-                  context:
-                    domain: dent:0.1.0
-                    action: update
-                    location:
-                      country:
-                        name: India
-                        code: IND
-                    city: std:080
-                    version: 1.1.0
-                    bap_id: example-bap.com
-                    bap_uri: https://api.example-bap.com/pilot/bap/energy/v1
-                    bpp_id: chargezone-energy-bpp.com
-                    bpp_uri: https://api.example-bpp.com/pilot/bpp/
-                    transaction_id: 6743e9e2-4fb5-487c-92b7-13ba8018f176
-                    message_id: 6743e9e2-4fb5-487c-92b7-13ba8018f176
-                    timestamp: '2023-07-16T04:41:16Z'
-                  message:
-                    update_target: order.fulfillments[0].state
-                    order:
-                      fulfillments:
-                        - id: '1'
-                          type: CHARGING
-                          state:
-                            descriptor:
-                              code: end-charging
       responses:
         '200':
           description: Acknowledgement of message received after successful validation of schema and signature
@@ -711,13 +719,13 @@ paths:
               The BAP rates the service provided:
                 value:
                   context:
-                    domain: dent:0.1.0
+                    domain: uei:evcharging
                     action: rating
                     location:
                       country:
-                        name: India
                         code: IND
-                    city: std:080
+                      city:
+                        code: std:080
                     version: 1.1.0
                     bap_id: example-bap.com
                     bap_uri: https://api.example-bap.com/pilot/bap/energy/v1
@@ -729,7 +737,7 @@ paths:
                   message:
                     ratings:
                       - id: 6743e9e2-4fb5-487c-92b7
-                        rating_category: charger
+                        rating_category: CHARGING_STATION
                         value: '5'
       responses:
         '200':
@@ -791,13 +799,13 @@ paths:
               The BAP wants to contact support:
                 value:
                   context:
-                    domain: dent:0.1.0
+                    domain: uei:evcharging
                     action: support
                     location:
                       country:
-                        name: India
                         code: IND
-                    city: std:080
+                      city:
+                        code: std:080
                     version: 1.1.0
                     bap_id: example-bap.com
                     bap_uri: https://api.example-bap.com/pilot/bap/energy/v1
@@ -808,8 +816,8 @@ paths:
                     timestamp: '2023-07-16T04:41:16Z'
                   message:
                     support:
-                      order_id: 6743e9e2-4fb5-487c-92b7
-                      phone: '+919876543210'
+                      ref_id: 6743e9e2-4fb5-487c-92b7
+                      phone: "+919876543210"
                       email: john.doe@gmail.com
       responses:
         '200':
@@ -873,13 +881,13 @@ paths:
               The provider returns a list of catalogs:
                 value:
                   context:
-                    domain: dent:0.1.0
+                    domain: uei:evcharging
                     action: on_search
                     location:
                       country:
-                        name: India
                         code: IND
-                    city: std:080
+                      city:
+                        code: std:080
                     version: 1.1.0
                     bap_id: example-bap.com
                     bap_uri: https://api.example-bap.com/pilot/bap/energy/v1
@@ -891,144 +899,153 @@ paths:
                   message:
                     catalog:
                       providers:
-                        - id: chargezone.in
+                      - id: chargezone.in
+                        descriptor:
+                          name: Chargezone
+                          short_desc: Chargezone Technologies Pvt Ltd
+                          images:
+                            - url: https://chargezone.in/images/logo.png
+                        locations:
+                        - id: '1'
+                          gps: 12.345345,77.389754
+                        - id: '2'
+                          gps: 12.247934,77.876987
+                        categories:
+                        - id: '1'
                           descriptor:
-                            name: Chargezone
-                            short_desc: Chargezone Technologies Pvt Ltd
-                            images:
-                              - url: https://chargezone.in/images/logo.png
-                          categories:
-                            - id: '1'
-                              descriptor:
-                                code: green-tariff
-                                name: green tariff
-                          locations:
-                            - id: '1'
-                              gps: 12.345345,77.389754
-                            - id: '2'
-                              gps: 12.247934,77.876987
-                          items:
-                            - id: pe-charging-01
-                              descriptor:
-                                code: energy
-                              price:
-                                value: '8'
-                                currency: INR / kWH
-                              quantity:
-                                available:
-                                  measure:
-                                    value: '100'
-                                    unit: kWH
-                              category_ids:
-                                - '1'
-                              location_ids:
-                                - '1'
-                                - '2'
-                              fulfillment_ids:
-                                - '1'
-                                - '2'
-                              add_ons:
-                                - id: pe-charging-01-addon-1
-                                  descriptor:
-                                    name: Free car wash
-                                  price:
-                                    value: '0'
-                                    currency: INR
-                          fulfillments:
-                            - id: '1'
-                              type: CHARGING
-                              stops:
-                                - type: start
-                                  time:
-                                    timestamp: 01-06-2023 10:00:00
-                                - type: end
-                                  time:
-                                    timestamp: 01-06-2023 10:30:00
-                              tags:
-                                - descriptor:
-                                    name: Charging Point Specifications
-                                  list:
-                                    - descriptor:
-                                        name: Charger type
-                                        code: charger-type
-                                      value: AC
-                                    - descriptor:
-                                        name: Connector type
-                                        code: connector-type
-                                      value: CCS2
-                                    - descriptor:
-                                        name: Power Rating
-                                      value: greater than 50kW
-                                    - descriptor:
-                                        name: Availability
-                                      value: Available
-                                  display: true
-                            - id: '2'
-                              type: CHARGING
-                              stops:
-                                - type: start
-                                  time:
-                                    timestamp: 01-06-2023 10:00:00
-                                - type: end
-                                  time:
-                                    timestamp: 01-06-2023 10:30:00
-                              tags:
-                                - descriptor:
-                                    name: Charging Point
-                                  list:
-                                    - descriptor:
-                                        name: Charger type
-                                      value: AC
-                                    - descriptor:
-                                        name: Connector type
-                                      value: CCS2
-                                    - descriptor:
-                                        name: Power Rating
-                                      value: greater than 50kW
-                                    - descriptor:
-                                        name: Availability
-                                      value: Available
-                                  display: true
-                        - id: log9.in
+                            code: GREEN_TARIFF
+                            name: green tariff
+                        fulfillments:
+                        - id: '1'
+                          type: CHARGING
+                          stops:
+                          - type: start
+                            time:
+                              timestamp: 01-06-2023 10:00:00
+                          - type: end
+                            time:
+                              timestamp: 01-06-2023 10:30:00
+                          tags:
+                          - descriptor:
+                              name: Charging Point Specifications
+                            list:
+                            - descriptor:
+                                name: Charger type
+                                code: charger-type
+                              value: AC
+                            - descriptor:
+                                name: Connector type
+                                code: connector-type
+                              value: CCS2
+                            - descriptor:
+                                name: Power Rating
+                              value: greater than 50kW
+                            - descriptor:
+                                name: Availability
+                              value: Available
+                            display: true
+                        - id: '2'
+                          type: CHARGING
+                          stops:
+                          - type: start
+                            time:
+                              timestamp: 01-06-2023 10:00:00
+                          - type: end
+                            time:
+                              timestamp: 01-06-2023 10:30:00
+                          tags:
+                          - descriptor:
+                              name: Charging Point
+                            list:
+                            - descriptor:
+                                name: Charger type
+                              value: AC
+                            - descriptor:
+                                name: Connector type
+                              value: CCS2
+                            - descriptor:
+                                name: Power Rating
+                              value: greater than 50kW
+                            - descriptor:
+                                name: Availability
+                              value: Available
+                            display: true
+                        items:
+                        - id: pe-charging-01
                           descriptor:
-                            name: Log9 Inc
-                          categories:
-                            - id: '1'
-                              descriptor:
-                                code: green-tariff
-                                name: green tariff
-                          items:
-                            - id: pe-charging-01
-                              descriptor:
-                                code: energy
-                              price:
-                                value: '10'
-                                currency: INR / kWH
-                              quantity:
-                                available: '1000'
-                              category_ids:
-                                - '1'
-                              fulfillment_ids:
-                                - '3'
-                                - '4'
-                              add_ons:
-                                - id: pe-charging-01-addon-1
-                                  descriptor:
-                                    name: Free tyre pressure check
-                                  price:
-                                    value: '0'
-                                    currency: INR
-                          fulfillments:
-                            - id: '3'
-                              type: BATTERY-SWAP
-                              stops:
-                                - location:
-                                    gps: 12.745675, 77.987393
-                            - id: '4'
-                              type: MOBILE-BATTERY-SWAP
-                              stops:
-                                - location:
-                                    url: https://log9.in/track/bswap/3234242
+                            code: STANDARD_CHARGING
+                            name: abc
+                            short_desc: ""
+                          price:
+                            value: '8'
+                            currency: INR/kWH
+                          quantity:
+                            available:
+                              measure:
+                                unit: kWH
+                                value: '100'
+                          category_ids:
+                          - '1'
+                          location_ids:
+                          - '1'
+                          - '2'
+                          fulfillment_ids:
+                          - '1'
+                          - '2'
+                          add_ons:
+                          - id: pe-charging-01-addon-1
+                            descriptor:
+                              name: Free car wash
+                            price:
+                              value: '0'
+                              currency: INR
+                      - id: log9.in
+                        descriptor:
+                          name: Log9 Inc
+                          short_desc: ""
+                        categories:
+                        - id: '1'
+                          descriptor:
+                            code: GREEN_TARIFF
+                            name: green tariff
+                        fulfillments:
+                        - id: '3'
+                          type: BATTERY_SWAP
+                          stops:
+                          - location:
+                              gps: 12.745675, 77.987393
+                        - id: '4'
+                          type: MOBILE_BATTERY_SWAP
+                          stops:
+                          - location:
+                              url: https://log9.in/track/bswap/3234242
+                        items:
+                        - id: pe-charging-01
+                          descriptor:
+                            code: FAST_CHARGING
+                            name: fast charging
+                            short_desc: ""
+                          price:
+                            value: '10'
+                            currency: INR / kWH
+                          quantity:
+                            available:
+                              measure:
+                                unit: kWH
+                                value: '1000'
+                          category_ids:
+                          - '1'
+                          fulfillment_ids:
+                          - '3'
+                          - '4'
+                          add_ons:
+                          - id: pe-charging-01-addon-1
+                            descriptor:
+                              name: Free tyre pressure check
+                            price:
+                              value: '0'
+                              currency: INR
+
       responses:
         '200':
           description: Acknowledgement of message received after successful validation of schema and signature
@@ -1096,13 +1113,13 @@ paths:
               The provider sends the details of the item selected, along with a quote:
                 value:
                   context:
-                    domain: dent:0.1.0
+                    domain: uei:evcharging
                     action: on_select
                     location:
                       country:
-                        name: India
                         code: IND
-                    city: std:080
+                      city:
+                        code: std:080
                     version: 1.1.0
                     bap_id: example-bap.com
                     bap_uri: https://api.example-bap.com/pilot/bap/energy/v1
@@ -1119,81 +1136,88 @@ paths:
                           name: Chargezone
                           short_desc: Chargezone Technologies Pvt Ltd
                           images:
-                            - url: https://chargezone.in/images/logo.png
+                          - url: https://chargezone.in/images/logo.png
                       items:
-                        - id: pe-charging-01
-                          descriptor:
-                            code: energy
-                          price:
-                            value: '8'
-                            currency: INR/kWH
-                          quantity:
-                            available:
-                              measure:
-                                value: '100'
-                                unit: kWh
-                            selected:
-                              measure:
-                                value: '4'
-                                unit: kWh
-                        - id: pe-charging-01-addon-1
-                          descriptor:
-                            code: add-on-item
-                            name: Free car wash
-                          price:
-                            value: '0'
-                            currency: INR
+                      - id: pe-charging-01
+                        descriptor:
+                          code: STANDARD_CHARGING
+                          name: "abc"
+                          short_desc: ""
+                        price:
+                          value: '8'
+                          currency: INR/kWH
+                        quantity:
+                          available:
+                            measure:
+                              value: '100'
+                              unit: kWh
+                          selected:
+                            measure:
+                              value: '4'
+                              unit: kWh
+                      - id: pe-charging-01-addon-1
+                        descriptor:
+                          code: add-on-item
+                          name: Free car wash
+                        price:
+                          value: '0'
+                          currency: INR
                       fulfillments:
-                        - id: '1'
-                          type: CHARGING
-                          stops:
-                            - type: start
-                              time:
-                                timestamp: 01-06-2023 10:00:00
-                            - type: end
-                              time:
-                                timestamp: 01-06-2023 10:30:00
-                          tags:
-                            - descriptor:
-                                name: Charging Point Specifications
-                              list:
-                                - descriptor:
-                                    name: Charger type
-                                    code: charger-type
-                                  value: AC
-                                - descriptor:
-                                    name: Connector type
-                                    code: connector-type
-                                  value: CCS2
-                                - descriptor:
-                                    name: Power Rating
-                                  value: greater than 50kW
-                                - descriptor:
-                                    name: Availability
-                                  value: Available
-                              display: true
+                      - id: '1'
+                        type: CHARGING
+                        stops:
+                        - type: start
+                          time:
+                            timestamp: 01-06-2023 10:00:00
+                        - type: end
+                          time:
+                            timestamp: 01-06-2023 10:30:00
+                        tags:
+                        - descriptor:
+                            name: Charging Point Specifications
+                          list:
+                          - descriptor:
+                              name: Charger type
+                              code: charger-type
+                            value: AC
+                          - descriptor:
+                              name: Connector type
+                              code: connector-type
+                            value: CCS2
+                          - descriptor:
+                              name: Power Rating
+                            value: greater than 50kW
+                          - descriptor:
+                              name: Availability
+                            value: Available
+                          display: true
                       quote:
                         price:
                           value: '32'
                           currency: INR
                         breakup:
-                          - item:
-                              descriptor:
-                                name: Estimated units consumed
-                              quantity:
-                                selected:
-                                  measure:
-                                    value: '4'
-                                    unit: kWh
-                            price:
-                              value: '32'
-                              currency: INR
-                          - item:
-                              descriptor:
-                                name: Free car wash
-                            price:
-                              value: '0'
-                              currency: INR
+                        - item:
+                            id: pe-charging-01
+                            descriptor:
+                              name: Estimated units consumed
+                            quantity:
+                              selected:
+                                measure:
+                                  value: '4'
+                                  unit: kWh
+                          title: ENERGY
+                          price:
+                            value: '32'
+                            currency: INR
+                        - item:
+                            add-ons:
+                            - id: pe-charging-01-addon-1
+                            descriptor:
+                              name: Free car wash
+                          title: ADD_ON
+                          price:
+                            value: '0'
+                            currency: INR
       responses:
         '200':
           description: Acknowledgement of message received after successful validation of schema and signature
@@ -1254,9 +1278,6 @@ paths:
                         - billing
                         - payments
                         - cancellation_terms
-                        - refund_terms
-                        - return_terms
-                        - replacement_terms
                   required:
                     - order
                 error:
@@ -1267,13 +1288,13 @@ paths:
               The BPP intiates the order, sends the payment link:
                 value:
                   context:
-                    domain: dent:0.1.0
+                    domain: uei:evcharging
                     action: on_init
                     location:
                       country:
-                        name: India
                         code: IND
-                    city: std:080
+                      city:
+                        code: std:080
                     version: 1.1.0
                     bap_id: example-bap.com
                     bap_uri: https://api.example-bap.com/pilot/bap/energy/v1
@@ -1290,99 +1311,110 @@ paths:
                           name: Chargezone
                           short_desc: Chargezone Technologies Pvt Ltd
                           images:
-                            - url: https://chargezone.in/images/logo.png
+                          - url: https://chargezone.in/images/logo.png
                       items:
-                        - id: pe-charging-01
+                      - id: pe-charging-01
+                        descriptor:
+                          code: STANDARD_CHARGING
+                          name: abc
+                          short_desc: ""
+                        price:
+                          value: '8'
+                          currency: INR/kWH
+                        quantity:
+                          available:
+                            measure:
+                              value: '100'
+                              unit: kWh
+                          selected:
+                            measure:
+                              value: '4'
+                              unit: kWh
+                        add_ons:
+                        - id: pe-charging-01-addon-1
                           descriptor:
-                            code: energy
+                            code: add-on-item
+                            name: Free car wash
                           price:
-                            value: '8'
-                            currency: INR/kWH
-                          quantity:
-                            available:
-                              measure:
-                                value: '100'
-                                unit: kWh
-                            selected:
-                              measure:
-                                value: '4'
-                                unit: kWh
-                          fulfillments:
-                            - '1'
+                            value: '0'
+                            currency: INR
                       fulfillments:
-                        - id: '1'
-                          customer:
-                            person:
-                              name: John Doe
-                            contact:
-                              phone: +91-9887766554
-                          type: CHARGING
-                          state:
-                            descriptor:
-                              code: order-initiated
-                          stops:
-                            - type: start
-                              time:
-                                timestamp: 01-06-2023 10:00:00
-                            - type: end
-                              time:
-                                timestamp: 01-06-2023 10:30:00
-                          tags:
-                            - descriptor:
-                                name: Charging Point
-                              list:
-                                - descriptor:
-                                    name: Charger type
-                                  value: AC
-                                - descriptor:
-                                    name: Connector type
-                                  value: CCS2
-                                - descriptor:
-                                    name: Power Rating
-                                  value: greater than 50kW
-                                - descriptor:
-                                    name: Availability
-                                  value: Available
-                              display: true
+                      - id: '1'
+                        customer:
+                          person:
+                            name: John Doe
+                          contact:
+                            phone: "+91-9887766554"
+                        type: CHARGING
+                        state:
+                          descriptor:
+                            code: order-initiated
+                        stops:
+                        - type: start
+                          time:
+                            timestamp: 01-06-2023 10:00:00
+                        - type: end
+                          time:
+                            timestamp: 01-06-2023 10:30:00
+                        tags:
+                        - descriptor:
+                            name: Charging Point
+                          list:
+                          - descriptor:
+                              name: Charger type
+                            value: AC
+                          - descriptor:
+                              name: Connector type
+                            value: CCS2
+                          - descriptor:
+                              name: Power Rating
+                            value: greater than 50kW
+                          - descriptor:
+                              name: Availability
+                            value: Available
+                          display: true
                       billing:
                         email: abc@example.com
-                        number: +91-9876522222
+                        number: "+91-9876522222"
                       quote:
                         price:
                           value: '32'
                           currency: INR
                         breakup:
-                          - item:
-                              descriptor:
-                                name: Estimated units consumed
-                              quantity:
-                                selected:
-                                  measure:
-                                    value: '4'
-                                    unit: kWh
-                            price:
-                              value: '32'
-                              currency: INR
-                      payments:
-                        - url: https://payment.gateway.in
-                          type: PRE-ORDER
-                          status: NOT-PAID
-                          params:
-                            amount: '40'
-                            currency: INR
-                          time:
-                            range:
-                              start: '2023-08-10T10:00:00Z'
-                              end: '2023-08-10T10:30:00Z'
-                      cancellation_terms:
-                        - fulfillment_state:
+                        - item:
                             descriptor:
-                              code: charging-start
-                          cancellation_fee:
-                            percentage: 30%
-                          external_ref:
-                            mimetype: text/html
-                            url: https://chargezone.in/charge/tnc.html
+                              name: Estimated units consumed
+                            quantity:
+                              selected:
+                                measure:
+                                  value: '4'
+                                  unit: kWh
+                          title: ENERGY
+                          price:
+                            value: '32'
+                            currency: INR
+                      payments:
+                      - url: https://payment.gateway.in
+                        type: PRE_ORDER
+                        status: NOT_PAID
+                        params:
+                          amount: '40'
+                          currency: INR
+                        time:
+                          range:
+                            start: '2023-08-10T10:00:00Z'
+                            end: '2023-08-10T10:30:00Z'
+                      cancellation_terms:
+                      - fulfillment_state:
+                          descriptor:
+                            code: charging-start
+                        cancel_by:
+                          label: upto 2 hours before the booked slot
+                        cancellation_fee:
+                          percentage: 30%
+                        external_ref:
+                          mimetype: text/html
+                          url: https://chargezone.in/charge/tnc.html
       responses:
         '200':
           description: Acknowledgement of message received after successful validation of schema and signature
@@ -1454,9 +1486,6 @@ paths:
                         - billing
                         - payments
                         - cancellation_terms
-                        - refund_terms
-                        - return_terms
-                        - replacement_terms
                         - id
                   required:
                     - order
@@ -1468,13 +1497,13 @@ paths:
               The BAP sends an order confirmation:
                 value:
                   context:
-                    domain: dent:0.1.0
+                    domain: uei:evcharging
                     action: on_confirm
                     location:
                       country:
-                        name: India
                         code: IND
-                    city: std:080
+                      city:
+                        code: std:080
                     version: 1.1.0
                     bap_id: example-bap.com
                     bap_uri: https://api.example-bap.com/pilot/bap/energy/v1
@@ -1492,109 +1521,123 @@ paths:
                           name: Chargezone
                           short_desc: Chargezone Technologies Pvt Ltd
                           images:
-                            - url: https://chargezone.in/images/logo.png
+                          - url: https://chargezone.in/images/logo.png
                       items:
-                        - id: pe-charging-01
+                      - id: pe-charging-01
+                        descriptor:
+                          code: STANDARD_CHARGING
+                          name: abc
+                          short_desc: ""
+                        price:
+                          value: '8'
+                          currency: INR/kWH
+                        quantity:
+                          available:
+                            measure:
+                              value: '100'
+                              unit: kWh
+                          selected:
+                            measure:
+                              value: '4'
+                              unit: kWh
+                        add_ons:
+                        - id: pe-charging-01-addon-1
                           descriptor:
-                            code: energy
+                            code: add-on-item
+                            name: Free car wash
                           price:
-                            value: '8'
-                            currency: INR/kWH
-                          quantity:
-                            available:
-                              measure:
-                                value: '100'
-                                unit: kWh
-                            selected:
-                              measure:
-                                value: '4'
-                                unit: kWh
-                          fulfillments:
-                            - '1'
+                            value: '0'
+                            currency: INR
                       fulfillments:
-                        - id: '1'
-                          customer:
-                            person:
-                              name: John Doe
-                            contact:
-                              phone: +91-9887766554
-                          type: CHARGING
-                          state:
-                            descriptor:
-                              code: payment-completed
-                          stops:
-                            - type: start
-                              location:
-                                gps: 12.423423,77.325647
-                              time:
-                                timestamp: 01-06-2023 10:00:00
-                                range:
-                                  start: 01-06-2023 10:00:00
-                                  end: 01-06-2023 10:10:00
-                              instructions:
-                                name: Charging instructions
-                                short_desc: To start your charging, go to charger number 987, and click on 'start' on your app
-                            - type: end
-                              time:
-                                timestamp: 01-06-2023 10:30:00
-                                range:
-                                  start: 01-06-2023 10:30:00
-                                  end: 01-06-2023 10:40:00
-                          tags:
-                            - descriptor:
-                                name: Charging Point
-                              list:
-                                - descriptor:
-                                    name: Charger type
-                                  value: AC
-                                - descriptor:
-                                    name: Connector type
-                                  value: CCS2
-                                - descriptor:
-                                    name: Power Rating
-                                  value: greater than 50kW
-                                - descriptor:
-                                    name: Availability
-                                  value: Available
-                              display: true
+                      - id: '1'
+                        customer:
+                          person:
+                            name: John Doe
+                          contact:
+                            phone: "+91-9887766554"
+                        type: CHARGING
+                        state:
+                          descriptor:
+                            code: payment-completed
+                        stops:
+                        - type: start
+                          location:
+                            gps: 12.423423,77.325647
+                          time:
+                            timestamp: 01-06-2023 10:00:00
+                            range:
+                              start: 01-06-2023 10:00:00
+                              end: 01-06-2023 10:10:00
+                          instructions:
+                            name: Charging instructions
+                            short_desc: To start your charging, go to charger number 987, and click
+                              on 'start' on your app
+                        - type: end
+                          time:
+                            timestamp: 01-06-2023 10:30:00
+                            range:
+                              start: 01-06-2023 10:30:00
+                              end: 01-06-2023 10:40:00
+                        tags:
+                        - descriptor:
+                            name: Charging Point
+                          list:
+                          - descriptor:
+                              name: Charger type
+                            value: AC
+                          - descriptor:
+                              name: Connector type
+                            value: CCS2
+                          - descriptor:
+                              name: Power Rating
+                            value: greater than 50kW
+                          - descriptor:
+                              name: Availability
+                            value: Available
+                          display: true
                       billing:
                         email: abc@example.com
-                        number: +91-9876522222
+                        number: "+91-9876522222"
                       quote:
                         price:
                           value: '40'
                           currency: INR
                         breakup:
-                          - item:
-                              descriptor:
-                                name: Estimated units consumed
-                              quantity:
-                                selected:
-                                  measure:
-                                    value: '4'
-                                    unit: kWh
-                            price:
-                              value: '32'
-                              currency: INR
-                      payments:
-                        - type: PRE-ORDER
-                          status: PAID
-                          params:
-                            amount: '40'
-                            currency: INR
-                          time:
-                            range:
-                              start: '2023-08-10T10:00:00Z'
-                              end: '2023-08-10T10:30:00Z'
-                      cancellation_terms:
-                        - fulfillment_state:
+                        - item:
                             descriptor:
-                              code: charging-start
-                          cancellation_fee:
-                            percentage: 30%
-                          external_ref:
-                            mimetype: text/html
-                            url: https://chargezone.in/charge/tnc.html
+                              name: Estimated units consumed
+                            quantity:
+                              selected:
+                                measure:
+                                  value: '4'
+                                  unit: kWh
+                          title: ENERGY
+                          price:
+                            value: '32'
+                            currency: INR
+                      payments:
+                      - id: testid
+                        type: PRE_ORDER
+                        status: PAID
+                        params:
+                          amount: '40'
+                          currency: INR
+                          transaction_id: asjdhw8e238e3
+                        time:
+                          range:
+                            start: '2023-08-10T10:00:00Z'
+                            end: '2023-08-10T10:30:00Z'
+                      cancellation_terms:
+                      - fulfillment_state:
+                          descriptor:
+                            code: charging-start
+                        cancel_by:
+                          label: "upto 2 hours before the booked slot"
+                        cancellation_fee:
+                          percentage: 30%
+                        external_ref:
+                          mimetype: text/html
+                          url: https://chargezone.in/charge/tnc.html
       responses:
         '200':
           description: Acknowledgement of message received after successful validation of schema and signature
@@ -1668,9 +1711,6 @@ paths:
                         - billing
                         - payments
                         - cancellation_terms
-                        - refund_terms
-                        - return_terms
-                        - replacement_terms
                         - id
                         - cancellation
                   required:
@@ -1683,13 +1723,13 @@ paths:
               The provider cancels the order after the BAP requested for a cancellation:
                 value:
                   context:
-                    domain: dent:0.1.0
+                    domain: uei:evcharging
                     action: on_cancel
                     location:
                       country:
-                        name: India
                         code: IND
-                    city: std:080
+                      city:
+                        code: std:080
                     version: 1.1.0
                     bap_id: example-bap.com
                     bap_uri: https://api.example-bap.com/pilot/bap/energy/v1
@@ -1708,106 +1748,120 @@ paths:
                           name: Chargezone
                           short_desc: Chargezone Technologies Pvt Ltd
                           images:
-                            - url: https://chargezone.in/images/logo.png
+                          - url: https://chargezone.in/images/logo.png
                       items:
-                        - id: pe-charging-01
+                      - id: pe-charging-01
+                        descriptor:
+                          code: STANDARD_CHARGING
+                          name: abc
+                          short_desc: ""
+                        price:
+                          value: '8'
+                          currency: INR/kWH
+                        quantity:
+                          available:
+                            measure:
+                              value: '100'
+                              unit: kWh
+                          selected:
+                            measure:
+                              value: '4'
+                              unit: kWh
+                        add_ons:
+                        - id: pe-charging-01-addon-1
                           descriptor:
-                            code: energy
+                            code: add-on-item
+                            name: Free car wash
                           price:
-                            value: '8'
-                            currency: INR/kWH
-                          quantity:
-                            available:
-                              measure:
-                                value: '100'
-                                unit: kWh
-                            selected:
-                              measure:
-                                value: '4'
-                                unit: kWh
-                          fulfillments:
-                            - '1'
+                            value: '0'
+                            currency: INR
                       fulfillments:
-                        - id: '1'
-                          customer:
-                            person:
-                              name: John Doe
-                            contact:
-                              phone: +91-9887766554
-                          type: CHARGING
-                          state:
-                            descriptor:
-                              code: order-cancelled
-                          stops:
-                            - time:
-                                range:
-                                  start: '10:00'
-                                  end: '10:30'
-                          tags:
-                            - descriptor:
-                                name: Charging Point
-                              list:
-                                - descriptor:
-                                    name: Charger type
-                                  value: AC
-                                - descriptor:
-                                    name: Connector type
-                                  value: CCS2
-                                - descriptor:
-                                    name: Power Rating
-                                  value: greater than 50kW
-                                - descriptor:
-                                    name: Availability
-                                  value: Available
-                              display: true
+                      - id: '1'
+                        customer:
+                          person:
+                            name: John Doe
+                          contact:
+                            phone: "+91-9887766554"
+                        type: CHARGING
+                        state:
+                          descriptor:
+                            code: order-cancelled
+                        stops:
+                        - time:
+                            range:
+                              start: '10:00'
+                              end: '10:30'
+                        tags:
+                        - descriptor:
+                            name: Charging Point
+                          list:
+                          - descriptor:
+                              name: Charger type
+                            value: AC
+                          - descriptor:
+                              name: Connector type
+                            value: CCS2
+                          - descriptor:
+                              name: Power Rating
+                            value: greater than 50kW
+                          - descriptor:
+                              name: Availability
+                            value: Available
+                          display: true
                       billing:
                         email: abc@example.com
-                        number: +91-9876522222
+                        number: "+91-9876522222"
                       quote:
                         price:
-                          value: '-32'
+                          value: "-32"
                           currency: INR
                         breakup:
-                          - item:
-                              descriptor:
-                                name: payment refund
-                              quantity:
-                                selected:
-                                  measure:
-                                    value: '4'
-                                    unit: kWh
-                            price:
-                              value: '-32'
-                              currency: INR
-                      payments:
-                        - type: PRE-ORDER
-                          status: PAID
-                          params:
-                            amount: '40'
-                            currency: INR
-                          time:
-                            range:
-                              start: '2023-08-10T10:00:00Z'
-                              end: '2023-08-10T10:30:00Z'
-                      cancellation_terms:
-                        - fulfillment_state:
+                        - item:
                             descriptor:
-                              code: charging-start
-                          cancellation_fee:
-                            percentage: 30%
-                          external_ref:
-                            mimetype: text/html
-                            url: https://chargezone.in/charge/tnc.html
+                              name: payment refund
+                            quantity:
+                              selected:
+                                measure:
+                                  value: '4'
+                                  unit: kWh
+                          title: ENERGY
+                          price:
+                            value: "-32"
+                            currency: INR
+                      payments:
+                      - id: testid
+                        type: PRE_ORDER
+                        status: PAID
+                        params:
+                          amount: '40'
+                          currency: INR
+                          transaction_id: asjdhw8e238e3
+                        time:
+                          range:
+                            start: '2023-08-10T10:00:00Z'
+                            end: '2023-08-10T10:30:00Z'
+                      cancellation_terms:
+                      - fulfillment_state:
+                          descriptor:
+                            code: charging-start
+                        cancel_by:
+                          label: upto 2 hours before the booked slot
+                        cancellation_fee:
+                          percentage: 30%
+                        external_ref:
+                          mimetype: text/html
+                          url: https://chargezone.in/charge/tnc.html
+
               The provider cancels the order after the there was an error in the charger:
                 value:
                   context:
-                    domain: dent:0.1.0
+                    domain: uei:evcharging
                     action: on_cancel
                     location:
                       country:
-                        name: India
                         code: IND
-                    city: std:080
+                      city:
+                        code: std:080
                     version: 1.1.0
                     bap_id: example-bap.com
                     bap_uri: https://api.example-bap.com/pilot/bap/energy/v1
@@ -1826,100 +1880,114 @@ paths:
                           name: Chargezone
                           short_desc: Chargezone Technologies Pvt Ltd
                           images:
-                            - url: https://chargezone.in/images/logo.png
+                          - url: https://chargezone.in/images/logo.png
                       items:
-                        - id: pe-charging-01
+                      - id: pe-charging-01
+                        descriptor:
+                          code: STANDARD_CHARGING
+                          name: abc
+                          short_desc: ""
+                        price:
+                          value: '8'
+                          currency: INR/kWH
+                        quantity:
+                          available:
+                            measure:
+                              value: '100'
+                              unit: kWh
+                          selected:
+                            measure:
+                              value: '4'
+                              unit: kWh
+                          allocated:
+                            measure:
+                              value: '2'
+                              unit: kWh
+                        add_ons:
+                        - id: pe-charging-01-addon-1
                           descriptor:
-                            code: energy
+                            code: add-on-item
+                            name: Free car wash
                           price:
-                            value: '8'
-                            currency: INR/kWH
-                          quantity:
-                            available:
-                              measure:
-                                value: '100'
-                                unit: kWh
-                            selected:
-                              measure:
-                                value: '4'
-                                unit: kWh
-                            allocated:
-                              measure:
-                                value: '2'
-                                unit: kWh
-                          fulfillments:
-                            - '1'
+                            value: '0'
+                            currency: INR
                       fulfillments:
-                        - id: '1'
-                          customer:
-                            person:
-                              name: John Doe
-                            contact:
-                              phone: +91-9887766554
-                          type: CHARGING
-                          state:
-                            descriptor:
-                              code: charger-error
-                          stops:
-                            - time:
-                                range:
-                                  start: '10:00'
-                                  end: '10:30'
-                          tags:
-                            - descriptor:
-                                name: Charging Point
-                              list:
-                                - descriptor:
-                                    name: Charger type
-                                  value: AC
-                                - descriptor:
-                                    name: Connector type
-                                  value: CCS2
-                                - descriptor:
-                                    name: Power Rating
-                                  value: greater than 50kW
-                                - descriptor:
-                                    name: Availability
-                                  value: Available
-                              display: true
+                      - id: '1'
+                        customer:
+                          person:
+                            name: John Doe
+                          contact:
+                            phone: "+91-9887766554"
+                        type: CHARGING
+                        state:
+                          descriptor:
+                            code: charger-error
+                        stops:
+                        - time:
+                            range:
+                              start: '10:00'
+                              end: '10:30'
+                        tags:
+                        - descriptor:
+                            name: Charging Point
+                          list:
+                          - descriptor:
+                              name: Charger type
+                            value: AC
+                          - descriptor:
+                              name: Connector type
+                            value: CCS2
+                          - descriptor:
+                              name: Power Rating
+                            value: greater than 50kW
+                          - descriptor:
+                              name: Availability
+                            value: Available
+                          display: true
                       billing:
                         email: abc@example.com
-                        number: +91-9876522222
+                        number: "+91-9876522222"
                       quote:
                         price:
-                          value: '-12'
+                          value: "-12"
                           currency: INR
                         breakup:
-                          - item:
-                              descriptor:
-                                name: payment refund
-                              quantity:
-                                selected:
-                                  measure:
-                                    value: '4'
-                                    unit: kWh
-                            price:
-                              value: '-12'
-                              currency: INR
-                      payments:
-                        - type: PRE-ORDER
-                          status: PAID
-                          params:
-                            amount: '40'
-                            currency: INR
-                          time:
-                            range:
-                              start: '2023-08-10T10:00:00Z'
-                              end: '2023-08-10T10:30:00Z'
-                      cancellation_terms:
-                        - fulfillment_state:
+                        - item:
                             descriptor:
-                              code: charging-start
-                          cancellation_fee:
-                            percentage: 30%
-                          external_ref:
-                            mimetype: text/html
-                            url: https://chargezone.in/charge/tnc.html
+                              name: payment refund
+                            quantity:
+                              selected:
+                                measure:
+                                  value: '4'
+                                  unit: kWh
+                          title: ENERGY
+                          price:
+                            value: "-12"
+                            currency: INR
+                      payments:
+                      - id: testid
+                        type: PRE_ORDER
+                        status: PAID
+                        params:
+                          amount: '40'
+                          currency: INR
+                          transaction_id: asjdhw8e238e3
+                        time:
+                          range:
+                            start: '2023-08-10T10:00:00Z'
+                            end: '2023-08-10T10:30:00Z'
+                      cancellation_terms:
+                      - fulfillment_state:
+                          descriptor:
+                            code: charging-start
+                        cancel_by:
+                          label: upto 2 hours before the booked slot
+                        cancellation_fee:
+                          percentage: 30%
+                        external_ref:
+                          mimetype: text/html
+                          url: https://chargezone.in/charge/tnc.html
+
       responses:
         '200':
           description: Acknowledgement of message received after successful validation of schema and signature
@@ -1993,9 +2061,6 @@ paths:
                         - billing
                         - payments
                         - cancellation_terms
-                        - refund_terms
-                        - return_terms
-                        - replacement_terms
                         - id
                   required:
                     - order
@@ -2007,13 +2072,13 @@ paths:
               The provider sends an updated object to start charging:
                 value:
                   context:
-                    domain: dent:0.1.0
+                    domain: uei:evcharging
                     action: on_update
                     location:
                       country:
-                        name: India
                         code: IND
-                    city: std:080
+                      city:
+                        code: std:080
                     version: 1.1.0
                     bap_id: example-bap.com
                     bap_uri: https://api.example-bap.com/pilot/bap/energy/v1
@@ -2031,116 +2096,130 @@ paths:
                           name: Chargezone
                           short_desc: Chargezone Technologies Pvt Ltd
                           images:
-                            - url: https://chargezone.in/images/logo.png
+                          - url: https://chargezone.in/images/logo.png
                       items:
-                        - id: pe-charging-01
+                      - id: pe-charging-01
+                        descriptor:
+                          code: STANDARD_CHARGING
+                          name: abc
+                          short_desc: ""
+                        price:
+                          value: '8'
+                          currency: INR/kWH
+                        quantity:
+                          available:
+                            measure:
+                              value: '100'
+                              unit: kWh
+                          selected:
+                            measure:
+                              value: '4'
+                              unit: kWh
+                        add_ons:
+                        - id: pe-charging-01-addon-1
                           descriptor:
-                            code: energy
+                            code: add-on-item
+                            name: Free car wash
                           price:
-                            value: '8'
-                            currency: INR/kWH
-                          quantity:
-                            available:
-                              measure:
-                                value: '100'
-                                unit: kWh
-                            selected:
-                              measure:
-                                value: '4'
-                                unit: kWh
-                          fulfillments:
-                            - '1'
+                            value: '0'
+                            currency: INR
                       fulfillments:
-                        - id: '1'
-                          customer:
-                            person:
-                              name: John Doe
-                            contact:
-                              phone: +91-9887766554
-                          type: CHARGING
-                          state:
-                            descriptor:
-                              code: charging-started
-                          stops:
-                            - type: start
-                              location:
-                                gps: 12.423423,77.325647
-                              time:
-                                timestamp: 01-06-2023 10:00:00
-                                range:
-                                  start: 01-06-2023 10:00:00
-                                  end: 01-06-2023 10:10:00
-                            - type: end
-                              time:
-                                timestamp: 01-06-2023 10:30:00
-                                range:
-                                  start: 01-06-2023 10:30:00
-                                  end: 01-06-2023 10:40:00
-                          tags:
-                            - descriptor:
-                                name: Charging Point
-                              list:
-                                - descriptor:
-                                    name: Charger type
-                                  value: AC
-                                - descriptor:
-                                    name: Connector type
-                                  value: CCS2
-                                - descriptor:
-                                    name: Power Rating
-                                  value: greater than 50kW
-                                - descriptor:
-                                    name: Availability
-                                  value: Available
-                              display: true
+                      - id: '1'
+                        customer:
+                          person:
+                            name: John Doe
+                          contact:
+                            phone: "+91-9887766554"
+                        type: CHARGING
+                        state:
+                          descriptor:
+                            code: charging-started
+                        stops:
+                        - type: start
+                          location:
+                            gps: 12.423423,77.325647
+                          time:
+                            timestamp: 01-06-2023 10:00:00
+                            range:
+                              start: 01-06-2023 10:00:00
+                              end: 01-06-2023 10:10:00
+                        - type: end
+                          time:
+                            timestamp: 01-06-2023 10:30:00
+                            range:
+                              start: 01-06-2023 10:30:00
+                              end: 01-06-2023 10:40:00
+                        tags:
+                        - descriptor:
+                            name: Charging Point
+                          list:
+                          - descriptor:
+                              name: Charger type
+                            value: AC
+                          - descriptor:
+                              name: Connector type
+                            value: CCS2
+                          - descriptor:
+                              name: Power Rating
+                            value: greater than 50kW
+                          - descriptor:
+                              name: Availability
+                            value: Available
+                          display: true
                       billing:
                         email: abc@example.com
-                        number: +91-9876522222
+                        number: "+91-9876522222"
                       quote:
                         price:
                           value: '40'
                           currency: INR
                         breakup:
-                          - item:
-                              descriptor:
-                                name: Estimated units consumed
-                              quantity:
-                                selected:
-                                  measure:
-                                    value: '4'
-                                    unit: kWh
-                            price:
-                              value: '32'
-                              currency: INR
-                      payments:
-                        - type: PRE-ORDER
-                          status: PAID
-                          params:
-                            amount: '40'
-                            currency: INR
-                          time:
-                            range:
-                              start: '2023-08-10T10:00:00Z'
-                              end: '2023-08-10T10:30:00Z'
-                      cancellation_terms:
-                        - fulfillment_state:
+                        - item:
                             descriptor:
-                              code: charging-start
-                          cancellation_fee:
-                            percentage: 30%
-                          external_ref:
-                            mimetype: text/html
-                            url: https://chargezone.in/charge/tnc.html
+                              name: Estimated units consumed
+                            quantity:
+                              selected:
+                                measure:
+                                  value: '4'
+                                  unit: kWh
+                          title: ENERGY
+                          price:
+                            value: '32'
+                            currency: INR
+                      payments:
+                      - id: testid
+                        type: PRE-ORDER
+                        status: PAID
+                        params:
+                          amount: '40'
+                          currency: INR
+                          transaction_id: asjdhw8e238e3
+                        time:
+                          range:
+                            start: '2023-08-10T10:00:00Z'
+                            end: '2023-08-10T10:30:00Z'
+                      cancellation_terms:
+                      - fulfillment_state:
+                          descriptor:
+                            code: charging-start
+                        cancel_by:
+                          label: upto 2 hours before the booked slot
+                        cancellation_fee:
+                          percentage: 30%
+                        external_ref:
+                          mimetype: text/html
+                          url: https://chargezone.in/charge/tnc.html
+
               The provider sends an updated object to stop charging:
                 value:
                   context:
-                    domain: dent:0.1.0
+                    domain: uei:evcharging
                     action: on_update
                     location:
                       country:
-                        name: India
                         code: IND
-                    city: std:080
+                      city:
+                        code: std:080
                     version: 1.1.0
                     bap_id: example-bap.com
                     bap_uri: https://api.example-bap.com/pilot/bap/energy/v1
@@ -2158,106 +2237,113 @@ paths:
                           name: Chargezone
                           short_desc: Chargezone Technologies Pvt Ltd
                           images:
-                            - url: https://chargezone.in/images/logo.png
+                          - url: https://chargezone.in/images/logo.png
                       items:
-                        - id: pe-charging-01
+                      - id: pe-charging-01
+                        descriptor:
+                          code: energy
+                        price:
+                          value: '8'
+                          currency: INR/kWH
+                        quantity:
+                          available:
+                            measure:
+                              value: '100'
+                              unit: kWh
+                          selected:
+                            measure:
+                              value: '4'
+                              unit: kWh
+                        add_ons:
+                        - id: pe-charging-01-addon-1
                           descriptor:
-                            code: energy
+                            code: add-on-item
+                            name: Free car wash
                           price:
-                            value: '8'
-                            currency: INR/kWH
-                          quantity:
-                            available:
-                              measure:
-                                value: '100'
-                                unit: kWh
-                            selected:
-                              measure:
-                                value: '4'
-                                unit: kWh
-                          fulfillments:
-                            - '1'
+                            value: '0'
+                            currency: INR
                       fulfillments:
-                        - id: '1'
-                          customer:
-                            person:
-                              name: John Doe
-                            contact:
-                              phone: +91-9887766554
-                          type: CHARGING
-                          state:
-                            descriptor:
-                              code: charging-ended
-                          stops:
-                            - type: start
-                              location:
-                                gps: 12.423423,77.325647
-                              time:
-                                timestamp: 01-06-2023 10:00:00
-                                range:
-                                  start: 01-06-2023 10:00:00
-                                  end: 01-06-2023 10:10:00
-                            - type: end
-                              time:
-                                timestamp: 01-06-2023 10:30:00
-                                range:
-                                  start: 01-06-2023 10:30:00
-                                  end: 01-06-2023 10:40:00
-                          tags:
-                            - descriptor:
-                                name: Charging Point
-                              list:
-                                - descriptor:
-                                    name: Charger type
-                                  value: AC
-                                - descriptor:
-                                    name: Connector type
-                                  value: CCS2
-                                - descriptor:
-                                    name: Power Rating
-                                  value: greater than 50kW
-                                - descriptor:
-                                    name: Availability
-                                  value: Available
-                              display: true
+                      - id: '1'
+                        customer:
+                          person:
+                            name: John Doe
+                          contact:
+                            phone: "+91-9887766554"
+                        type: CHARGING
+                        state:
+                          descriptor:
+                            code: charging-ended
+                        stops:
+                        - type: start
+                          location:
+                            gps: 12.423423,77.325647
+                          time:
+                            timestamp: 01-06-2023 10:00:00
+                            range:
+                              start: 01-06-2023 10:00:00
+                              end: 01-06-2023 10:10:00
+                        - type: end
+                          time:
+                            timestamp: 01-06-2023 10:30:00
+                            range:
+                              start: 01-06-2023 10:30:00
+                              end: 01-06-2023 10:40:00
+                        tags:
+                        - descriptor:
+                            name: Charging Point
+                          list:
+                          - descriptor:
+                              name: Charger type
+                            value: AC
+                          - descriptor:
+                              name: Connector type
+                            value: CCS2
+                          - descriptor:
+                              name: Power Rating
+                            value: greater than 50kW
+                          - descriptor:
+                              name: Availability
+                            value: Available
+                          display: true
                       billing:
                         email: abc@example.com
-                        number: +91-9876522222
+                        number: "+91-9876522222"
                       quote:
                         price:
                           value: '40'
                           currency: INR
                         breakup:
-                          - item:
-                              descriptor:
-                                name: Estimated units consumed
-                              quantity:
-                                selected:
-                                  measure:
-                                    value: '4'
-                                    unit: kWh
-                            price:
-                              value: '32'
-                              currency: INR
-                      payments:
-                        - type: PRE-ORDER
-                          status: PAID
-                          params:
-                            amount: '40'
-                            currency: INR
-                          time:
-                            range:
-                              start: '2023-08-10T10:00:00Z'
-                              end: '2023-08-10T10:30:00Z'
-                      cancellation_terms:
-                        - fulfillment_state:
+                        - item:
                             descriptor:
-                              code: charging-start
-                          cancellation_fee:
-                            percentage: 30%
-                          external_ref:
-                            mimetype: text/html
-                            url: https://chargezone.in/charge/tnc.html
+                              name: Estimated units consumed
+                            quantity:
+                              selected:
+                                measure:
+                                  value: '4'
+                                  unit: kWh
+                          price:
+                            value: '32'
+                            currency: INR
+                      payments:
+                      - type: PRE-ORDER
+                        status: PAID
+                        params:
+                          amount: '40'
+                          currency: INR
+                          transaction_id: asjdhw8e238e3
+                        time:
+                          range:
+                            start: '2023-08-10T10:00:00Z'
+                            end: '2023-08-10T10:30:00Z'
+                      cancellation_terms:
+                      - fulfillment_state:
+                          descriptor:
+                            code: charging-start
+                        cancellation_fee:
+                          percentage: 30%
+                        external_ref:
+                          mimetype: text/html
+                          url: https://chargezone.in/charge/tnc.html
       responses:
         '200':
           description: Acknowledgement of message received after successful validation of schema and signature
@@ -2331,9 +2417,6 @@ paths:
                         - billing
                         - payments
                         - cancellation_terms
-                        - refund_terms
-                        - return_terms
-                        - replacement_terms
                         - id
                   required:
                     - order
@@ -2345,13 +2428,13 @@ paths:
               The provider sends status of the charging:
                 value:
                   context:
-                    domain: dent:0.1.0
+                    domain: uei:evcharging
                     action: on_status
                     location:
                       country:
-                        name: India
                         code: IND
-                    city: std:080
+                      city:
+                        code: std:080
                     version: 1.1.0
                     bap_id: example-bap.com
                     bap_uri: https://api.example-bap.com/pilot/bap/energy/v1
@@ -2369,106 +2452,119 @@ paths:
                           name: Chargezone
                           short_desc: Chargezone Technologies Pvt Ltd
                           images:
-                            - url: https://chargezone.in/images/logo.png
+                          - url: https://chargezone.in/images/logo.png
                       items:
-                        - id: pe-charging-01
+                      - id: pe-charging-01
+                        descriptor:
+                          code: STANDARD_CHARGING
+                          name: abc
+                          short_desc: ""
+                        price:
+                          value: '8'
+                          currency: INR/kWH
+                        quantity:
+                          available:
+                            measure:
+                              value: '100'
+                              unit: kWh
+                          selected:
+                            measure:
+                              value: '4'
+                              unit: kWh
+                        add_ons:
+                        - id: pe-charging-01-addon-1
                           descriptor:
-                            code: energy
+                            code: add-on-item
+                            name: Free car wash
                           price:
-                            value: '8'
-                            currency: INR/kWH
-                          quantity:
-                            available:
-                              measure:
-                                value: '100'
-                                unit: kWh
-                            selected:
-                              measure:
-                                value: '4'
-                                unit: kWh
-                          fulfillments:
-                            - '1'
+                            value: '0'
+                            currency: INR
                       fulfillments:
-                        - id: '1'
-                          customer:
-                            person:
-                              name: John Doe
-                            contact:
-                              phone: +91-9887766554
-                          type: CHARGING
-                          state:
-                            descriptor:
-                              name: vehicle 65% charged
-                          stops:
-                            - type: start
-                              location:
-                                gps: 12.423423,77.325647
-                              time:
-                                timestamp: 01-06-2023 10:00:00
-                                range:
-                                  start: 01-06-2023 10:00:00
-                                  end: 01-06-2023 10:10:00
-                            - type: end
-                              time:
-                                timestamp: 01-06-2023 10:30:00
-                                range:
-                                  start: 01-06-2023 10:30:00
-                                  end: 01-06-2023 10:40:00
-                          tags:
-                            - descriptor:
-                                name: Charging Point
-                              list:
-                                - descriptor:
-                                    name: Charger type
-                                  value: AC
-                                - descriptor:
-                                    name: Connector type
-                                  value: CCS2
-                                - descriptor:
-                                    name: Power Rating
-                                  value: greater than 50kW
-                                - descriptor:
-                                    name: Availability
-                                  value: Available
-                              display: true
+                      - id: '1'
+                        customer:
+                          person:
+                            name: John Doe
+                          contact:
+                            phone: "+91-9887766554"
+                        type: CHARGING
+                        state:
+                          descriptor:
+                            name: vehicle 65% charged
+                        stops:
+                        - type: start
+                          location:
+                            gps: 12.423423,77.325647
+                          time:
+                            timestamp: 01-06-2023 10:00:00
+                            range:
+                              start: 01-06-2023 10:00:00
+                              end: 01-06-2023 10:10:00
+                        - type: end
+                          time:
+                            timestamp: 01-06-2023 10:30:00
+                            range:
+                              start: 01-06-2023 10:30:00
+                              end: 01-06-2023 10:40:00
+                        tags:
+                        - descriptor:
+                            name: Charging Point
+                          list:
+                          - descriptor:
+                              name: Charger type
+                            value: AC
+                          - descriptor:
+                              name: Connector type
+                            value: CCS2
+                          - descriptor:
+                              name: Power Rating
+                            value: greater than 50kW
+                          - descriptor:
+                              name: Availability
+                            value: Available
+                          display: true
                       billing:
                         email: abc@example.com
-                        number: +91-9876522222
+                        number: "+91-9876522222"
                       quote:
                         price:
                           value: '32'
                           currency: INR
                         breakup:
-                          - item:
-                              descriptor:
-                                name: Estimated units consumed
-                              quantity:
-                                selected:
-                                  measure:
-                                    value: '4'
-                                    unit: kWh
-                            price:
-                              value: '32'
-                              currency: INR
-                      payments:
-                        - type: PRE-ORDER
-                          status: PAID
-                          params:
-                            amount: '40'
-                            currency: INR
-                          time:
-                            range:
-                              start: '2023-08-10T10:00:00Z'
-                              end: '2023-08-10T10:30:00Z'
-                      cancellation_terms:
-                        - fulfillment_state:
+                        - item:
                             descriptor:
-                              code: charging-start
-                          cancellation_fee:
-                            percentage: 30%
-                          external_ref:
-                            mimetype: text/html
-                            url: https://chargezone.in/charge/tnc.html
+                              name: Estimated units consumed
+                            quantity:
+                              selected:
+                                measure:
+                                  value: '4'
+                                  unit: kWh
+                          title: ENERGY
+                          price:
+                            value: '32'
+                            currency: INR
+                      payments:
+                      - id: testid
+                        type: PRE-ORDER
+                        status: PAID
+                        params:
+                          amount: '40'
+                          currency: INR
+                          transaction_id: asjdhw8e238e3
+                        time:
+                          range:
+                            start: '2023-08-10T10:00:00Z'
+                            end: '2023-08-10T10:30:00Z'
+                      cancellation_terms:
+                      - fulfillment_state:
+                          descriptor:
+                            code: charging-start
+                        cancel_by:
+                          label: upto 2 hours before the booked slot
+                        cancellation_fee:
+                          percentage: 30%
+                        external_ref:
+                          mimetype: text/html
+                          url: https://chargezone.in/charge/tnc.html
       responses:
         '200':
           description: Acknowledgement of message received after successful validation of schema and signature
@@ -2531,13 +2627,13 @@ paths:
               The provider responds with a form URL for rating:
                 value:
                   context:
-                    domain: dent:0.1.0
+                    domain: uei:evcharging
                     action: on_rating
                     location:
                       country:
-                        name: India
                         code: IND
-                    city: std:080
+                      city:
+                        code: std:080
                     version: 1.1.0
                     bap_id: example-bap.com
                     bap_uri: https://api.example-bap.com/pilot/bap/energy/v1
@@ -2548,10 +2644,9 @@ paths:
                     timestamp: '2023-07-16T04:41:16Z'
                   message:
                     feedback_form:
-                      xinput:
-                        form:
-                          url: https://api.example-bpp.com/pilot/bpp/feedback/portal
-                        required: 'false'
+                      form:
+                        url: https://api.example-bpp.com/pilot/bpp/feedback/portal
+                      required: 'false'
       responses:
         '200':
           description: Acknowledgement of message received after successful validation of schema and signature
@@ -2619,13 +2714,13 @@ paths:
               The provider returns support details:
                 value:
                   context:
-                    domain: dent:0.1.0
+                    domain: uei:evcharging
                     action: on_support
                     location:
                       country:
-                        name: India
                         code: IND
-                    city: std:080
+                      city:
+                        code: std:080
                     version: 1.1.0
                     bap_id: example-bap.com
                     bap_uri: https://api.example-bap.com/pilot/bap/energy/v1
@@ -2636,7 +2731,7 @@ paths:
                     timestamp: '2023-07-16T04:41:16Z'
                   message:
                     support:
-                      order_id: 6743e9e2-4fb5-487c-92b7
+                      ref_id: 6743e9e2-4fb5-487c-92b7
                       phone: 1800 1080
                       email: customer.care@chargezone.com
                       url: https://www.chargezone.com/helpdesk
@@ -2879,9 +2974,7 @@ components:
                                 - $ref: '#/components/schemas/Descriptor'
                               required:
                                 - name
-                                - images
                                 - short_desc
-                                - long_desc
                       required:
                         - id
                         - descriptor
@@ -2928,6 +3021,7 @@ components:
                     - STANDARD_CHARGING
                     - FAST_CHARGING
                     - ULTRA_FAST_CHARGING
+                    - GREEN_TARIFF
         time:
           $ref: '#/components/schemas/Time'
         ttl:
@@ -3193,6 +3287,7 @@ components:
             - CHARGING
             - BATTERY_SWAP
             - AUTOMATIC_DISPATCH
+            - MOBILE_BATTERY_SWAP
         rateable:
           description: Whether the fulfillment can be rated or not
           type: boolean
@@ -3414,6 +3509,7 @@ components:
                     - STANDARD_CHARGING
                     - FAST_CHARGING
                     - ULTRA_FAST_CHARGING
+                    - GREEN_TARIFF
         creator:
           description: The creator of this item
           allOf:
