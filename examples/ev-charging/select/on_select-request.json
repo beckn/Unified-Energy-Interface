@@ -21,13 +21,13 @@
   "message": {
     "order": {
       "providers": {
-        "id": "chargezone.in",
+        "id": "da327407-7e41-4d1d-9462-8ecb7bfccca6",
         "descriptor": {
-          "name": "Chargezone",
-          "short_desc": "Chargezone Technologies Pvt Ltd",
+          "name": "Pulse Energy",
+          "short_desc": "Pulse Energy offers a state-of-the-art EV charging station designed for fast, efficient, and reliable electric vehicle charging. Equipped with advanced technology, our stations provide high-speed charging capabilities to get you back on the road quickly",
           "images": [
             {
-              "url": "https://chargezone.in/images/logo.png"
+              "url": "https://pulse.energy/images/logo.png"
             }
           ]
         }
@@ -51,7 +51,7 @@
             },
             "selected": {
               "measure": {
-                "value": "4",
+                "value": "12.5",
                 "unit": "kWh"
               }
             }
@@ -66,8 +66,15 @@
             {
               "time": {
                 "range": {
-                  "start": "10:00",
-                  "end": "10:30"
+                  "start": "2024-06-11T10:30:00",
+                  "end": "2024-06-11T11:00:00"
+                }
+              },
+              "location": {
+                "gps": "12.423423,77.325647",
+                "address": "No. 12, 3rd Cross, 5th Main Road, Koramangala 4th Block",
+                "city": {
+                  "name": "Bangalore"
                 }
               }
             }
@@ -78,20 +85,6 @@
                 "name": "Charging Point Specifications"
               },
               "list": [
-                {
-                  "descriptor": {
-                    "name": "Charger type",
-                    "code": "charger-type"
-                  },
-                  "value": "AC"
-                },
-                {
-                  "descriptor": {
-                    "name": "Connector type",
-                    "code": "connector-type"
-                  },
-                  "value": "CCS2"
-                },
                 {
                   "descriptor": {
                     "name": "Power Rating"
@@ -112,7 +105,7 @@
       ],
       "quote": {
         "price": {
-          "value": "32",
+          "value": "100",
           "currency": "INR"
         },
         "breakup": [
@@ -124,14 +117,14 @@
               "quantity": {
                 "selected": {
                   "measure": {
-                    "value": "4",
+                    "value": "12.5",
                     "unit": "kWh"
                   }
                 }
               }
             },
             "price": {
-              "value": "32",
+              "value": "100",
               "currency": "INR"
             }
           }

@@ -21,69 +21,58 @@
   "message": {
     "order": {
       "providers": {
-        "id": "chargezone.in"
+        "id": "da327407-7e41-4d1d-9462-8ecb7bfccca6"
       },
       "items": [
         {
-          "id": "pe-charging-01"
+          "id": "pe-charging-01",
+          "price": {
+            "currency": "INR",
+            "value": "100"
+          }
         }
       ],
       "billing": {
-        "name": "John Doe",
-        "email": "abc@example.com",
-        "number": "+91-9876522222"
+        "name": "Alice Dixo",
+        "email": "alicedixo@gmail.com",
+        "phone": "+91-9876522222"
       },
       "fulfillments": [
         {
           "id": "1",
+          "type": "CHARGING",
           "customer": {
             "person": {
-              "name": "John Doe"
+              "name": "Alice Dixo"
             },
             "contact": {
               "phone": "+91-9887766554"
             }
-          }
+          },
+          "stops": [
+            {
+              "time": {
+                "range": {
+                  "start": "2024-06-11T10:30:00",
+                  "end": "2024-06-11T11:00:00"
+                }
+              }
+            }
+          ]
         }
       ],
       "payments": [
         {
-          "collected_by": "BPP",
-          "params": {
-            "amount": "40",
-            "currency": "INR"
-          },
+          "url": "https://payment.gateway.in",
+          "type": "PRE-ORDER",
           "status": "PAID",
-          "type": "PRE-ORDER"
-        }
-      ],
-      "quote": {
-        "price": {
-          "value": "40",
-          "currency": "INR"
-        },
-        "breakup": [
-          {
-            "item": {
-              "descriptor": {
-                "name": "Estimated units consumed"
-              },
-              "quantity": {
-                "selected": {
-                  "measure": {
-                    "value": "4",
-                    "unit": "kWh"
-                  }
-                }
-              }
-            },
-            "price": {
-              "value": "32",
-              "currency": "INR"
-            }
+          "params": {
+            "transaction_id": "paytxn_131414231",
+            "amount": "100",
+            "currency": "INR"
           }
-        ]
-      }
+        }
+      ]
     }
   }
 }

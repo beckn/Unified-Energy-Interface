@@ -20,16 +20,15 @@
   },
   "message": {
     "order": {
-      "id": "6743e9e2-4fb5-487c-92b7",
-      "status": "CANCELLED",
+      "id": "c8570489-0189-42bc-81fd-130d73ea16c4",
       "providers": {
-        "id": "chargezone.in",
+        "id": "da327407-7e41-4d1d-9462-8ecb7bfccca6",
         "descriptor": {
-          "name": "Chargezone",
-          "short_desc": "Chargezone Technologies Pvt Ltd",
+          "name": "Pulse Energy",
+          "short_desc": "Pulse Energy offers a state-of-the-art EV charging station designed for fast, efficient, and reliable electric vehicle charging. Equipped with advanced technology, our stations provide high-speed charging capabilities to get you back on the road quickly",
           "images": [
             {
-              "url": "https://chargezone.in/images/logo.png"
+              "url": "https://pulse.energy/images/logo.png"
             }
           ]
         }
@@ -53,7 +52,7 @@
             },
             "selected": {
               "measure": {
-                "value": "4",
+                "value": "0",
                 "unit": "kWh"
               }
             }
@@ -68,7 +67,7 @@
           "id": "1",
           "customer": {
             "person": {
-              "name": "John Doe"
+              "name": "Alice Dixo"
             },
             "contact": {
               "phone": "+91-9887766554"
@@ -84,8 +83,15 @@
             {
               "time": {
                 "range": {
-                  "start": "10:00",
-                  "end": "10:30"
+                  "start": "2024-06-11T10:30:00",
+                  "end": "2024-06-11T11:00:00"
+                }
+              },
+              "location": {
+                "gps": "12.423423,77.325647",
+                "address": "No. 12, 3rd Cross, 5th Main Road, Koramangala 4th Block",
+                "city": {
+                  "name": "Bangalore"
                 }
               }
             }
@@ -93,21 +99,9 @@
           "tags": [
             {
               "descriptor": {
-                "name": "Charging Point"
+                "name": "Charging Point Specifications"
               },
               "list": [
-                {
-                  "descriptor": {
-                    "name": "Charger type"
-                  },
-                  "value": "AC"
-                },
-                {
-                  "descriptor": {
-                    "name": "Connector type"
-                  },
-                  "value": "CCS2"
-                },
                 {
                   "descriptor": {
                     "name": "Power Rating"
@@ -127,12 +121,13 @@
         }
       ],
       "billing": {
-        "email": "abc@example.com",
-        "number": "+91-9876522222"
+        "name": "Alice Dixo",
+        "email": "alicedixo@gmail.com",
+        "phone": "+91-9876522222"
       },
       "quote": {
         "price": {
-          "value": "40",
+          "value": "100",
           "currency": "INR"
         },
         "breakup": [
@@ -144,14 +139,14 @@
               "quantity": {
                 "selected": {
                   "measure": {
-                    "value": "4",
+                    "value": "12.5",
                     "unit": "kWh"
                   }
                 }
               }
             },
             "price": {
-              "value": "32",
+              "value": "100",
               "currency": "INR"
             }
           }
@@ -159,17 +154,13 @@
       },
       "payments": [
         {
+          "url": "https://payment.gateway.in",
           "type": "PRE-ORDER",
           "status": "PAID",
           "params": {
-            "amount": "40",
+            "transaction_id": "paytxn_131414231",
+            "amount": "100",
             "currency": "INR"
-          },
-          "time": {
-            "range": {
-              "start": "2023-08-10T10:00:00Z",
-              "end": "2023-08-10T10:30:00Z"
-            }
           }
         }
       ]
