@@ -1,0 +1,132 @@
+{
+  "context": {
+    "domain": "dent:0.1.0",
+    "action": "on_status",
+    "location": {
+      "country": {
+        "name": "India",
+        "code": "IND"
+      }
+    },
+    "city": "std:080",
+    "version": "1.1.0",
+    "bap_id": "sheru-bap.com",
+    "bap_uri": "https://api.example-bap.com/pilot/bap/energy/v1",
+    "bpp_id": "pulse-energy-bpp.com",
+    "bpp_uri": "https://api.example-bpp.com/pilot/bpp/",
+    "transaction_id": "6743e9e2-4fb5-487c-92b7-13ba8018f176",
+    "message_id": "6743e9e2-4fb5-487c-92b7-13ba8018f176",
+    "timestamp": "2023-07-16T04:41:16Z"
+  },
+  "message": {
+    "order": {
+      "id": "c8570489-0189-42bc-81fd-130d73ea16c4",
+      "providers": {
+        "id": "da327407-7e41-4d1d-9462-8ecb7bfccca6",
+        "descriptor": {
+          "name": "Pulse Energy",
+          "short_desc": "Pulse Energy offers a state-of-the-art EV charging station designed for fast, efficient, and reliable electric vehicle charging. Equipped with advanced technology, our stations provide high-speed charging capabilities to get you back on the road quickly",
+          "images": [
+            {
+              "url": "https://pulse.energy/images/logo.png"
+            }
+          ]
+        }
+      },
+      "items": [
+        {
+          "id": "2",
+          "descriptor": {
+            "code": "energy-demand",
+            "name": "Energy Demand"
+          },
+          "price": {
+            "value": "2",
+            "currency": "INR/kWH"
+          },
+          "quantity": {
+            "available": {
+              "measure": {
+                "value": "4",
+                "unit": "kWH"
+              }
+            }
+          }
+        }
+      ],
+      "fulfillments": [
+        {
+          "state": {
+            "descriptor": {
+              "code": "energy-transferred",
+              "name": "The Energy has been transferred"
+            }
+          },
+          "customer": {
+            "person": {
+              "name": "Ramesh Dsouza"
+            },
+            "contact": {
+              "phone": "+91-9887755555"
+            }
+          }
+        }
+      ],
+      "billing": {
+        "organization": {
+          "descriptor": {
+            "name": "Sheru Energy Ltd"
+          }
+        },
+        "name": "Ramesh Dsouza",
+        "email": "ramesh@sheru.com",
+        "phone": "+91-9876555555"
+      },
+      "quote": {
+        "price": {
+          "value": "8",
+          "currency": "INR"
+        },
+        "breakup": [
+          {
+            "item": {
+              "descriptor": {
+                "name": "Energy Demand cost"
+              },
+              "quantity": {
+                "selected": {
+                  "measure": {
+                    "value": "4",
+                    "unit": "kWh"
+                  }
+                }
+              }
+            },
+            "price": {
+              "value": "8",
+              "currency": "INR"
+            }
+          }
+        ]
+      },
+      "payments": [
+        {
+          "url": "https://payment.gateway.in",
+          "type": "PRE-ORDER",
+          "status": "PAID",
+          "params": {
+            "transaction_id": "paytxn_131414231",
+            "amount": "8",
+            "currency": "INR"
+          },
+          "time": {
+            "range": {
+              "start": "2023-08-10T10:00:00Z",
+              "end": "2023-08-10T10:30:00Z"
+            }
+          }
+        }
+      ]
+    }
+  }
+}
