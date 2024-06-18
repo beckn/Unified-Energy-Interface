@@ -21,19 +21,31 @@
   "message": {
     "order": {
       "provider": {
-        "id": "chargezone.in"
+        "id": "da327407-7e41-4d1d-9462-8ecb7bfccca6"
       },
       "items": [
         {
           "id": "pe-charging-01",
-          "quantity": {
-            "selected": {
-              "measure": {
-                "value": "4",
-                "unit": "kWh"
+          "price": {
+            "currency": "INR",
+            "value": "100"
+          }
+        }
+      ],
+      "fulfillments": [
+        {
+          "id": "1",
+          "type": "CHARGING",
+          "stops": [
+            {
+              "time": {
+                "range": {
+                  "start": "2024-06-11T10:30:00",
+                  "end": "2024-06-11T11:00:00"
+                }
               }
             }
-          }
+          ]
         }
       ]
     }

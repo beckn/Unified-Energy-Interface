@@ -19,12 +19,10 @@
     "timestamp": "2023-07-16T04:41:16Z"
   },
   "message": {
-    "order": {
-      "cancellation_reason_id": "5",
-      "descriptor": {
-        "short_desc": "Can't make it on time"
-      },
-      "order_id": "6743e9e2-4fb5-487c-92b7"
-    }
+    "cancellation_reason_id": "5",
+    "descriptor": {
+      "short_desc": "Can't make it on time"
+    },
+    "order_id": "c8570489-0189-42bc-81fd-130d73ea16c4"
   }
 }
