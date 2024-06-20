@@ -76,7 +76,7 @@
           "type": "CHARGING",
           "state": {
             "descriptor": {
-              "code": "charging-inprogress",
+              "code": "CHARGING_INPROGRESS",
               "short_desc": "Vehicle 45 % Charged"
             }
           },

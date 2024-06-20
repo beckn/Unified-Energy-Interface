@@ -76,7 +76,7 @@
           "type": "CHARGING",
           "state": {
             "descriptor": {
-              "code": "payment-completed"
+              "code": "PAYMENT_COMPLETED"
             }
           },
           "stops": [

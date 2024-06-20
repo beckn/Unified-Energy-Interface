@@ -76,7 +76,7 @@
           "type": "CHARGING",
           "state": {
             "descriptor": {
-              "code": "order-cancelled"
+              "code": "ORDER_CANCELLED"
             }
           },
           "stops": [
