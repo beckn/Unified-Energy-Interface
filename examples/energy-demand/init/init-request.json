@@ -10,9 +10,9 @@
     },
     "city": "std:080",
     "version": "1.1.0",
-    "bap_id": "example-bap.com",
+    "bap_id": "sheru-bap.com",
     "bap_uri": "https://api.example-bap.com/pilot/bap/energy/v1",
-    "bpp_id": "chargezone-energy-bpp.com",
+    "bpp_id": "pulse-energy-bpp.com",
     "bpp_uri": "https://api.example-bpp.com/pilot/bpp/",
     "transaction_id": "6743e9e2-4fb5-487c-92b7-13ba8018f176",
     "message_id": "6743e9e2-4fb5-487c-92b7-13ba8018f176",
@@ -25,40 +25,29 @@
       },
       "items": [
         {
-          "id": "pe-charging-01",
-          "price": {
-            "currency": "INR",
-            "value": "100"
-          }
+          "id": "2"
         }
       ],
       "billing": {
-        "name": "Alice Dixo",
-        "email": "alicedixo@gmail.com",
-        "phone": "+91-9876522222"
+        "organization": {
+          "descriptor": {
+            "name": "Sheru Energy Ltd"
+          }
+        },
+        "name": "Ramesh Dsouza",
+        "email": "ramesh@sheru.com",
+        "phone": "+91-9876555555"
       },
       "fulfillments": [
         {
-          "id": "1",
-          "type": "CHARGING",
           "customer": {
             "person": {
-              "name": "Alice Dixo"
+              "name": "Ramesh Dsouza"
             },
             "contact": {
-              "phone": "+91-9887766554"
+              "phone": "+91-9887755555"
             }
-          },
-          "stops": [
-            {
-              "time": {
-                "range": {
-                  "start": "2024-06-11T10:30:00",
-                  "end": "2024-06-11T11:00:00"
-                }
-              }
-            }
-          ]
+          }
         }
       ]
     }

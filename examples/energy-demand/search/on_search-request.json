@@ -1,0 +1,99 @@
+{
+  "context": {
+    "domain": "dent:0.1.0",
+    "action": "on_search",
+    "location": {
+      "country": {
+        "name": "India",
+        "code": "IND"
+      }
+    },
+    "city": "std:080",
+    "version": "1.1.0",
+    "bap_id": "sheru-bap.com",
+    "bap_uri": "https://api.example-bap.com/pilot/bap/energy/v1",
+    "bpp_id": "pulse-energy-bpp.com",
+    "bpp_uri": "https://api.example-bpp.com/pilot/bpp/",
+    "transaction_id": "6743e9e2-4fb5-487c-92b7-13ba8018f176",
+    "message_id": "6743e9e2-4fb5-487c-92b7-13ba8018f176",
+    "timestamp": "2023-07-16T04:41:16Z"
+  },
+  "message": {
+    "catalog": {
+      "providers": [
+        {
+          "id": "da327407-7e41-4d1d-9462-8ecb7bfccca6",
+          "descriptor": {
+            "name": "Pulse Energy",
+            "short_desc": "Pulse Energy offers a state-of-the-art EV charging station designed for fast, efficient, and reliable electric vehicle charging. Equipped with advanced technology, our stations provide high-speed charging capabilities to get you back on the road quickly",
+            "images": [
+              {
+                "url": "https://pulse.energy/images/logo.png"
+              }
+            ]
+          },
+          "categories": [
+            {
+              "id": "2",
+              "descriptor": {
+                "code": "energy-demand",
+                "name": "Energy Demand"
+              }
+            }
+          ],
+          "locations": [
+            {
+              "id": "1",
+              "gps": "12.345345,77.389754"
+            },
+            {
+              "id": "2",
+              "gps": "12.247934,77.876987"
+            }
+          ],
+          "items": [
+            {
+              "id": "2",
+              "descriptor": {
+                "code": "energy-demand",
+                "name": "Energy Demand"
+              },
+              "price": {
+                "value": "2",
+                "currency": "INR/kWH"
+              },
+              "quantity": {
+                "available": {
+                  "measure": {
+                    "value": "4",
+                    "unit": "kWH"
+                  }
+                }
+              },
+              "category_ids": [
+                "2"
+              ],
+              "tags": [
+                {
+                  "descriptor": {
+                    "name": "energy-specifications"
+                  },
+                  "list": [
+                    {
+                      "descriptor": {
+                        "name": "Energy type",
+                        "code": "energy-type"
+                      },
+                      "value": "Green Energy"
+                    }
+                  ],
+                  "display": true
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    }
+  }
+}

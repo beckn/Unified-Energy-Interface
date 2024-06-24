@@ -22,13 +22,13 @@
     "catalog": {
       "providers": [
         {
-          "id": "chargezone.in",
+          "id": "da327407-7e41-4d1d-9462-8ecb7bfccca6",
           "descriptor": {
-            "name": "Chargezone",
-            "short_desc": "Chargezone Technologies Pvt Ltd",
+            "name": "Pulse Energy",
+            "short_desc": "Pulse Energy offers a state-of-the-art EV charging station designed for fast, efficient, and reliable electric vehicle charging. Equipped with advanced technology, our stations provide high-speed charging capabilities to get you back on the road quickly",
             "images": [
               {
-                "url": "https://chargezone.in/images/logo.png"
+                "url": "https://pulse.energy/images/logo.png"
               }
             ]
           },
@@ -79,27 +79,11 @@
               "fulfillment_ids": [
                 "1",
                 "2"
-              ]
-            }
-          ],
-          "fulfillments": [
-            {
-              "id": "1",
-              "type": "CHARGING",
-              "stops": [
-                {
-                  "time": {
-                    "range": {
-                      "start": "10:00",
-                      "end": "10:30"
-                    }
-                  }
-                }
               ],
               "tags": [
                 {
                   "descriptor": {
-                    "name": "Charging Point Specifications"
+                    "name": "Charger-Specifications"
                   },
                   "list": [
                     {
@@ -116,6 +100,46 @@
                       },
                       "value": "CCS2"
                     },
+                    {
+                      "descriptor": {
+                        "name": "Vehicle type",
+                        "code": "vehicle-type"
+                      },
+                      "value": "4W"
+                    }
+                  ],
+                  "display": true
+                }
+              ]
+            }
+          ],
+          "fulfillments": [
+            {
+              "id": "1",
+              "type": "CHARGING",
+              "stops": [
+                {
+                  "time": {
+                    "range": {
+                      "start": "10:00",
+                      "end": "10:30"
+                    }
+                  },
+                  "location": {
+                    "gps": "12.423423,77.325647",
+                    "address": "No. 12, 3rd Cross, 5th Main Road, Koramangala 4th Block",
+                    "city": {
+                      "name": "Bangalore"
+                    }
+                  }
+                }
+              ],
+              "tags": [
+                {
+                  "descriptor": {
+                    "name": "Charging Point Specifications"
+                  },
+                  "list": [
                     {
                       "descriptor": {
                         "name": "Power Rating"
@@ -140,8 +164,15 @@
                 {
                   "time": {
                     "range": {
-                      "start": "10:30",
-                      "end": "11:00"
+                      "start": "10:00",
+                      "end": "22:30"
+                    }
+                  },
+                  "location": {
+                    "gps": "12.423423,77.325647",
+                    "address": "Suite 305, 3rd Floor, Mantri Square, Malleshwaram,",
+                    "city": {
+                      "name": "Bangalore"
                     }
                   }
                 }
@@ -149,21 +180,9 @@
               "tags": [
                 {
                   "descriptor": {
-                    "name": "Charging Point"
+                    "name": "Charging Point Specifications"
                   },
                   "list": [
-                    {
-                      "descriptor": {
-                        "name": "Charger type"
-                      },
-                      "value": "AC"
-                    },
-                    {
-                      "descriptor": {
-                        "name": "Connector type"
-                      },
-                      "value": "CCS2"
-                    },
                     {
                       "descriptor": {
                         "name": "Power Rating"
@@ -178,67 +197,6 @@
                     }
                   ],
                   "display": true
-                }
-              ]
-            }
-          ]
-        },
-        {
-          "id": "log9.in",
-          "descriptor": {
-            "name": "Log9 Inc"
-          },
-          "categories": [
-            {
-              "id": "1",
-              "descriptor": {
-                "code": "green-tariff",
-                "name": "green tariff"
-              }
-            }
-          ],
-          "items": [
-            {
-              "id": "pe-charging-01",
-              "descriptor": {
-                "code": "energy"
-              },
-              "price": {
-                "value": "10",
-                "currency": "INR / kWH"
-              },
-              "quantity": {
-                "available": "1000"
-              },
-              "category_ids": [
-                "1"
-              ],
-              "fulfillment_ids": [
-                "3",
-                "4"
-              ]
-            }
-          ],
-          "fulfillments": [
-            {
-              "id": "3",
-              "type": "BATTERY-SWAP",
-              "stops": [
-                {
-                  "location": {
-                    "gps": "12.745675, 77.987393"
-                  }
-                }
-              ]
-            },
-            {
-              "id": "4",
-              "type": "MOBILE-BATTERY-SWAP",
-              "stops": [
-                {
-                  "location": {
-                    "url": "https://log9.in/track/bswap/3234242"
-                  }
                 }
               ]
             }

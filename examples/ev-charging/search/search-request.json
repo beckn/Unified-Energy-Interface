@@ -18,29 +18,40 @@
   },
   "message": {
     "intent": {
-      "item": {
+      "category": {
         "descriptor": {
-          "code": "energy"
-        },
-        "quantity": {
-          "required": {
-            "value": "4.0",
-            "unit": "kWH"
-          }
-        },
-        "category": {
-          "descriptor": {
-            "code": "green-tariff"
-          }
+          "code": "green-tariff"
         }
       },
-      "location": {
-        "gps": "12.423423,77.325647",
-        "radius": {
-          "type": "CONSTANT",
-          "value": "5",
-          "unit": "km"
-        }
+      "item": {
+        "tags": [
+          {
+            "descriptor": {
+              "code": "vehicle-type"
+            },
+            "list": [
+              {
+                "value": "4W"
+              }
+            ]
+          }
+        ]
+      },
+      "fulfillment": {
+        "stops": [
+          {
+            "location": {
+              "circle": {
+                "gps": "12.423423,77.325647",
+                "radius": {
+                  "type": "CONSTANT",
+                  "value": "5",
+                  "unit": "km"
+                }
+              }
+            }
+          }
+        ]
       }
     }
   }

@@ -1,7 +1,7 @@
 {
   "context": {
     "domain": "dent:0.1.0",
-    "action": "on_status",
+    "action": "on_confirm",
     "location": {
       "country": {
         "name": "India",
@@ -76,8 +76,7 @@
           "type": "CHARGING",
           "state": {
             "descriptor": {
-              "code": "CHARGING_INPROGRESS",
-              "short_desc": "Vehicle 45 % Charged"
+              "code": "PAYMENT_COMPLETED"
             }
           },
           "stops": [
