@@ -21,7 +21,7 @@
   },
   "message": {
     "order": {
-      "providers": {
+      "provider": {
         "id": "chargezone.in"
       },
       "items": [
@@ -45,7 +45,7 @@
       "billing": {
         "name": "John Doe",
         "email": "abc@example.com",
-        "number": "+91-9876522222"
+        "phone": "+91-9876522222"
       },
       "fulfillments": [
         {

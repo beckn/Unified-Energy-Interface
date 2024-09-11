@@ -23,7 +23,7 @@
     "order": {
       "id": "6743e9e2-4fb5-487c-92b7",
       "status": "CANCELLED",
-      "providers": {
+      "provider": {
         "id": "chargezone.in",
         "descriptor": {
           "name": "Chargezone",
@@ -101,8 +101,8 @@
             {
               "time": {
                 "range": {
-                  "start": "10:00",
-                  "end": "10:30"
+                  "start": "2023-06-10T10:00:00Z",
+                  "end": "2023-06-10T10:30:00Z"
                 }
               }
             }
@@ -145,7 +145,7 @@
       ],
       "billing": {
         "email": "abc@example.com",
-        "number": "+91-9876522222"
+        "phone": "+91-9876522222"
       },
       "quote": {
         "price": {

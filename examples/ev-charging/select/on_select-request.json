@@ -21,7 +21,7 @@
   },
   "message": {
     "order": {
-      "providers": {
+      "provider": {
         "id": "chargezone.in",
         "descriptor": {
           "name": "Chargezone",
@@ -78,13 +78,13 @@
             {
               "type": "start",
               "time": {
-                "timestamp": "01-06-2023 10:00:00"
+                "timestamp": "2023-06-01T10:00:00"
               }
             },
             {
               "type": "end",
               "time": {
-                "timestamp": "01-06-2023 10:30:00"
+                "timestamp": "2023-06-01T10:00:00"
               }
             }
           ],
@@ -154,7 +154,7 @@
           },
           {
             "item": {
-              "add-ons": [
+              "add_ons": [
                 {
                   "id": "pe-charging-01-addon-1"
                 }

@@ -20,12 +20,10 @@
     "timestamp": "2023-07-16T04:41:16Z"
   },
   "message": {
-    "order": {
       "cancellation_reason_id": "5",
       "descriptor": {
         "short_desc": "can't attend booking"
       },
       "order_id": "6743e9e2-4fb5-487c-92b7"
-    }
   }
 }

@@ -60,13 +60,13 @@
                 {
                   "type": "start",
                   "time": {
-                    "timestamp": "01-06-2023 10:00:00"
+                    "timestamp": "2023-06-01T10:00:00Z"
                   }
                 },
                 {
                   "type": "end",
                   "time": {
-                    "timestamp": "01-06-2023 10:30:00"
+                    "timestamp": "2023-06-01T10:00:00Z"
                   }
                 }
               ],
@@ -114,13 +114,13 @@
                 {
                   "type": "start",
                   "time": {
-                    "timestamp": "01-06-2023 10:00:00"
+                    "timestamp": "2023-06-01T10:00:00Z"
                   }
                 },
                 {
                   "type": "end",
                   "time": {
-                    "timestamp": "01-06-2023 10:30:00"
+                    "timestamp": "2023-06-01T10:00:00Z"
                   }
                 }
               ],
@@ -236,7 +236,7 @@
               "stops": [
                 {
                   "location": {
-                    "url": "https://log9.in/track/bswap/3234242"
+                    "map_url": "https://log9.in/track/bswap/3234242"
                   }
                 }
               ]
