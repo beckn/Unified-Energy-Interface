@@ -496,6 +496,7 @@ paths:
                       $ref: '#/components/schemas/Descriptor'
                   required:
                     - order_id
+                    - cancellation_reason_id
               required:
                 - context
                 - message
@@ -1903,6 +1904,10 @@ components:
         type:
           description: 'A code that describes the mode of fulfillment. This is typically set when there are multiple ways an order can be fulfilled. For example, a retail order can be fulfilled either via store pickup or a home delivery. Similarly, a medical consultation can be provided either in-person or via tele-consultation. The network policy must publish standard fulfillment type codes for the different modes of fulfillment.'
           type: string
+          enum:
+            - CHARGING
+            - AUTOMATIC-DISPATCH
+            - VIRTUAL-POWER PURCHASE-AGREEMENTS
         rateable:
           description: Whether the fulfillment can be rated or not
           type: boolean
