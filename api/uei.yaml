@@ -37,7 +37,7 @@ paths:
               The BAP looks for EV charging providers:
                 value:
                   context:
-                    domain: dent:ev-charging:0.1.0
+                    domain: ev-charging
                     action: search
                     location:
                       country:
@@ -131,7 +131,7 @@ paths:
               The BAP selects an EV charging service from a provider:
                 value:
                   context:
-                    domain: dent:ev-charging:0.1.0
+                    domain: ev-charging
                     action: select
                     location:
                       country:
@@ -220,7 +220,7 @@ paths:
               The BAP initiates an order for the EV charging service from a provider:
                 value:
                   context:
-                    domain: dent:ev-charging:0.1.0
+                    domain: ev-charging
                     action: init
                     location:
                       country:
@@ -318,7 +318,7 @@ paths:
               The BAP confirms the order to charge the EV:
                 value:
                   context:
-                    domain: 'dent:ev-charging:0.1.0'
+                    domain: ev-charging
                     action: confirm
                     location:
                       country:
@@ -440,7 +440,7 @@ paths:
               The BAP checks for the status of the charging:
                 value:
                   context:
-                    domain: 'dent:ev-charging:0.1.0'
+                    domain: ev-charging
                     action: status
                     location:
                       country:
@@ -520,7 +520,7 @@ paths:
               The BAP cancels the order for the EV charging:
                 value:
                   context:
-                    domain: 'dent:ev-charging:0.1.0'
+                    domain: ev-charging
                     action: cancel
                     location:
                       country:
@@ -606,7 +606,7 @@ paths:
               The BAP sends an update to start charging the EV:
                 value:
                   context:
-                    domain: 'dent:ev-charging:0.1.0'
+                    domain: ev-charging
                     action: update
                     location:
                       country:
@@ -632,7 +632,7 @@ paths:
               The BAP sends an update to stop charging the EV:
                 value:
                   context:
-                    domain: 'dent:ev-charging:0.1.0'
+                    domain: ev-charging
                     action: update
                     location:
                       country:
@@ -716,7 +716,7 @@ paths:
               The BAP rates the service provided:
                 value:
                   context:
-                    domain: 'dent:ev-charging:0.1.0'
+                    domain: ev-charging
                     action: rating
                     location:
                       country:
@@ -793,7 +793,7 @@ paths:
               The BAP wants to contact support:
                 value:
                   context:
-                    domain: 'dent:ev-charging:0.1.0'
+                    domain: ev-charging
                     action: support
                     location:
                       country:
@@ -874,7 +874,7 @@ paths:
               The provider returns a list of catalogs:
                 value:
                   context:
-                    domain: 'dent:ev-charging:0.1.0'
+                    domain: ev-charging
                     action: on_search
                     location:
                       country:
@@ -1091,7 +1091,7 @@ paths:
               The provider sends the details of the item selected, along with a quote:
                 value:
                   context:
-                    domain: 'dent:ev-charging:0.1.0'
+                    domain: ev-charging
                     action: on_select
                     location:
                       country:
@@ -1252,7 +1252,7 @@ paths:
               The BPP intiates the order, sends the payment link:
                 value:
                   context:
-                    domain: 'dent:ev-charging:0.1.0'
+                    domain: ev-charging
                     action: on_init
                     location:
                       country:
@@ -1434,7 +1434,7 @@ paths:
               The BAP sends an order confirmation:
                 value:
                   context:
-                    domain: 'dent:ev-charging:0.1.0'
+                    domain: ev-charging
                     action: on_confirm
                     location:
                       country:
@@ -1630,7 +1630,7 @@ paths:
               The provider cancels the order after the BAP requested for a cancellation:
                 value:
                   context:
-                    domain: 'dent:ev-charging:0.1.0'
+                    domain: ev-charging
                     action: on_cancel
                     location:
                       country:
@@ -1755,7 +1755,7 @@ paths:
               The provider cancels the order after the there was an error in the charger:
                 value:
                   context:
-                    domain: 'dent:ev-charging:0.1.0'
+                    domain: ev-charging
                     action: on_cancel
                     location:
                       country:
@@ -1941,7 +1941,7 @@ paths:
               The provider sends an updated object to start charging:
                 value:
                   context:
-                    domain: 'dent:ev-charging:0.1.0'
+                    domain: ev-charging
                     action: on_update
                     location:
                       country:
@@ -2075,7 +2075,7 @@ paths:
               The provider sends an updated object to stop charging:
                 value:
                   context:
-                    domain: 'dent:ev-charging:0.1.0'
+                    domain: ev-charging
                     action: on_update
                     location:
                       country:
@@ -2266,7 +2266,7 @@ paths:
               The provider sends status of the charging:
                 value:
                   context:
-                    domain: 'dent:ev-charging:0.1.0'
+                    domain: ev-charging
                     action: on_status
                     location:
                       country:
@@ -2458,7 +2458,7 @@ paths:
               The provider responds with a form URL for rating:
                 value:
                   context:
-                    domain: 'dent:ev-charging:0.1.0'
+                    domain: ev-charging
                     action: on_rating
                     location:
                       country:
@@ -2536,7 +2536,7 @@ paths:
               The provider returns support details:
                 value:
                   context:
-                    domain: 'dent:ev-charging:0.1.0'
+                    domain: ev-charging
                     action: on_support
                     location:
                       country:
