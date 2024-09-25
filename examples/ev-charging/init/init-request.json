@@ -1,14 +1,15 @@
 {
   "context": {
-    "domain": "dent:0.1.0",
+    "domain": "dent:ev-charging:0.1.0",
     "action": "init",
     "location": {
       "country": {
-        "name": "India",
         "code": "IND"
+      },
+      "city": {
+        "code": "std:080"
       }
     },
-    "city": "std:080",
     "version": "1.1.0",
     "bap_id": "example-bap.com",
     "bap_uri": "https://api.example-bap.com/pilot/bap/energy/v1",
@@ -25,7 +26,20 @@
       },
       "items": [
         {
-          "id": "pe-charging-01"
+          "id": "pe-charging-01",
+          "quantity": {
+            "selected": {
+              "measure": {
+                "value": "4",
+                "unit": "kWh"
+              }
+            }
+          },
+          "add_ons": [
+            {
+              "id": "pe-charging-01-addon-1"
+            }
+          ]
         }
       ],
       "billing": {

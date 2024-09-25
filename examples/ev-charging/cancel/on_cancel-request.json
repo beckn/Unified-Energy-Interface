@@ -1,14 +1,15 @@
 {
   "context": {
-    "domain": "dent:0.1.0",
+    "domain": "dent:ev-charging:0.1.0",
     "action": "on_cancel",
     "location": {
       "country": {
-        "name": "India",
         "code": "IND"
+      },
+      "city": {
+        "code": "std:080"
       }
     },
-    "city": "std:080",
     "version": "1.1.0",
     "bap_id": "example-bap.com",
     "bap_uri": "https://api.example-bap.com/pilot/bap/energy/v1",
@@ -22,7 +23,7 @@
     "order": {
       "id": "6743e9e2-4fb5-487c-92b7",
       "status": "CANCELLED",
-      "providers": {
+      "provider": {
         "id": "chargezone.in",
         "descriptor": {
           "name": "Chargezone",
@@ -58,8 +59,18 @@
               }
             }
           },
-          "fulfillments": [
-            "1"
+          "add_ons": [
+            {
+              "id": "pe-charging-01-addon-1",
+              "descriptor": {
+                "code": "add-on-item",
+                "name": "Free car wash"
+              },
+              "price": {
+                "value": "0",
+                "currency": "INR"
+              }
+            }
           ]
         }
       ],
@@ -84,8 +95,8 @@
             {
               "time": {
                 "range": {
-                  "start": "10:00",
-                  "end": "10:30"
+                  "start": "2023-06-01T10:00:00",
+                  "end": "2023-06-01T10:30:00"
                 }
               }
             }
@@ -128,7 +139,7 @@
       ],
       "billing": {
         "email": "abc@example.com",
-        "number": "+91-9876522222"
+        "phone": "+91-9876522222"
       },
       "quote": {
         "price": {
@@ -163,7 +174,8 @@
           "status": "PAID",
           "params": {
             "amount": "40",
-            "currency": "INR"
+            "currency": "INR",
+            "transaction_id": "asjdhw8e238e3"
           },
           "time": {
             "range": {
