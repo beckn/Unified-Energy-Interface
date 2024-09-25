@@ -3,10 +3,9 @@ The Unified Energy Interface (UEI) Protocol is an adaptation of [beckn protocol]
 
 ## Release History
 
-| Version | Release Date         | Adaptation to Core Spec Version | Authors      |
-|:-------:|----------------------|---------------------------------|--------------|
-| 0.2.0   | 25th September, 2023 | 1.1.0                           | Ravi Prakash, Akhil Jayaprakash |
-| 0.1.0   | 24th June, 2023      | 1.1.0                           | Ravi Prakash |
+For the complete release history, please refer to [this link.](https://github.com/beckn/Unified-Energy-Interface/releases)
+
+Important: We recommend using version 0.2.2 or later for production environments. Releases prior to version 0.2.2 may not be stable and are not advised for production use.
 
 ## Working Group Members
 
