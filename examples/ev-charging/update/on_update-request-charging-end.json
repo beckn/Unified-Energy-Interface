@@ -1,6 +1,6 @@
 {
   "context": {
-    "domain": "dent:ev-charging:0.1.0",
+    "domain": "uei:ev-charging:0.1.0",
     "action": "on_update",
     "location": {
       "country": {
