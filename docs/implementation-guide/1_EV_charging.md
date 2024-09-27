@@ -36,7 +36,7 @@ The search is broadcast to all providers on the network, there will be many prov
 ```json
 {
   "context": {
-    "domain": "dent:ev-charging:0.1.0",
+    "domain": "uei:ev-charging",
     "action": "search",
     "location": {
       "country": {
@@ -99,7 +99,7 @@ The on_search comes from all the providers, The providers have to be mapped to t
 ```json
 {
   "context": {
-    "domain": "dent:ev-charging:0.1.0",
+    "domain": "uei:ev-charging",
     "action": "on_search",
     "location": {
       "country": {
@@ -425,7 +425,7 @@ An example of `select` request
 ```json
 {
   "context": {
-    "domain": "dent:ev-charging:0.1.0",
+    "domain": "uei:ev-charging",
     "action": "select",
     "location": {
       "country": {
@@ -482,7 +482,7 @@ An example of `on_select` request
 ```json
 {
   "context": {
-    "domain": "dent:ev-charging:0.1.0",
+    "domain": "uei:ev-charging",
     "action": "select",
     "location": {
       "country": {
@@ -539,7 +539,7 @@ An example of `init` request
 ```json
 {
   "context": {
-    "domain": "dent:ev-charging:0.1.0",
+    "domain": "uei:ev-charging",
     "action": "init",
     "location": {
       "country": {
@@ -609,7 +609,7 @@ An example of `on_init` request
 ```json
 {
   "context": {
-    "domain": "dent:ev-charging:0.1.0",
+    "domain": "uei:ev-charging",
     "action": "on_init",
     "location": {
       "country": {
@@ -822,7 +822,7 @@ An example of `confirm` request
 ```json
 {
   "context": {
-    "domain": "dent:ev-charging:0.1.0",
+    "domain": "uei:ev-charging",
     "action": "confirm",
     "location": {
       "country": {
@@ -931,7 +931,7 @@ An example of `on_confirm` request
 ```json
 {
   "context": {
-    "domain": "dent:ev-charging:0.1.0",
+    "domain": "uei:ev-charging",
     "action": "on_confirm",
     "location": {
       "country": {
@@ -1193,7 +1193,7 @@ An example of `status` request
 ```json
 {
   "context": {
-    "domain": "dent:ev-charging:0.1.0",
+    "domain": "uei:ev-charging",
     "action": "status",
     "location": {
       "country": {
@@ -1223,7 +1223,7 @@ An example of `on_status` request
 ```json
 {
   "context": {
-    "domain": "dent:ev-charging:0.1.0",
+    "domain": "uei:ev-charging",
     "action": "on_status",
     "location": {
       "country": {
@@ -1448,7 +1448,7 @@ An example of `cancel` request
 ```json
 {
   "context": {
-    "domain": "dent:ev-charging:0.1.0",
+    "domain": "uei:ev-charging",
     "action": "cancel",
     "location": {
       "country": {
@@ -1482,7 +1482,7 @@ An example of `on_cancel` request
 ```json
 {
   "context": {
-    "domain": "dent:ev-charging:0.1.0",
+    "domain": "uei:ev-charging",
     "action": "on_cancel",
     "location": {
       "country": {
@@ -1693,7 +1693,7 @@ An example of `update` request
 ```json
 {
   "context": {
-    "domain": "dent:ev-charging:0.1.0",
+    "domain": "uei:ev-charging",
     "action": "update",
     "location": {
       "country": {
@@ -1736,7 +1736,7 @@ An example of `on_update` request
 ```json
 {
   "context": {
-    "domain": "dent:ev-charging:0.1.0",
+    "domain": "uei:ev-charging",
     "action": "on_update",
     "location": {
       "country": {
@@ -1986,7 +1986,7 @@ An example of `rating` request
 ```json
 {
   "context": {
-    "domain": "dent:ev-charging:0.1.0",
+    "domain": "uei:ev-charging",
     "action": "rating",
     "location": {
       "country": {
@@ -2022,7 +2022,7 @@ An example of `on_rating` request
 ```json
 {
   "context": {
-    "domain": "dent:ev-charging:0.1.0",
+    "domain": "uei:ev-charging",
     "action": "on_rating",
     "location": {
       "country": {
@@ -2057,7 +2057,7 @@ An example of `support` request
 ```json
 {
   "context": {
-    "domain": "dent:ev-charging:0.1.0",
+    "domain": "uei:ev-charging",
     "action": "support",
     "location": {
       "country": {
@@ -2091,7 +2091,7 @@ An example of `on_support` request
 ```json
 {
   "context": {
-    "domain": "dent:ev-charging:0.1.0",
+    "domain": "uei:ev-charging",
     "action": "on_support",
     "location": {
       "country": {
