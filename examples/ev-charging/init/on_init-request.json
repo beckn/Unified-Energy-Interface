@@ -1,6 +1,6 @@
 {
   "context": {
-    "domain": "uei:ev-charging:0.1.0",
+    "domain": "uei:ev-charging",
     "action": "on_init",
     "location": {
       "country": {
