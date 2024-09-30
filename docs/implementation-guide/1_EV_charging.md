@@ -36,7 +36,7 @@ The search is broadcast to all providers on the network, there will be many prov
 ```json
 {
   "context": {
-    "domain": "dent:0.1.0",
+    "domain": "uei:ev-charging",
     "action": "search",
     "location": {
       "country": {
@@ -73,15 +73,21 @@ The search is broadcast to all providers on the network, there will be many prov
           }
         }
       },
-      "location": {
-        "circle": {
-          "gps": "12.423423,77.325647",
-          "radius": {
-            "type": "CONSTANT",
-            "value": "5",
-            "unit": "km"
+      "fulfillment": {
+        "stops": [
+          {
+            "location": {
+              "circle": {
+                "gps": "12.423423,77.325647",
+                "radius": {
+                  "type": "CONSTANT",
+                  "value": "5",
+                  "unit": "km"
+                }
+              }
+            }
           }
-        }
+        ]
       }
     }
   }
@@ -93,7 +99,7 @@ The on_search comes from all the providers, The providers have to be mapped to t
 ```json
 {
   "context": {
-    "domain": "dent:0.1.0",
+    "domain": "uei:ev-charging",
     "action": "on_search",
     "location": {
       "country": {
@@ -153,13 +159,13 @@ The on_search comes from all the providers, The providers have to be mapped to t
                 {
                   "type": "start",
                   "time": {
-                    "timestamp": "01-06-2023 10:00:00"
+                    "timestamp": "2023-06-01T10:00:00Z"
                   }
                 },
                 {
                   "type": "end",
                   "time": {
-                    "timestamp": "01-06-2023 10:30:00"
+                    "timestamp": "2023-06-01T10:00:00Z"
                   }
                 }
               ],
@@ -207,13 +213,13 @@ The on_search comes from all the providers, The providers have to be mapped to t
                 {
                   "type": "start",
                   "time": {
-                    "timestamp": "01-06-2023 10:00:00"
+                    "timestamp": "2023-06-01T10:00:00Z"
                   }
                 },
                 {
                   "type": "end",
                   "time": {
-                    "timestamp": "01-06-2023 10:30:00"
+                    "timestamp": "2023-06-01T10:00:00Z"
                   }
                 }
               ],
@@ -329,7 +335,7 @@ The on_search comes from all the providers, The providers have to be mapped to t
               "stops": [
                 {
                   "location": {
-                    "url": "https://log9.in/track/bswap/3234242"
+                    "map_url": "https://log9.in/track/bswap/3234242"
                   }
                 }
               ]
@@ -419,7 +425,7 @@ An example of `select` request
 ```json
 {
   "context": {
-    "domain": "dent:0.1.0",
+    "domain": "uei:ev-charging",
     "action": "select",
     "location": {
       "country": {
@@ -476,8 +482,8 @@ An example of `on_select` request
 ```json
 {
   "context": {
-    "domain": "dent:0.1.0",
-    "action": "on_select",
+    "domain": "uei:ev-charging",
+    "action": "select",
     "location": {
       "country": {
         "code": "IND"
@@ -489,7 +495,7 @@ An example of `on_select` request
     "version": "1.1.0",
     "bap_id": "example-bap.com",
     "bap_uri": "https://api.example-bap.com/pilot/bap/energy/v1",
-    "bpp_id": "example-bpp.com",
+    "bpp_id": "chargezone-energy-bpp.com",
     "bpp_uri": "https://api.example-bpp.com/pilot/bpp/",
     "transaction_id": "6743e9e2-4fb5-487c-92b7-13ba8018f176",
     "message_id": "6743e9e2-4fb5-487c-92b7-13ba8018f176",
@@ -497,155 +503,32 @@ An example of `on_select` request
   },
   "message": {
     "order": {
-      "providers": {
-        "id": "chargezone.in",
-        "descriptor": {
-          "name": "Chargezone",
-          "short_desc": "Chargezone Technologies Pvt Ltd",
-          "images": [
-            {
-              "url": "https://chargezone.in/images/logo.png"
-            }
-          ]
-        }
+      "provider": {
+        "id": "chargezone.in"
       },
       "items": [
         {
           "id": "pe-charging-01",
-          "descriptor": {
-            "code": "energy"
-          },
-          "price": {
-            "value": "8",
-            "currency": "INR/kWH"
-          },
           "quantity": {
-            "available": {
-              "measure": {
-                "value": "100",
-                "unit": "kWh"
-              }
-            },
             "selected": {
               "measure": {
                 "value": "4",
                 "unit": "kWh"
               }
             }
-          }
-        },
-        {
-          "id": "pe-charging-01-addon-1",
-          "descriptor": {
-            "code": "add-on-item",
-            "name": "Free car wash"
           },
-          "price": {
-            "value": "0",
-            "currency": "INR"
-          }
-        }
-      ],
-      "fulfillments": [
-        {
-          "id": "1",
-          "type": "CHARGING",
-          "stops": [
+          "add_ons": [
             {
-              "type": "start",
-              "time": {
-                "timestamp": "01-06-2023 10:00:00"
-              }
-            },
-            {
-              "type": "end",
-              "time": {
-                "timestamp": "01-06-2023 10:30:00"
-              }
-            }
-          ],
-          "tags": [
-            {
-              "descriptor": {
-                "name": "Charging Point Specifications"
-              },
-              "list": [
-                {
-                  "descriptor": {
-                    "name": "Charger type",
-                    "code": "charger-type"
-                  },
-                  "value": "AC"
-                },
-                {
-                  "descriptor": {
-                    "name": "Connector type",
-                    "code": "connector-type"
-                  },
-                  "value": "CCS2"
-                },
-                {
-                  "descriptor": {
-                    "name": "Power Rating"
-                  },
-                  "value": "greater than 50kW"
-                },
-                {
-                  "descriptor": {
-                    "name": "Availability"
-                  },
-                  "value": "Available"
-                }
-              ],
-              "display": true
+              "id": "pe-charging-01-addon-1"
             }
           ]
         }
       ],
-      "quote": {
-        "price": {
-          "value": "32",
-          "currency": "INR"
-        },
-        "breakup": [
-          {
-            "item": {
-              "id": "pe-charging-01",
-              "descriptor": {
-                "name": "Estimated units consumed"
-              },
-              "quantity": {
-                "selected": {
-                  "measure": {
-                    "value": "4",
-                    "unit": "kWh"
-                  }
-                }
-              }
-            },
-            "price": {
-              "value": "32",
-              "currency": "INR"
-            }
-          },
-          {
-            "item": {
-              "add-ons": [
-                {
-                  "id": "pe-charging-01-addon-1"
-                }
-              ],
-              "descriptor": {
-                "name": "Free car wash"
-              }
-            },
-            "price": {
-              "value": "0",
-              "currency": "INR"
-            }
-          }
-        ]
-      }
+      "fulfillments": [
+        {
+          "id": "1"
+        }
+      ]
     }
   }
 }
@@ -656,7 +539,7 @@ An example of `init` request
 ```json
 {
   "context": {
-    "domain": "dent:0.1.0",
+    "domain": "uei:ev-charging",
     "action": "init",
     "location": {
       "country": {
@@ -726,7 +609,7 @@ An example of `on_init` request
 ```json
 {
   "context": {
-    "domain": "dent:0.1.0",
+    "domain": "uei:ev-charging",
     "action": "on_init",
     "location": {
       "country": {
@@ -747,7 +630,7 @@ An example of `on_init` request
   },
   "message": {
     "order": {
-      "providers": {
+      "provider": {
         "id": "chargezone.in",
         "descriptor": {
           "name": "Chargezone",
@@ -819,13 +702,13 @@ An example of `on_init` request
             {
               "type": "start",
               "time": {
-                "timestamp": "01-06-2023 10:00:00"
+                "timestamp": "2023-06-01T10:00:00"
               }
             },
             {
               "type": "end",
               "time": {
-                "timestamp": "01-06-2023 10:30:00"
+                "timestamp": "2023-06-01T10:00:00"
               }
             }
           ],
@@ -867,7 +750,7 @@ An example of `on_init` request
       ],
       "billing": {
         "email": "abc@example.com",
-        "number": "+91-9876522222"
+        "phone": "+91-9876522222"
       },
       "quote": {
         "price": {
@@ -939,7 +822,7 @@ An example of `confirm` request
 ```json
 {
   "context": {
-    "domain": "dent:0.1.0",
+    "domain": "uei:ev-charging",
     "action": "confirm",
     "location": {
       "country": {
@@ -960,7 +843,7 @@ An example of `confirm` request
   },
   "message": {
     "order": {
-      "providers": {
+      "provider": {
         "id": "chargezone.in"
       },
       "items": [
@@ -984,7 +867,7 @@ An example of `confirm` request
       "billing": {
         "name": "John Doe",
         "email": "abc@example.com",
-        "number": "+91-9876522222"
+        "phone": "+91-9876522222"
       },
       "fulfillments": [
         {
@@ -1004,7 +887,8 @@ An example of `confirm` request
           "collected_by": "BPP",
           "params": {
             "amount": "40",
-            "currency": "INR"
+            "currency": "INR",
+            "transaction_id": "asjdhw8e238e3"
           },
           "status": "PAID",
           "type": "PRE-ORDER"
@@ -1047,7 +931,7 @@ An example of `on_confirm` request
 ```json
 {
   "context": {
-    "domain": "dent:0.1.0",
+    "domain": "uei:ev-charging",
     "action": "on_confirm",
     "location": {
       "country": {
@@ -1069,7 +953,7 @@ An example of `on_confirm` request
   "message": {
     "order": {
       "id": "6743e9e2-4fb5-487c-92b7",
-      "providers": {
+      "provider": {
         "id": "chargezone.in",
         "descriptor": {
           "name": "Chargezone",
@@ -1144,10 +1028,10 @@ An example of `on_confirm` request
                 "gps": "12.423423,77.325647"
               },
               "time": {
-                "timestamp": "01-06-2023 10:00:00",
+                "timestamp": "2023-06-01T10:00:00",
                 "range": {
-                  "start": "01-06-2023 10:00:00",
-                  "end": "01-06-2023 10:10:00"
+                  "start": "2023-06-01T10:00:00",
+                  "end": "2023-06-01T10:10:00"
                 }
               },
               "instructions": {
@@ -1158,10 +1042,10 @@ An example of `on_confirm` request
             {
               "type": "end",
               "time": {
-                "timestamp": "01-06-2023 10:30:00",
+                "timestamp": "2023-06-01T10:30:00",
                 "range": {
-                  "start": "01-06-2023 10:30:00",
-                  "end": "01-06-2023 10:40:00"
+                  "start": "2023-06-01T10:30:00",
+                  "end": "2023-06-01T10:40:00"
                 }
               }
             }
@@ -1204,7 +1088,7 @@ An example of `on_confirm` request
       ],
       "billing": {
         "email": "abc@example.com",
-        "number": "+91-9876522222"
+        "phone": "+91-9876522222"
       },
       "quote": {
         "price": {
@@ -1239,7 +1123,8 @@ An example of `on_confirm` request
           "status": "PAID",
           "params": {
             "amount": "40",
-            "currency": "INR"
+            "currency": "INR",
+            "transaction_id": "asjdhw8e238e3"
           },
           "time": {
             "range": {
@@ -1308,7 +1193,7 @@ An example of `status` request
 ```json
 {
   "context": {
-    "domain": "dent:0.1.0",
+    "domain": "uei:ev-charging",
     "action": "status",
     "location": {
       "country": {
@@ -1338,7 +1223,7 @@ An example of `on_status` request
 ```json
 {
   "context": {
-    "domain": "dent:0.1.0",
+    "domain": "uei:ev-charging",
     "action": "on_status",
     "location": {
       "country": {
@@ -1360,7 +1245,7 @@ An example of `on_status` request
   "message": {
     "order": {
       "id": "6743e9e2-4fb5-487c-92b7",
-      "providers": {
+      "provider": {
         "id": "chargezone.in",
         "descriptor": {
           "name": "Chargezone",
@@ -1435,20 +1320,20 @@ An example of `on_status` request
                 "gps": "12.423423,77.325647"
               },
               "time": {
-                "timestamp": "01-06-2023 10:00:00",
+                "timestamp": "2023-06-01T10:00:00",
                 "range": {
-                  "start": "01-06-2023 10:00:00",
-                  "end": "01-06-2023 10:10:00"
+                  "start": "2023-06-01T10:00:00",
+                  "end": "2023-06-01T10:10:00"
                 }
               }
             },
             {
               "type": "end",
               "time": {
-                "timestamp": "01-06-2023 10:30:00",
+                "timestamp": "2023-06-01T10:30:00",
                 "range": {
-                  "start": "01-06-2023 10:30:00",
-                  "end": "01-06-2023 10:40:00"
+                  "start": "2023-06-01T10:00:00",
+                  "end": "2023-06-01T10:40:00"
                 }
               }
             }
@@ -1491,7 +1376,7 @@ An example of `on_status` request
       ],
       "billing": {
         "email": "abc@example.com",
-        "number": "+91-9876522222"
+        "phone": "+91-9876522222"
       },
       "quote": {
         "price": {
@@ -1526,7 +1411,8 @@ An example of `on_status` request
           "status": "PAID",
           "params": {
             "amount": "40",
-            "currency": "INR"
+            "currency": "INR",
+            "transaction_id": "asjdhw8e238e3"
           },
           "time": {
             "range": {
@@ -1562,7 +1448,7 @@ An example of `cancel` request
 ```json
 {
   "context": {
-    "domain": "dent:0.1.0",
+    "domain": "uei:ev-charging",
     "action": "cancel",
     "location": {
       "country": {
@@ -1582,13 +1468,11 @@ An example of `cancel` request
     "timestamp": "2023-07-16T04:41:16Z"
   },
   "message": {
-    "order": {
       "cancellation_reason_id": "5",
       "descriptor": {
         "short_desc": "can't attend booking"
       },
       "order_id": "6743e9e2-4fb5-487c-92b7"
-    }
   }
 }
 ```
@@ -1598,7 +1482,7 @@ An example of `on_cancel` request
 ```json
 {
   "context": {
-    "domain": "dent:0.1.0",
+    "domain": "uei:ev-charging",
     "action": "on_cancel",
     "location": {
       "country": {
@@ -1621,7 +1505,7 @@ An example of `on_cancel` request
     "order": {
       "id": "6743e9e2-4fb5-487c-92b7",
       "status": "CANCELLED",
-      "providers": {
+      "provider": {
         "id": "chargezone.in",
         "descriptor": {
           "name": "Chargezone",
@@ -1693,8 +1577,8 @@ An example of `on_cancel` request
             {
               "time": {
                 "range": {
-                  "start": "10:00",
-                  "end": "10:30"
+                  "start": "2023-06-01T10:00:00",
+                  "end": "2023-06-01T10:30:00"
                 }
               }
             }
@@ -1737,7 +1621,7 @@ An example of `on_cancel` request
       ],
       "billing": {
         "email": "abc@example.com",
-        "number": "+91-9876522222"
+        "phone": "+91-9876522222"
       },
       "quote": {
         "price": {
@@ -1772,7 +1656,8 @@ An example of `on_cancel` request
           "status": "PAID",
           "params": {
             "amount": "40",
-            "currency": "INR"
+            "currency": "INR",
+            "transaction_id": "asjdhw8e238e3"
           },
           "time": {
             "range": {
@@ -1808,7 +1693,7 @@ An example of `update` request
 ```json
 {
   "context": {
-    "domain": "dent:0.1.0",
+    "domain": "uei:ev-charging",
     "action": "update",
     "location": {
       "country": {
@@ -1851,7 +1736,7 @@ An example of `on_update` request
 ```json
 {
   "context": {
-    "domain": "dent:0.1.0",
+    "domain": "uei:ev-charging",
     "action": "on_update",
     "location": {
       "country": {
@@ -1873,7 +1758,7 @@ An example of `on_update` request
   "message": {
     "order": {
       "id": "6743e9e2-4fb5-487c-92b7",
-      "providers": {
+      "provider": {
         "id": "chargezone.in",
         "descriptor": {
           "name": "Chargezone",
@@ -1948,20 +1833,20 @@ An example of `on_update` request
                 "gps": "12.423423,77.325647"
               },
               "time": {
-                "timestamp": "01-06-2023 10:00:00",
+                "timestamp": "2023-06-01T10:00:00",
                 "range": {
-                  "start": "01-06-2023 10:00:00",
-                  "end": "01-06-2023 10:10:00"
+                  "start": "2023-06-01T10:00:00",
+                  "end": "2023-06-01T10:10:00"
                 }
               }
             },
             {
               "type": "end",
               "time": {
-                "timestamp": "01-06-2023 10:30:00",
+                "timestamp": "2023-06-01T10:30:00",
                 "range": {
-                  "start": "01-06-2023 10:30:00",
-                  "end": "01-06-2023 10:40:00"
+                  "start": "2023-06-01T10:30:00",
+                  "end": "2023-06-01T10:40:00"
                 }
               }
             }
@@ -2004,7 +1889,7 @@ An example of `on_update` request
       ],
       "billing": {
         "email": "abc@example.com",
-        "number": "+91-9876522222"
+        "phone": "+91-9876522222"
       },
       "quote": {
         "price": {
@@ -2039,7 +1924,8 @@ An example of `on_update` request
           "status": "PAID",
           "params": {
             "amount": "40",
-            "currency": "INR"
+            "currency": "INR",
+            "transaction_id": "asjdhw8e238e3"
           },
           "time": {
             "range": {
@@ -2100,7 +1986,7 @@ An example of `rating` request
 ```json
 {
   "context": {
-    "domain": "dent:0.1.0",
+    "domain": "uei:ev-charging",
     "action": "rating",
     "location": {
       "country": {
@@ -2136,7 +2022,7 @@ An example of `on_rating` request
 ```json
 {
   "context": {
-    "domain": "dent:0.1.0",
+    "domain": "uei:ev-charging",
     "action": "on_rating",
     "location": {
       "country": {
@@ -2160,7 +2046,7 @@ An example of `on_rating` request
         "form": {
           "url": "https://api.example-bpp.com/pilot/bpp/feedback/portal"
         },
-        "required": "false"
+        "required": false
     }
   }
 }
@@ -2171,7 +2057,7 @@ An example of `support` request
 ```json
 {
   "context": {
-    "domain": "dent:0.1.0",
+    "domain": "uei:ev-charging",
     "action": "support",
     "location": {
       "country": {
@@ -2205,7 +2091,7 @@ An example of `on_support` request
 ```json
 {
   "context": {
-    "domain": "dent:0.1.0",
+    "domain": "uei:ev-charging",
     "action": "on_support",
     "location": {
       "country": {
