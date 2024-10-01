@@ -1,14 +1,15 @@
 {
   "context": {
-    "domain": "dent:0.1.0",
+    "domain": "dent:ev-charging:0.1.0",
     "action": "on_select",
     "location": {
       "country": {
-        "name": "India",
         "code": "IND"
+      },
+      "city": {
+        "code": "std:080"
       }
     },
-    "city": "std:080",
     "version": "1.1.0",
     "bap_id": "example-bap.com",
     "bap_uri": "https://api.example-bap.com/pilot/bap/energy/v1",
@@ -20,7 +21,7 @@
   },
   "message": {
     "order": {
-      "providers": {
+      "provider": {
         "id": "chargezone.in",
         "descriptor": {
           "name": "Chargezone",
@@ -77,13 +78,13 @@
             {
               "type": "start",
               "time": {
-                "timestamp": "01-06-2023 10:00:00"
+                "timestamp": "2023-06-01T10:00:00"
               }
             },
             {
               "type": "end",
               "time": {
-                "timestamp": "01-06-2023 10:30:00"
+                "timestamp": "2023-06-01T10:00:00"
               }
             }
           ],
@@ -133,6 +134,7 @@
         "breakup": [
           {
             "item": {
+              "id": "pe-charging-01",
               "descriptor": {
                 "name": "Estimated units consumed"
               },
@@ -152,6 +154,11 @@
           },
           {
             "item": {
+              "add_ons": [
+                {
+                  "id": "pe-charging-01-addon-1"
+                }
+              ],
               "descriptor": {
                 "name": "Free car wash"
               }
