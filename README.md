@@ -30,6 +30,10 @@ Just like physical goods can be consumed or stored, energy can _also_ be _consum
 
 > **Note :** UEI does NOT transfer "Energy" in its physical form. Enery transfer is still done via physical infrastructures like Generators, transmission lines, transformers, inverters, adaptors etc. UEI only facilites the creation of the energy transfer contract (order) that ultimately results in the physical transfer (fulfillment).
 
+## Explore the APIs
+Visualise the APIs in an interactive, user-friendly interface [here](https://beckn.github.io/Unified-Energy-Interface/swagger/index.html)
+
+
 ## Test it yourself
 We can try out the sample example requests and response using this postman collection.
 
